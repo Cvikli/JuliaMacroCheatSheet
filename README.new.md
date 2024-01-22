@@ -1,6 +1,3 @@
-`Meta.quot(x)` = `Expr(:quote, x)` (Macro hygenie does not apply... so no `esc` required)
-Similar: `QuoteNode(c)` but prevents interpolation. So if `$`(literal) is in the args, it won't interpolate, just "noted to be interpolated when effectively runs live".
-
 
 
 @makeex2 1 + $(sin(1))
