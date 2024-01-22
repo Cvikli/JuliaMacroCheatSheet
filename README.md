@@ -1,7 +1,7 @@
 # JuliaMacroCheatSheet
 Macro CheatSheet
 
-
+$\color{rgb(255,0,0)}{\textsf{lorem ipsum}}$
 
 <style>
 tr:nth-child(even) {
