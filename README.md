@@ -39,7 +39,7 @@ end</code></th>
   
   <tr align="left"> <!-- ROW 1 -->
     <td><code>println(ex)</code></td>
-    <td>“ok”</td>
+    <td>$\color{green}{\textsf{“ok”}}$</td>
     <!-- <td>quote<br>
  #= ~/macro.jl:41 =#<br>
  println(ex)<br>
