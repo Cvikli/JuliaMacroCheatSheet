@@ -3,7 +3,12 @@ Macro CheatSheet
 
 
 
-
+<style>
+tr:nth-child(even) {
+  background-color: #b200b2!important;
+  color: #f4f4f4!important;
+}
+</style>
 
 
 <table>
