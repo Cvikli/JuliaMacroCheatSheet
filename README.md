@@ -29,7 +29,7 @@ end</code></th>
     <th><code>macro f(ex)
  ...
 end</code></th>
-	<th><code>macro f(ex)
+  <th><code>macro f(ex)
  :(...)
 end</code></th>
 <th><code>macro f(ex)
@@ -77,13 +77,13 @@ Case - Expression evaluation:
   <tr align="left"> <!-- HEADER -->
     <th></th>
     <th><code>macro quo(arg)
-	:( x = $(esc(arg)); :($x + $x) )
+  :( x = $(esc(arg)); :($x + $x) )
 end</code></th>
     <th><code>macro quo(arg)
-	:( x = $(Meta.quot(arg)); :($x + $x) )
+  :( x = $(Meta.quot(arg)); :($x + $x) )
 end</code></th>
-	<th><code>macro quo(arg)
-	:( x = $(QuoteNode(arg)); :($x + $x) )
+  <th><code>macro quo(arg)
+  :( x = $(QuoteNode(arg)); :($x + $x) )
 end</code></th>
 
   </tr>
@@ -125,40 +125,40 @@ Case - Expression interpolation:
   <tr align="left"> <!-- HEADER -->
     <th></th>
     <th><code>macro interpolate(expr, left, right)
-	quote
-		Meta.quot($expr)
-		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
-	end
+  quote
+    Meta.quot($expr)
+    :($$(Meta.quot(left)) + $$(Meta.quot(right)))
+  end
 end</code></th>
     <th><code>macro interpolate(expr, left, right)
-	quote
-		$(Meta.quot(expr))
-		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
-	end
+  quote
+    $(Meta.quot(expr))
+    :($$(Meta.quot(left)) + $$(Meta.quot(right)))
+  end
 end</code></th>
-	<th><code>macro interpolate(expr, left, right)
-	quote
-		quote
-			$$(Meta.quot(expr))
-			:($$$(Meta.quot(left)) + $$$(Meta.quot(right)))
-		end
-	end
-end</code></th>
-<th><code>macro interpolate(expr, left, right)
-	quote
-		quote
-			$$(Meta.quot(expr))
-			:($$(Meta.quot($(Meta.quot(left)))) + $$(Meta.quot($(Meta.quot(right)))))
-		end
-	end
+  <th><code>macro interpolate(expr, left, right)
+  quote
+    quote
+      $$(Meta.quot(expr))
+      :($$$(Meta.quot(left)) + $$$(Meta.quot(right)))
+    end
+  end
 end</code></th>
 <th><code>macro interpolate(expr, left, right)
-	quote
-		quote
-			$$(Meta.quot(expr))
-			:($$(Meta.quot($(QuoteNode(left)))) + $$(Meta.quot($(QuoteNode(right)))))
-		end
-	end
+  quote
+    quote
+      $$(Meta.quot(expr))
+      :($$(Meta.quot($(Meta.quot(left)))) + $$(Meta.quot($(Meta.quot(right)))))
+    end
+  end
+end</code></th>
+<th><code>macro interpolate(expr, left, right)
+  quote
+    quote
+      $$(Meta.quot(expr))
+      :($$(Meta.quot($(QuoteNode(left)))) + $$(Meta.quot($(QuoteNode(right)))))
+    end
+  end
 end</code></th>
   </tr>
   <tr align="left"><!-- ROW 1 -->
@@ -222,7 +222,7 @@ end</code></th>
     <th><code>macro f(ex)
   ...
 end</code></th>
-	<th><code>macro f(ex)
+  <th><code>macro f(ex)
  :(...)
 end</code></th>
 <th><code>macro f(ex)
