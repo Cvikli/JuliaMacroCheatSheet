@@ -39,7 +39,6 @@ end</code></th>
 end</code></th>
   </tr>
 
-  
   <tr align="left"> <!-- ROW 1 -->
     <td><code>println(ex)</code></td>
     <td style="background-color: #2f2; color: #222">"ok”</td>
@@ -47,8 +46,6 @@ end</code></th>
     <td style="background-color: #ff2; color: #222">ERROR: `ex` not defined (hygenie)</td>
     <td style="background-color: #ff2; color: #222">ERROR: `ex` not defined (hygenie)</td>
   </tr>
-
-
   <tr align="left"><!-- ROW 2 -->
     <td><code>println($(ex))</code></td>
     <td style="background-color: #e55; color: #222">Compilation error</td>
@@ -56,8 +53,6 @@ end</code></th>
     <td style="background-color: #ff2; color: #222">“ok”</td>
     <td style="background-color: #ff2; color: #222">“ok”</td>
   </tr>
-
-
   <tr align="left"><!-- ROW 3 -->
     <td><code>println($(esc(ex)))</code></td>
     <td style="background-color: #e55; color: #222">Compilation error</td>
@@ -65,8 +60,6 @@ end</code></th>
     <td style="background-color: #2f2; color: #222">“ok”</td>
     <td style="background-color: #2f2; color: #222">“ok”</td>
   </tr>
-
-
   <tr align="left"><!-- ROW 4 -->
     <td><code>println($(string(ex)))</code></td>
     <td style="background-color: #e55; color: #222">Compilation error</td>
@@ -82,63 +75,139 @@ end</code></th>
 Case - Expression evaluation:
 <table>
   <tr align="left"> <!-- HEADER -->
-    <th><code>fn(sleep(1))</code> or <code>@fn sleep(1)</code></th>
-    <th><code>function f(ex)
- ...
+    <th></th>
+    <th><code>macro quo(arg)
+	:( x = $(esc(arg)); :($x + $x) )
 end</code></th>
-    <th><code>macro f(ex)
- ...
+    <th><code>macro quo(arg)
+	:( x = $(Meta.quot(arg)); :($x + $x) )
 end</code></th>
-	<th><code>macro f(ex)
- :(...)
+	<th><code>macro quo(arg)
+	:( x = $(QuoteNode(arg)); :($x + $x) )
 end</code></th>
-<th><code>macro f(ex)
- quote
-  ...
- end
-end</code></th>
+
   </tr>
 
   
   <tr align="left"> <!-- ROW 1 -->
-    <td><code>println(ex)</code></td>
-    <td style="background-color: #2f2; color: #222">"ok”</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #ff2; color: #222">ERROR: `ex` not defined (hygenie)</td>
-    <td style="background-color: #ff2; color: #222">ERROR: `ex` not defined (hygenie)</td>
+    <td><code>@quo 1</code></td>
+    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
+    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
+    <td style="background-color: #ff2; color: #222">:(1 + 1)</td>
   </tr>
-
-
   <tr align="left"><!-- ROW 2 -->
-    <td><code>println($(ex))</code></td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #ff2; color: #222">“ok”</td>
-    <td style="background-color: #ff2; color: #222">“ok”</td>
+    <td><code>@quo 1 + 1</code></td>
+    <td style="background-color: #e55; color: #222">:(2 + 2)</td>
+    <td style="background-color: #e55; color: #222">:((1 + 1) + (1 + 1))</td>
+    <td style="background-color: #ff2; color: #222">:((1 + 1) + (1 + 1))</td>
   </tr>
-
-
   <tr align="left"><!-- ROW 3 -->
-    <td><code>println($(esc(ex)))</code></td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #2f2; color: #222">“ok”</td>
-    <td style="background-color: #2f2; color: #222">“ok”</td>
+    <td><code>@quo 1 + $(sin(1))</code></td>
+    <td style="background-color: #e55; color: #222">ERROR: "$" expression outside quote</td>
+    <td style="background-color: #e55; color: #222">:((1 + 0.84147…) + (1 + 0.841…))</td>
+    <td style="background-color: #2f2; color: #222">:((1 + $(Expr(:$, :(sin(1))))) + (1 + $(Expr(:$, :(sin(1))))))</td>
   </tr>
-
-
   <tr align="left"><!-- ROW 4 -->
-    <td><code>println($(string(ex)))</code></td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
+    <td><code>let q = 0.5 
+  @quo 1 + $q
+end</code></td>
+    <td style="background-color: #e55; color: #222">ERROR: "$" expression outside quote</td>
+    <td style="background-color: #e55; color: #222">ERROR: UndefVarError: `q` not defined</td>
+    <td style="background-color: #2f2; color: #222">:((1 + $(Expr(:$, :q))) + (1 + $(Expr(:$, :q))))</td>
   </tr>
 
 </table>
 
 
 
+Case - Expression interpolation:
+<table>
+  <tr align="left"> <!-- HEADER -->
+    <th></th>
+    <th><code>macro interpolate(expr, left, right)
+	quote
+		Meta.quot($expr)
+		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
+	end
+end</code></th>
+    <th><code>macro interpolate(expr, left, right)
+	quote
+		$(Meta.quot(expr))
+		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
+	end
+end</code></th>
+	<th><code>macro interpolate(expr, left, right)
+	quote
+		quote
+			$$(Meta.quot(expr))
+			:($$$(Meta.quot(left)) + $$$(Meta.quot(right)))
+		end
+	end
+end</code></th>
+<th><code>macro interpolate(expr, left, right)
+	quote
+		quote
+			$$(Meta.quot(expr))
+			:($$(Meta.quot($(Meta.quot(left)))) + $$(Meta.quot($(Meta.quot(right)))))
+		end
+	end
+end</code></th>
+<th><code>macro interpolate(expr, left, right)
+	quote
+		quote
+			$$(Meta.quot(expr))
+			:($$(Meta.quot($(QuoteNode(left)))) + $$(Meta.quot($(QuoteNode(right)))))
+		end
+	end
+end</code></th>
+  </tr>
+  <tr align="left"><!-- ROW 1 -->
+    <td><code>@interpolate x=1 x x</code></td>
+    <td style="background-color: #e55; color: #222">var</td>
+    <td style="background-color: #e55; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+  </tr>
+  <tr align="left"><!-- ROW 2 -->
+    <td><code>@interpolate x=1 x/2 x</code></td>
+    <td style="background-color: #e55; color: #222">vra</td>
+    <td style="background-color: #e55; color: #222">vra</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+  </tr>
+  <tr align="left"><!-- ROW 3 -->
+    <td><code>@interpolate x=1 1/2 1/4</code></td>
+    <td style="background-color: #e55; color: #222">var</td>
+    <td style="background-color: #e55; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+  </tr>
+  <tr align="left"><!-- ROW 4 -->
+    <td><code>@interpolate y=1 $y $y</code></td>
+    <td style="background-color: #e55; color: #222">vad</td>
+    <td style="background-color: #e55; color: #222">vad</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+  </tr>
+  <tr align="left"><!-- ROW 6 -->
+    <td><code>@interpolate y=1 1+$y $y</code></td>
+    <td style="background-color: #e55; color: #222">Compilation error</td>
+    <td style="background-color: #e55; color: #222">Compilation error</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+  </tr>
+  <tr align="left"><!-- ROW 7 -->
+    <td><code>@interpolate y=1 $y/2 $y</code></td>
+    <td style="background-color: #e55; color: #222">Compilation error</td>
+    <td style="background-color: #e55; color: #222">Compilation error</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">var</td>
+  </tr>
+</table>
 
 Case - generate variable:
 ```julia
