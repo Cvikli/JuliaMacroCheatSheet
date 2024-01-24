@@ -77,13 +77,13 @@ Case - Expression evaluation:
   <tr align="left"> <!-- HEADER -->
     <th></th>
     <th><code>macro quo(arg)
-  :( x = $(esc(arg)); :($x + $x) )
+ :( x = $(esc(arg)); :($x + $x) )
 end</code></th>
     <th><code>macro quo(arg)
-  :( x = $(Meta.quot(arg)); :($x + $x) )
+ :( x = $(Meta.quot(arg)); :($x + $x) )
 end</code></th>
   <th><code>macro quo(arg)
-  :( x = $(QuoteNode(arg)); :($x + $x) )
+ :( x = $(QuoteNode(arg)); :($x + $x) )
 end</code></th>
 
   </tr>
@@ -109,7 +109,7 @@ end</code></th>
   </tr>
   <tr align="left"><!-- ROW 4 -->
     <td><code>let q = 0.5 
-  @quo 1 + $q
+ @quo 1 + $q
 end</code></td>
     <td style="background-color: #e55; color: #222">ERROR: "$" expression outside quote</td>
     <td style="background-color: #e55; color: #222">ERROR: UndefVarError: `q` not defined</td>
@@ -120,45 +120,45 @@ end</code></td>
 
 
 
-Case - Expression interpolation:
+Case - Expression interpolation (@ip):
 <table>
   <tr align="left"> <!-- HEADER -->
     <th></th>
     <th><code>macro ip(expr, left, right)
-  quote
-    Meta.quot($expr)
-    :($$(Meta.quot(left)) + $$(Meta.quot(right)))
-  end
+ quote
+  Meta.quot($expr)
+  :($$(Meta.quot(left)) + $$(Meta.quot(right)))
+ end
 end</code></th>
     <th><code>macro ip(expr, left, right)
-  quote
-    $(Meta.quot(expr))
+ quote
+  $(Meta.quot(expr))
     :($$(Meta.quot(left)) + $$(Meta.quot(right)))
   end
 end</code></th>
   <th><code>macro ip(expr, left, right)
+ quote
   quote
-    quote
-      $$(Meta.quot(expr))
-      :($$$(Meta.quot(left)) + $$$(Meta.quot(right)))
-    end
+   $$(Meta.quot(expr))
+   :($$$(Meta.quot(left)) + $$$(Meta.quot(right)))
   end
+ end
 end</code></th>
 <th><code>macro ip(expr, left, right)
+ quote
   quote
-    quote
-      $$(Meta.quot(expr))
-      :($$(Meta.quot($(Meta.quot(left)))) + $$(Meta.quot($(Meta.quot(right)))))
-    end
+   $$(Meta.quot(expr))
+   :($$(Meta.quot($(Meta.quot(left)))) + $$(Meta.quot($(Meta.quot(right)))))
   end
+ end
 end</code></th>
 <th><code>macro ip(expr, left, right)
+ quote
   quote
-    quote
-      $$(Meta.quot(expr))
-      :($$(Meta.quot($(QuoteNode(left)))) + $$(Meta.quot($(QuoteNode(right)))))
-    end
+   $$(Meta.quot(expr))
+   :($$(Meta.quot($(QuoteNode(left)))) + $$(Meta.quot($(QuoteNode(right)))))
   end
+ end
 end</code></th>
   </tr>
   <tr align="left"><!-- ROW 1 -->
@@ -166,16 +166,16 @@ end</code></th>
     <td style="background-color: #2f2; color: #222">:(x + x)</td>
     <td style="background-color: #2f2; color: #222">:(x + x)</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
 end</td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
@@ -199,16 +199,16 @@ end</td>
     <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
     <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
 end</td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
@@ -224,16 +224,16 @@ end</td>
     <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
     <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
     <td style="background-color: #2f2; color: #222">quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
 end</td>
   </tr>
   <tr align="left"><!-- ROW 3 -->
@@ -249,16 +249,16 @@ end</td>
     <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, 1))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, 1))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
 end</td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
@@ -274,16 +274,16 @@ end</td>
     <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :(1 + 1))) + $(Expr(:$, 1)))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :(1 + 1))) + $(Expr(:$, 1)))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + 1)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + 1)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + $(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + $(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
 end</td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
@@ -299,16 +299,16 @@ end</td>
     <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
 end</td>
     <td style="background-color: #2f2; color: #222">quote
-  x = 1
-  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)) / 2)))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+ x = 1
+ $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)) / 2)))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
 end</td>
   </tr>
   <tr align="left"><!-- ROW 7 -->
