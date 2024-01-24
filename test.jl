@@ -197,3 +197,103 @@ println(ss)
 
 
 #%%
+macro quo(arg)
+	:( x = $(esc(arg)); :($x + $x) )
+end
+
+#%%
+macro quo(arg)
+	:( x = $(Meta.quot(arg)); :($x + $x) )
+end
+
+#%%
+macro quo(arg)
+	:( x = $(QuoteNode(arg)); :($x + $x) )
+end
+#%%
+@quo 1
+#%%
+eval(@quo 1)
+#%%
+@quo 1 + 1
+#%%
+eval(@quo 1 + 1)
+#%%
+@quo 1 + $(sin(1))
+#%%
+let q = 0.5 
+  @quo 1 + $q
+end
+#%%
+let q = 0.5 
+	eval(@quo 1 + $q)
+end
+
+
+
+
+
+#%%
+macro interpolate(expr, left, right)
+	quote
+		Meta.quot($expr)
+		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
+	end
+end
+#%%
+macro interpolate(expr, left, right)
+	quote
+		$(Meta.quot(expr))
+		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
+	end
+end
+#%%
+macro interpolate(expr, left, right)
+	quote
+		quote
+			$$(Meta.quot(expr))
+			:($$$(Meta.quot(left)) + $$$(Meta.quot(right)))
+		end
+	end
+end
+#%%
+macro interpolate(expr, left, right)
+	quote
+		quote
+			$$(Meta.quot(expr))
+			:($$(Meta.quot($(Meta.quot(left)))) + $$(Meta.quot($(Meta.quot(right)))))
+		end
+	end
+end
+#%%
+macro interpolate(expr, left, right)
+	quote
+		quote
+			$$(Meta.quot(expr))
+			:($$(Meta.quot($(QuoteNode(left)))) + $$(Meta.quot($(QuoteNode(right)))))
+		end
+	end
+end
+#%%
+@interpolate x=1 x x
+#%%
+eval(@interpolate x=1 x x)
+#%%
+eval(eval(@interpolate x=1 x x))
+#%%
+@interpolate x=1 x/2 x
+#%%
+eval(@interpolate x=1 x/2 x)
+#%%
+@interpolate x=1 1/2 1/4
+#%%
+eval(@interpolate x=1 1/2 1/4)
+#%%
+@interpolate y=1 $y $y
+#%%
+eval(@interpolate y=1 1+$y $y)
+#%%
+:(5 + 3)
+#%%
+@interpolatex y=1 $y/2 $y
+
