@@ -123,21 +123,22 @@ end</code></td>
 Case - Expression interpolation (@ip):
 <table>
   <tr align="left"> <!-- HEADER -->
-    <th>________________________</th>
+    <th>_______________________</th>
     <th><code>macro ip(expr, left, right)
  quote
   Meta.quot($expr)
   :($$(Meta.quot(left)) + $$(Meta.quot(right)))
  end
-end
-_____________________________________________</code></th>
+end</code>
+___________________________________</th>
     <th><code>macro ip(expr, left, right)
  quote
   $(Meta.quot(expr))
     :($$(Meta.quot(left)) + $$(Meta.quot(right)))
   end
 end
-_______________________________________</code></th>
+</code>
+________________________</th>
   <th><code>macro ip(expr, left, right)
  quote
   quote
@@ -146,7 +147,8 @@ _______________________________________</code></th>
   end
  end
 end
-________________________________________________</code></th>
+</code>
+________________________________</th>
 <th><code>macro ip(expr, left, right)
  quote
   quote
@@ -155,7 +157,8 @@ ________________________________________________</code></th>
   end
  end
 end
-____________________________________________________________</code></th>
+</code>
+____________________________________</th>
 <th><code>macro ip(expr, left, right)
  quote
   quote
@@ -164,7 +167,8 @@ ____________________________________________________________</code></th>
   end
  end
 end
-_______________________________________________________________________</code></th>
+</code>
+_______________________________________</th>
   </tr>
   <tr align="left"><!-- ROW 1 -->
     <td><code>@ip x=1 x x</code></td>
