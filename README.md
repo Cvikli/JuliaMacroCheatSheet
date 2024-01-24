@@ -124,19 +124,19 @@ Case - Expression interpolation:
 <table>
   <tr align="left"> <!-- HEADER -->
     <th></th>
-    <th><code>macro interpolate(expr, left, right)
+    <th><code>macro ip(expr, left, right)
   quote
     Meta.quot($expr)
     :($$(Meta.quot(left)) + $$(Meta.quot(right)))
   end
 end</code></th>
-    <th><code>macro interpolate(expr, left, right)
+    <th><code>macro ip(expr, left, right)
   quote
     $(Meta.quot(expr))
     :($$(Meta.quot(left)) + $$(Meta.quot(right)))
   end
 end</code></th>
-  <th><code>macro interpolate(expr, left, right)
+  <th><code>macro ip(expr, left, right)
   quote
     quote
       $$(Meta.quot(expr))
@@ -144,7 +144,7 @@ end</code></th>
     end
   end
 end</code></th>
-<th><code>macro interpolate(expr, left, right)
+<th><code>macro ip(expr, left, right)
   quote
     quote
       $$(Meta.quot(expr))
@@ -152,7 +152,7 @@ end</code></th>
     end
   end
 end</code></th>
-<th><code>macro interpolate(expr, left, right)
+<th><code>macro ip(expr, left, right)
   quote
     quote
       $$(Meta.quot(expr))
@@ -162,7 +162,7 @@ end</code></th>
 end</code></th>
   </tr>
   <tr align="left"><!-- ROW 1 -->
-    <td><code>@interpolate x=1 x x</code></td>
+    <td><code>@ip x=1 x x</code></td>
     <td style="background-color: #2f2; color: #222">:(x + x)</td>
     <td style="background-color: #2f2; color: #222">:(x + x)</td>
     <td style="background-color: #2f2; color: #222">quote
@@ -179,7 +179,7 @@ end</td>
 end</td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
-    <td><code>eval(@interpolate x=1 x x)</code></td>
+    <td><code>eval(@ip x=1 x x)</code></td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #e55; color: #222">:(1+1)</td>
@@ -187,7 +187,7 @@ end</td>
     <td style="background-color: #e55; color: #222">:(x + x)</td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
-    <td><code>eval(eval(@interpolate x=1 x x))</code></td>
+    <td><code>eval(eval(@ip x=1 x x))</code></td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #e55; color: #222">2</td>
@@ -195,7 +195,7 @@ end</td>
     <td style="background-color: #e55; color: #222">2</td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
-    <td><code>@interpolate x=1 x/2 x</code></td>
+    <td><code>@ip x=1 x/2 x</code></td>
     <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
     <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
     <td style="background-color: #2f2; color: #222">quote
@@ -212,7 +212,7 @@ end</td>
 end</td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
-    <td><code>eval(@interpolate x=1 x/2 x)</code></td>
+    <td><code>eval(@ip x=1 x/2 x)</code></td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #e55; color: #222">:(0.5 + 1)</td>
@@ -220,7 +220,7 @@ end</td>
     <td style="background-color: #e55; color: #222">:(x / 2 + x)</td>
   </tr>
   <tr align="left"><!-- ROW 3 -->
-    <td><code>@interpolate x=1 1/2 1/4</code></td>
+    <td><code>@ip x=1 1/2 1/4</code></td>
     <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
     <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
     <td style="background-color: #2f2; color: #222">quote
@@ -237,7 +237,7 @@ end</td>
 end</td>
   </tr>
   <tr align="left"><!-- ROW 3 -->
-    <td><code>eval(@interpolate x=1 1/2 1/4)</code></td>
+    <td><code>eval(@ip x=1 1/2 1/4)</code></td>
     <td style="background-color: #2f2; color: #222">0.75</td>
     <td style="background-color: #2f2; color: #222">0.75</td>
     <td style="background-color: #2f2; color: #222">:(0.5 + 0.25)</td>
@@ -245,7 +245,7 @@ end</td>
     <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
-    <td><code>@interpolate x=1 $x $x</code></td>
+    <td><code>@ip x=1 $x $x</code></td>
     <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">quote
@@ -262,7 +262,7 @@ end</td>
 end</td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
-    <td><code>eval(@interpolate x=1 $x $x)</code></td>
+    <td><code>eval(@ip x=1 $x $x)</code></td>
     <td style="background-color: #2f2; color: #222">2</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
@@ -270,7 +270,7 @@ end</td>
     <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
   </tr>
   <tr align="left"><!-- ROW 6 -->
-    <td><code>@interpolate x=1 1+$x $x</code></td>
+    <td><code>@ip x=1 1+$x $x</code></td>
     <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">quote
@@ -287,7 +287,7 @@ end</td>
 end</td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
-    <td><code>eval(@interpolate x=1 1+$x $x)</code></td>
+    <td><code>eval(@ip x=1 1+$x $x)</code></td>
     <td style="background-color: #2f2; color: #222">3</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">:(2 + 1)</td>
@@ -295,7 +295,7 @@ end</td>
     <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
   </tr>
   <tr align="left"><!-- ROW 7 -->
-    <td><code>@interpolate x=1 $x/2 $x</code></td>
+    <td><code>@ip x=1 $x/2 $x</code></td>
     <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">quote
@@ -312,7 +312,7 @@ end</td>
 end</td>
   </tr>
   <tr align="left"><!-- ROW 7 -->
-    <td><code>eval(@interpolate x=1 $x/2 $x)</code></td>
+    <td><code>eval(@ip x=1 $x/2 $x)</code></td>
     <td style="background-color: #2f2; color: #222">1.5</td>
     <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
     <td style="background-color: #2f2; color: #222">:(0.5 + 1)</td>

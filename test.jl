@@ -234,21 +234,21 @@ end
 
 
 #%%
-macro interpolate(expr, left, right)
+macro ip(expr, left, right)
 	quote
 		Meta.quot($expr)
 		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
 	end
 end
 #%%
-macro interpolate(expr, left, right)
+macro ip(expr, left, right)
 	quote
 		$(Meta.quot(expr))
 		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
 	end
 end
 #%%
-macro interpolate(expr, left, right)
+macro ip(expr, left, right)
 	quote
 		quote
 			$$(Meta.quot(expr))
@@ -257,7 +257,7 @@ macro interpolate(expr, left, right)
 	end
 end
 #%%
-macro interpolate(expr, left, right)
+macro ip(expr, left, right)
 	quote
 		quote
 			$$(Meta.quot(expr))
@@ -266,7 +266,7 @@ macro interpolate(expr, left, right)
 	end
 end
 #%%
-macro interpolate(expr, left, right)
+macro ip(expr, left, right)
 	quote
 		quote
 			$$(Meta.quot(expr))
