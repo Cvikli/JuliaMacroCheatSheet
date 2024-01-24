@@ -275,25 +275,33 @@ macro interpolate(expr, left, right)
 	end
 end
 #%%
-@interpolate x=1 x x
+macro qq(out) 
+	print("<td style=\"background-color: #e55; color: #222\">",eval(:($(QuoteNode(out)))),"</td>")
+end
+col=1
+@show "EFEEFEFE"
+# display(@interpolate x=1 x x)
+# display(eval(@interpolate x=1 x x))
+# display(eval(eval(@interpolate x=1 x x)))
+# display(@interpolate x=1 x/2 x)
+# display(eval(@interpolate x=1 x/2 x))
+# display(@interpolate x=1 1/2 1/4)
+# display(eval(@interpolate x=1 1/2 1/4))
+display(@interpolate x=1 $x $x)
+display(eval(@interpolate x=1 $x $x))
+display(@interpolate x=1 1+$x $x)
+display(eval(@interpolate x=1 1+$x $x))
+display(@interpolate x=1 $x/2 $x)
+display(eval(@interpolate x=1 $x/2 $x))
 #%%
-eval(@interpolate x=1 x x)
 #%%
-eval(eval(@interpolate x=1 x x))
 #%%
-@interpolate x=1 x/2 x
 #%%
-eval(@interpolate x=1 x/2 x)
 #%%
-@interpolate x=1 1/2 1/4
 #%%
-eval(@interpolate x=1 1/2 1/4)
 #%%
-@interpolate y=1 $y $y
 #%%
-eval(@interpolate y=1 1+$y $y)
 #%%
 :(5 + 3)
 #%%
-@interpolatex y=1 $y/2 $y
 

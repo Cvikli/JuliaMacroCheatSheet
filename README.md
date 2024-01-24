@@ -14,7 +14,7 @@ Calling function or macro behavior can be different: `fn(var) or @fn var`
 Similar: `QuoteNode(c)` but prevents interpolation. So if `$`(literal) is in the args, it won't interpolate, just "will be interpolated when evaluated".
 
 
-
+Note: Linenumbers are removed from the CheatSheet!
 
 Case - variable in Main module:
 ```julia
@@ -163,49 +163,161 @@ end</code></th>
   </tr>
   <tr align="left"><!-- ROW 1 -->
     <td><code>@interpolate x=1 x x</code></td>
-    <td style="background-color: #e55; color: #222">var</td>
-    <td style="background-color: #e55; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">:(x + x)</td>
+    <td style="background-color: #2f2; color: #222">:(x + x)</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+end</td>
+  </tr>
+  <tr align="left"><!-- ROW 2 -->
+    <td><code>eval(@interpolate x=1 x x)</code></td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #e55; color: #222">:(1+1)</td>
+    <td style="background-color: #e55; color: #222">:(x + x)</td>
+    <td style="background-color: #e55; color: #222">:(x + x)</td>
+  </tr>
+  <tr align="left"><!-- ROW 2 -->
+    <td><code>eval(eval(@interpolate x=1 x x))</code></td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #e55; color: #222">2</td>
+    <td style="background-color: #e55; color: #222">2</td>
+    <td style="background-color: #e55; color: #222">2</td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
     <td><code>@interpolate x=1 x/2 x</code></td>
-    <td style="background-color: #e55; color: #222">vra</td>
-    <td style="background-color: #e55; color: #222">vra</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
+    <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+end</td>
+  </tr>
+  <tr align="left"><!-- ROW 2 -->
+    <td><code>eval(@interpolate x=1 x/2 x)</code></td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #e55; color: #222">:(0.5 + 1)</td>
+    <td style="background-color: #e55; color: #222">:(x / 2 + x)</td>
+    <td style="background-color: #e55; color: #222">:(x / 2 + x)</td>
   </tr>
   <tr align="left"><!-- ROW 3 -->
     <td><code>@interpolate x=1 1/2 1/4</code></td>
-    <td style="background-color: #e55; color: #222">var</td>
-    <td style="background-color: #e55; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
+    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
+    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
+    <td style="background-color: #2f2; color: #222">quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
+end</td>
+  </tr>
+  <tr align="left"><!-- ROW 3 -->
+    <td><code>eval(@interpolate x=1 1/2 1/4)</code></td>
+    <td style="background-color: #2f2; color: #222">0.75</td>
+    <td style="background-color: #2f2; color: #222">0.75</td>
+    <td style="background-color: #2f2; color: #222">:(0.5 + 0.25)</td>
+    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
+    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
-    <td><code>@interpolate y=1 $y $y</code></td>
-    <td style="background-color: #e55; color: #222">vad</td>
-    <td style="background-color: #e55; color: #222">vad</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
+    <td><code>@interpolate x=1 $x $x</code></td>
+    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #2f2; color: #222">quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, 1))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+end</td>
+  </tr>
+  <tr align="left"><!-- ROW 4 -->
+    <td><code>eval(@interpolate x=1 $x $x)</code></td>
+    <td style="background-color: #2f2; color: #222">2</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
+    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
+    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
   </tr>
   <tr align="left"><!-- ROW 6 -->
-    <td><code>@interpolate y=1 1+$y $y</code></td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
+    <td><code>@interpolate x=1 1+$x $x</code></td>
+    <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :(1 + 1))) + $(Expr(:$, 1)))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + 1)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + $(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+end</td>
+  </tr>
+  <tr align="left"><!-- ROW 4 -->
+    <td><code>eval(@interpolate x=1 1+$x $x)</code></td>
+    <td style="background-color: #2f2; color: #222">3</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #2f2; color: #222">:(2 + 1)</td>
+    <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
+    <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
   </tr>
   <tr align="left"><!-- ROW 7 -->
-    <td><code>@interpolate y=1 $y/2 $y</code></td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #e55; color: #222">Compilation error</td>
-    <td style="background-color: #2f2; color: #222">var</td>
-    <td style="background-color: #2f2; color: #222">var</td>
+    <td><code>@interpolate x=1 $x/2 $x</code></td>
+    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+end</td>
+    <td style="background-color: #2f2; color: #222">quote
+  x = 1
+  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)) / 2)))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+end</td>
+  </tr>
+  <tr align="left"><!-- ROW 7 -->
+    <td><code>eval(@interpolate x=1 $x/2 $x)</code></td>
+    <td style="background-color: #2f2; color: #222">1.5</td>
+    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
+    <td style="background-color: #2f2; color: #222">:(0.5 + 1)</td>
+    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
+    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
   </tr>
 </table>
 
