@@ -110,9 +110,9 @@ end
 #%%
 basic_tests(io) = begin
 	title = "Case - Basic:"
-	init  = "ex=$(show(ex))  # Main.ex\n"*
-					"x=$(show(x))    # Main.x\n"*
-					"p=$(show(p))     # Main.p"
+	init  = "ex=:$(ex)   # Main.ex\n"*
+					"x=:$(x)     # Main.x\n"*
+					"p=$(p)     # Main.p"
 	tests = [("macro fn(ex)
  ","
 end"),
@@ -147,8 +147,8 @@ basic_tests(stdout)
 #%%
 value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
-	init  = "q=$(show(q))  # Main.q\n"*
-	        "p=$(show(p))   # Main.p"
+	init  = "q=:$(q)  # Main.q\n"*
+	        "p=$(p)   # Main.p"
 	tests = ["macro quo(ex)
  :( x = \$(esc(ex)); :(\$x + \$x) )
 end",
@@ -172,8 +172,8 @@ end
 
 expression_generation_tests(io) = begin
 	title = "Case - Expression generation:"
-	init  = "x=$(show(x))   # Main.x\n"*
-					"p=$(show(p))   # Main.p"
+	init  = "x=:$(x)   # Main.x\n"*
+					"p=:$(p)   # Main.p"
 	tests = [
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
@@ -193,9 +193,9 @@ end
 #%%
 expression_interpolation_tests(io) = begin
 	title = "Case - Expression interpolation:"
-	init= "ex=$ex   #  Main.ex\n"*
-				"y=$y     #  Main.y\n"*
-				"p=$p     #  Main.p"
+	init= "ex=:$(ex)   #  Main.ex\n"*
+				"y=:$(y)     #  Main.y\n"*
+				"p=$(p)      #  Main.p"
 	tests = [
 "macro sym(ex)
  ex
