@@ -365,7 +365,7 @@ tests = [
  ex
 end",
 "macro sym(ex)
- QuoteNode(ex)
+ :(ex)
 end",
 "macro sym(ex)
  :(\$ex)
@@ -375,6 +375,9 @@ end",
 end",
 "macro sym(ex)
  :(quot(\$ex))
+end",
+"macro sym(ex)
+ QuoteNode(ex)
 end",
 "macro sym(ex)
  :(QuoteNode(\$ex))
