@@ -182,10 +182,11 @@ expression_generation_tests(io) = begin
 	tests = [
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
-		"macro sym(); :(:x); end",
 		"macro sym(); quot(x); end",
 		"macro sym(); quot(:x); end",
 		"macro sym(); QuoteNode(:x); end",
+		"macro sym(); :(:x); end",
+		"macro sym(); quote; :x; end end",
 		]
 	cases = [
 		"@macroexpand(@sym)",

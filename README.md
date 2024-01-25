@@ -1,3 +1,12 @@
+# JuliaMacroCheatSheet
+Macro CheatSheet
+
+
+Note: Linenumbers are removed from the CheatSheet!
+All test has included: `using Base.Meta: quot, QuoteNode`
+
+Big mistakes: `$QuoteNode(…)` instead of `$(QuoteNode(…))` 
+
 
 Case - Basic:
 
@@ -169,12 +178,6 @@ p=:7   # Main.p
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); :(:x); end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-  </tr>
-  <tr>
     <td><code>macro sym(); quot(x); end</code></td>
     <td><code>:(:p)</code></td>
     <td><code>:p</code></td>
@@ -189,6 +192,20 @@ p=:7   # Main.p
   <tr>
     <td><code>macro sym(); QuoteNode(:x); end</code></td>
     <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :(:x); end</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); quote; :x; end end</code></td>
+    <td><code>quote
+    :x
+end</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
   </tr>
@@ -520,3 +537,4 @@ end</code></td>
     <td><code>:(1 / 2 + 1)</code></td>
   </tr>
 </table>
+Sources: https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
