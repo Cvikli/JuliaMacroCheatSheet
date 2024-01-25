@@ -70,7 +70,7 @@ cases = [
 ]
 	gen_all_cases(io,title,init,tests,cases)
 end
-value_interpolation_tests(stdout)
+# value_interpolation_tests(stdout)
 #%%
 
 expression_generation_tests(io) = begin
