@@ -142,48 +142,27 @@ end</code></td>
     <td><code>:ez</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); :ey; end</code></td>
-    <td><code>:(Main.ey)</code></td>
-    <td><code>:ez</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>macro sym(ex); :($ex); end</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); :(ey); end</code></td>
-    <td><code>:(Main.ey)</code></td>
-    <td><code>:ez</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>macro sym(ex); :($ex); end</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); quot(ey); end</code></td>
-    <td><code>:(:ez)</code></td>
-    <td><code>:ez</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(ex); QuoteNode(ey); end</code></td>
-    <td><code>:(:ez)</code></td>
-    <td><code>:ez</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(ex); :(ey); end</code></td>
-    <td><code>:(Main.ey)</code></td>
-    <td><code>:ez</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(ex); quote; ey; end end</code></td>
+    <td><code>macro sym(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    Main.ey
+    Main.x
 end</code></td>
-    <td><code>:ez</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
-    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
   </tr>
 </table>
 

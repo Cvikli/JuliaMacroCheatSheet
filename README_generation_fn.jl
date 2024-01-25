@@ -213,12 +213,12 @@ medium_expression_generation_tests(io) = begin
 		"macro sym(ex); QuoteNode(:ex); end",
 		"macro sym(ex); :(:ex); end",
 		"macro sym(ex); quote; :ex; end end",
-		"macro sym(ex); :$ex; end",
-		"macro sym(ex); :($ex); end",
-		"macro sym(ex); quot($ex); end",
-		"macro sym(ex); QuoteNode($ex); end",
-		"macro sym(ex); :($ex); end",
-		"macro sym(ex); quote; $ex; end end",
+		# "macro sym(ex); :\$ex; end",
+		"macro sym(ex); :(\$ex); end",
+		# "macro sym(ex); quot(\$ex); end",
+		# "macro sym(ex); QuoteNode(\$ex); end",
+		"macro sym(ex); :(\$ex); end",
+		"macro sym(ex); quote; \$ex; end end",
 		]
 	cases = [
 		"@macroexpand(@sym x)",
