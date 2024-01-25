@@ -251,6 +251,44 @@ medium_expression_generation_tests(io) = begin
 	gen_all_cases(io,title,init,tests,cases)
 end
 medium_expression_generation_tests(stdout)
+
+#%%
+
+advanced_expression_generation_tests(io) = begin
+	title = "Case - Medium expression:"
+	init  = "ex=:$(ex)  # Main.ex\n"*
+					"x=:$(x)    # Main.x\n"*
+					"p=$(p)     # Main.p"
+	tests = [
+		"macro fn(ex); ex; end",
+		"macro fn(ex); :(\$ex); end",
+		"macro fn(ex); quote; \$ex; end end",
+		"macro fn(ex); :(\$(esc(ex))); end",
+		"macro fn(ex); quote; \$(esc(ex)); end end",
+		"macro fn(ex); quot(ex); end",
+		"macro fn(ex); QuoteNode(ex); end",
+		"macro fn(ex); :ex; end",
+		"macro fn(ex); :(ex); end",
+		"macro fn(ex); :(\$(:ex)); end",
+		"macro fn(ex); :(:ex); end",
+		"macro fn(ex); quot(:ex); end",
+		"macro fn(ex); QuoteNode(:ex); end",
+		"macro fn(ex); quote; :ex; end end",
+		"macro fn(ex); :(string(ex)); end",
+		"macro fn(ex); :(string(\$ex)); end",
+		"macro fn(ex); string(ex); end",
+		"macro fn(ex); :(\$(string(ex))); end",
+		# "macro fn(ex); :(string(esc(\$ex))); end",
+		]
+	cases = [
+		"@macroexpand(@fn z=x^2)",
+		"@fn z=x^2",
+		"eval(@fn z=x^2)",
+		"eval(eval(@fn z=x^2))",
+	]
+	gen_all_cases(io,title,init,tests,cases)
+end
+advanced_expression_generation_tests(stdout)
 #%%
 
 macro_hygenie(io) = begin
@@ -262,10 +300,12 @@ macro_hygenie(io) = begin
 		"macro dummy(ex);	return esc(ex); end",
 		]
 	cases = [
-		"@dummy yy=p^2",
-		"@macroexpand @dummy yy=p^2",
-    "let p=3;	@dummy yy=p^2; end",
-		"let p=3; @macroexpand @dummy yy=p^2; end",
+		# "@dummy z=p^2",
+		# "@macroexpand @dummy z=p^2",
+    "let p=3;	@dummy p^2; end",
+		"let p=3; @macroexpand @dummy p^2; end",
+    "let p=3;	@dummy z=p^2; end",
+		"let p=3; @macroexpand @dummy z=p^2; end",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
