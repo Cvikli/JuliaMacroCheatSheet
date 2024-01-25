@@ -4,7 +4,7 @@ using MacroTools
 
 gen_all_cases(io,title, init, tests, cases) = begin
 	println(io,'\n',title,'\n')
-	println(io,"""```julia
+	!isempty(init) && println(io,"""```julia
 	$init
 	```""")
 	println(io,"<table>")
@@ -148,9 +148,7 @@ end
 #%%
 advanced_expression_interpolation_tests(io) = begin
 	title = "Case - Advanced expression interpolation  (note: @ip: interpolation, l: left, r: r):"
-	init= "ex=:ey   #  Main.ex\n"*
-				"y=:p     #  Main.y\n"*
-				"p=8      #  Main.p"
+	init= ""
 	tests = [
 "macro ip(ex, l, r)
 quote

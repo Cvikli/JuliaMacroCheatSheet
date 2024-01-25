@@ -225,11 +225,6 @@ end</code></td>
 
 Case - Advanced expression interpolation  (note: @ip: interpolation, l: left, r: r):
 
-```julia
-ex=:ey   #  Main.ex
-y=:p     #  Main.y
-p=8      #  Main.p
-```
 <table>
   <tr>
     <td></td>
