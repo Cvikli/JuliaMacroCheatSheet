@@ -75,15 +75,15 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 				mac = join((outer_space_first,inner_space,outer_space_last), "")
 				eval(Meta.parse(mac))
 
-				MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(call))))
+				aa=MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(call))))
 				# print("7")
-				# show(TextDisplay(io).io, MIME"text/plain"(), aa
+				show(TextDisplay(io).io, MIME"text/plain"(), aa
 				# replace("$(
 				# )",
 				# "    #= none:1 =#\n"=>"", 
 				# "    #= none:2 =#\n"=>"", 
 				# "    "=>"  ")
-				# ); 
+				); 
 			catch e
 				if isa(e,UndefVarError)
 					print(io,e)
@@ -110,23 +110,23 @@ basic_tests(io) = begin
 	init  = "ex=:ey"*
 					"x=:p"*
 					"p=9"
-	tests = [("macro fn(ex,io)
+	tests = [("macro fn(ex)
  ","
 end"),
-("macro fn(ex,io)
+("macro fn(ex)
  :(",")
 end"),
-("macro fn(ex,io)
+("macro fn(ex)
  quote
   ","
  end
 end"),
 ]
 	cases = [
-		"print(io,ex)",
-		"print(io,\$(ex))",
-		"print(io,\$(esc(ex)))",
-		"print(io,\$(string(ex)))",
+		"string(ex)",
+		"string(\$(ex))",
+		"string(\$(esc(ex)))",
+		"string(\$(string(ex)))",
 	]
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)
