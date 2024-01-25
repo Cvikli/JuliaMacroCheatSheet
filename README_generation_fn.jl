@@ -252,6 +252,25 @@ medium_expression_generation_tests(io) = begin
 end
 medium_expression_generation_tests(stdout)
 #%%
+
+macro_hygenie(io) = begin
+	title = "Case - Expression hygenie:"
+	init  = "ex=:$(ex)  # Main.ex\n"*
+					"p=$(p)     # Main.p"
+	tests = [
+		"macro dummy(ex);	return ex; end",
+		"macro dummy(ex);	return esc(ex); end",
+		]
+	cases = [
+		"@dummy yy=p^2",
+		"@macroexpand @dummy yy=p^2",
+    "let p=3;	@dummy yy=p^2; end",
+		"let p=3; @macroexpand @dummy yy=p^2; end",
+	]
+	gen_all_cases(io,title,init,tests,cases)
+end
+macro_hygenie(stdout)
+#%%
 expression_interpolation_tests(io) = begin
 	title = "Case - Expression interpolation:"
 	init= "ex=:$(ex)   #  Main.ex\n"*

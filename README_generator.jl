@@ -19,6 +19,8 @@ Big mistakes: `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`
 	basic_expression_generation_tests(file)
 	global_basic_expression_generation_tests(file)
 	medium_expression_generation_tests(file)
+	macro_hygenie(stdout)
+
 	basic_tests(file)
 	value_interpolation_tests(file)
 	expression_interpolation_tests(file)
