@@ -114,20 +114,28 @@ p=7     # Main.p
 <table>
   <tr>
     <td></td>
-    <td><code>let p=3;	@dummy p^2; end</code></td>
-    <td><code>let p=3; @macroexpand @dummy p^2; end</code></td>
-    <td><code>let p=3;	@dummy z=p^2; end</code></td>
-    <td><code>let p=3; @macroexpand @dummy z=p^2; end</code></td>
+    <td><code>let p=3;
+ @dummy p^2;
+end</code></td>
+    <td><code>let p=3;
+ @macroexpand @dummy p^2;
+end</code></td>
+    <td><code>let p=3;
+ @dummy z=p^2;
+end</code></td>
+    <td><code>let p=3;
+ @macroexpand @dummy z=p^2;
+end</code></td>
   </tr>
   <tr>
-    <td><code>macro dummy(ex);	return ex; end</code></td>
+    <td><code>macro dummy(ex); return ex; end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#345#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#440#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
-    <td><code>macro dummy(ex);	return esc(ex); end</code></td>
+    <td><code>macro dummy(ex); return esc(ex); end</code></td>
     <td><code>9</code></td>
     <td><code>:(p ^ 2)</code></td>
     <td><code>9</code></td>
@@ -300,14 +308,14 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#346#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#441#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#353#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#448#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -315,7 +323,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#360#z" = Main.p ^ 2
+    var"#455#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -411,7 +419,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#377#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#472#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>

@@ -295,16 +295,24 @@ macro_hygenie(io) = begin
 	init  = "ex=:$(ex)  # Main.ex\n"*
 					"p=$(p)     # Main.p"
 	tests = [
-		"macro dummy(ex);	return ex; end",
-		"macro dummy(ex);	return esc(ex); end",
+		"macro dummy(ex); return ex; end",
+		"macro dummy(ex); return esc(ex); end",
 		]
 	cases = [
 		# "@dummy z=p^2",
 		# "@macroexpand @dummy z=p^2",
-    "let p=3;	@dummy p^2; end",
-		"let p=3; @macroexpand @dummy p^2; end",
-    "let p=3;	@dummy z=p^2; end",
-		"let p=3; @macroexpand @dummy z=p^2; end",
+    "let p=3;
+ @dummy p^2;
+end",
+		"let p=3;
+ @macroexpand @dummy p^2;
+end",
+    "let p=3;
+ @dummy z=p^2;
+end",
+		"let p=3;
+ @macroexpand @dummy z=p^2;
+end",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
