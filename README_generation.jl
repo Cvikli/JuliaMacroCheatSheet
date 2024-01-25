@@ -280,7 +280,8 @@ end
 #%%
 
 value_interpolation_tests(io) = begin
-	init  = ""
+	init  = "q=:p\n"*
+	        "p=7"
 	tests = ["macro quo(ex)
  :( x = \$(esc(ex)); :(\$x + \$x) )
 end",
@@ -291,16 +292,16 @@ end",
  :( x = \$(QuoteNode(ex)); :(\$x + \$x) )
 end"]
 cases = [
-	"@quo 1",
-	"@quo 1 + 1",
-	"@quo 1 + \$(sin(1))",
-	"let q = 0.5 
-  @quo 1 + \$q
-end",
+	"@quo 2",
+	"@quo 2 + 2",
+	"@quo 2 + \$(sin(1))",
+	"@quo 2 + \$q",
+	"eval(@quo 2 + \$q)",
 ]
 	gen_all_cases(io,init,tests,cases)
 end
 value_interpolation_tests(stdout)
+#%%
 #%%
 
 expression_generation_tests(io) = begin
