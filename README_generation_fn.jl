@@ -183,9 +183,6 @@ basic_expression_generation_tests(io) = begin
 	tests = [
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
-		"macro sym(); :(\$x); end",
-		"macro sym(); :(\$(esc(x))); end",
-		"macro sym(); quot(x); end",
 		"macro sym(); quot(:x); end",
 		"macro sym(); QuoteNode(:x); end",
 		"macro sym(); :(:x); end",
@@ -199,7 +196,24 @@ basic_expression_generation_tests(io) = begin
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-basic_expression_generation_tests(stdout)
+global_basic_expression_generation_tests(io) = begin
+	title = "Case - Global space basic expressions:"
+	init  = "x=:$(x)   # Main.x\n"*
+					"p=$(p)   # Main.p"
+	tests = [
+		"macro sym(); :(\$x); end",
+		"macro sym(); :(\$(esc(x))); end",
+		"macro sym(); quot(x); end",
+		]
+	cases = [
+		"@macroexpand(@sym)",
+		"@sym",
+		"eval(@sym)",
+		"eval(eval(@sym))",
+	]
+	gen_all_cases(io,title,init,tests,cases)
+end
+global_basic_expression_generation_tests(stdout)
 #%%
 
 medium_expression_generation_tests(io) = begin
