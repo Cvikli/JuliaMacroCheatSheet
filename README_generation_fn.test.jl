@@ -254,10 +254,14 @@ gen_all_cases(io,init, tests, cases) = begin
 		eval(Meta.parse(mac))
 		for case in cases
 			print(io,"    <td><code>"); 
-			try	print(io,replace("$(eval(Meta.parse(case)))",
-				"    #= none:1 =#\n"=>"", 
-				"    #= none:2 =#\n"=>"", 
-				"    "=>"  ")); 
+			try	show(TextDisplay(stdout).io, MIME"text/plain"(),
+				# replace("$(
+				eval(Meta.parse(case))
+				# )",
+				# "    #= none:1 =#\n"=>"", 
+				# "    #= none:2 =#\n"=>"", 
+				# "    "=>"  ")
+				); 
 			catch e
 				if isa(e,UndefVarError)
 					print(io,e)
@@ -278,7 +282,6 @@ gen_all_cases(io,init, tests, cases) = begin
 	println(io,"</table>")
 end
 #%%
-
 value_interpolation_tests(io) = begin
 	init  = "q=:p\n"*
 	        "p=7"
@@ -301,7 +304,6 @@ cases = [
 	gen_all_cases(io,init,tests,cases)
 end
 value_interpolation_tests(stdout)
-#%%
 #%%
 
 expression_generation_tests(io) = begin

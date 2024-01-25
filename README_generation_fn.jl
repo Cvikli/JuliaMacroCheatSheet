@@ -1,0 +1,139 @@
+
+using Base.Meta: quot, QuoteNode
+gen_all_cases(io,init, tests, cases) = begin
+	println(io,"""```julia
+	$init
+	```""")
+	println(io,"<table>")
+	println(io,"  <tr>")
+	println(io,"    <td></td>")
+	for case in cases
+		println(io,"    <td><code>",case,"</code></td>")
+	end
+	println(io,"  </tr>")
+
+	eval(init)
+	for mac in tests
+		println(io,"  <tr>")
+		print(io,"    <td><code>"); print(io,mac);  println(io,"</code></td>"); 
+		eval(Meta.parse(mac))
+		for case in cases
+			print(io,"    <td><code>"); 
+			try	show(TextDisplay(stdout).io, MIME"text/plain"(),
+				# replace("$(
+				eval(Meta.parse(case))
+				# )",
+				# "    #= none:1 =#\n"=>"", 
+				# "    #= none:2 =#\n"=>"", 
+				# "    "=>"  ")
+				); 
+			catch e
+				if isa(e,UndefVarError)
+					print(io,e)
+				elseif isa(e,ErrorException)
+					print(io,e.msg)
+				else
+					println(io)
+					print(io,e)
+					print(io,typeof(e))
+					print(io,fieldnames(typeof(e)))
+					@assert false ""
+				end
+			end
+			println(io,"</code></td>"); 
+		end
+		println(io,"  </tr>")
+	end
+	println(io,"</table>")
+end
+#%%
+value_interpolation_tests(io) = begin
+	init  = "q=:p\n"*
+	        "p=7"
+	tests = ["macro quo(ex)
+ :( x = \$(esc(ex)); :(\$x + \$x) )
+end",
+"macro quo(ex)
+ :( x = \$(quot(ex)); :(\$x + \$x) )
+end",
+"macro quo(ex)
+ :( x = \$(QuoteNode(ex)); :(\$x + \$x) )
+end"]
+cases = [
+	"@quo 2",
+	"@quo 2 + 2",
+	"@quo 2 + \$(sin(1))",
+	"@quo 2 + \$q",
+	"eval(@quo 2 + \$q)",
+]
+	gen_all_cases(io,init,tests,cases)
+end
+# value_interpolation_tests(stdout)
+#%%
+
+expression_generation_tests(io) = begin
+	init  = "x=:p  # Main.x\n"*
+					"p=8   # Main.p"
+	tests = [
+		"macro sym(); :x; end",
+		"macro sym(); :(x); end",
+		"macro sym(); :(:x); end",
+		"macro sym(); quot(x); end",
+		"macro sym(); quot(:x); end",
+		"macro sym(); QuoteNode(:x); end",
+		]
+	cases = [
+		"@macroexpand(@sym)",
+		"@sym",
+		"eval(@sym)",
+	]
+	gen_all_cases(io,init,tests,cases)
+end
+# expression_generation_tests(stdout)
+#%%
+expression_interpolation_tests(io) = begin
+	init= "ex=:ey   #  Main.ex"*
+				"y=:p     #  Main.y"*
+				"p=8      #  Main.p"
+	tests = [
+"macro sym(ex)
+ ex
+end",
+"macro sym(ex)
+ :(ex)
+end",
+"macro sym(ex)
+ :(\$ex)
+end",
+"macro sym(ex)
+ :(\$:(\$ex))
+end",
+"macro sym(ex)
+ :(quot(\$ex))
+end",
+"macro sym(ex)
+ QuoteNode(ex)
+end",
+"macro sym(ex)
+ :(QuoteNode(\$ex))
+end",
+"macro sym(ex)
+ :(\$(QuoteNode(ex)))
+end",
+"macro sym(ex); quote 
+ QuoteNode(\$ex)
+end; end",
+"macro sym(ex); quote
+ \$(QuoteNode(ex))
+end; end",
+		]
+	cases = [
+		"@macroexpand(@sym y)",
+		"@macroexpand(@sym \$y)",
+		"@sym y",
+		"eval(@sym y)",
+		"@sym \$y",
+	]
+	gen_all_cases(io,init,tests,cases)
+end
+# expression_interpolation_tests(stdout)
