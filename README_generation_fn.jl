@@ -105,11 +105,12 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 	end
 	println(io,"</table>")
 end
+#%%
 basic_tests(io) = begin
 	title = "Case - Basic:"
-	init  = "ex=:ey"*
-					"x=:p"*
-					"p=9"
+	init  = "ex=:ey  # Main.ex\n"*
+					"x=:p    # Main.x\n"*
+					"p=9     # Main.p"
 	tests = [("macro fn(ex)
  ","
 end"),

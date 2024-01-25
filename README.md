@@ -2,7 +2,9 @@
 Case - Basic:
 
 ```julia
-ex=:eyx=:pp=9
+ex=:ey  # Main.ex
+x=:p    # Main.x
+p=9     # Main.p
 ```
 <table>
   <tr>
