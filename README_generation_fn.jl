@@ -77,7 +77,7 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 
 				aa=MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(call))))
 				# print("7")
-				show(TextDisplay(io).io, MIME"text/plain"(), aa
+				print(io,aa
 				# replace("$(
 				# )",
 				# "    #= none:1 =#\n"=>"", 

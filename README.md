@@ -16,7 +16,7 @@ ex=:eyx=:pp=9
     <td><code>macro fn(ex)
  ...
 end</code></td>
-    <td><code>"x"</code></td>
+    <td><code>x</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -25,10 +25,10 @@ end</code></td>
     <td><code>macro fn(ex)
  :(...)
 end</code></td>
-    <td><code>"ey"</code></td>
-    <td><code>"1"</code></td>
-    <td><code>"1"</code></td>
-    <td><code>"x"</code></td>
+    <td><code>ey</code></td>
+    <td><code>1</code></td>
+    <td><code>1</code></td>
+    <td><code>x</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
@@ -36,10 +36,10 @@ end</code></td>
   ...
  end
 end</code></td>
-    <td><code>"ey"</code></td>
-    <td><code>"1"</code></td>
-    <td><code>"1"</code></td>
-    <td><code>"x"</code></td>
+    <td><code>ey</code></td>
+    <td><code>1</code></td>
+    <td><code>1</code></td>
+    <td><code>x</code></td>
   </tr>
 </table>
 
