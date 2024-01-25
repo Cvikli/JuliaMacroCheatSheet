@@ -10,8 +10,6 @@ body {
 Macro CheatSheet
 
 Calling function or macro behavior can be different: `fn(var) or @fn var`
-`Meta.quot(x)` equal with `Expr(:quote, x)` (Macro hygenie does not apply... so no `esc` required)
-Similar: `QuoteNode(c)` but prevents interpolation. So if `$`(literal) is in the args, it won't interpolate, just "will be interpolated when evaluated".
 
 
 Note: Linenumbers are removed from the CheatSheet!
@@ -72,7 +70,51 @@ end</code></th>
 
 
 
-Case - Expression evaluation:
+Case - Expression evaluation (`x=8`):
+<table>
+  <tr>
+    <td></td>
+    <td><code>@macroexpand(@sym)</code></td>
+    <td><code>@sym</code></td>
+    <td><code>eval(@sym)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :x; end</code></td>
+    <td><code>Main.x</code></td>
+    <td><code>8</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :(x); end</code></td>
+    <td><code>Main.x</code></td>
+    <td><code>8</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :(:x); end</code></td>
+    <td><code>:x</code></td>
+    <td><code>x</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); Meta.quot(x); end</code></td>
+    <td><code>8</code></td>
+    <td><code>8</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+  <td><code>macro sym(); Meta.quot(:x); end</code></td>
+    <td><code>:x</code></td>
+    <td><code>x</code></td>
+    <td><code>8</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); Meta.QuoteNode(:x); end</code></td>
+    <td><code>:x</code></td>
+    <td><code>x</code></td>
+    <td><code>8</code></td>
+  </tr>
+</table>
 <table>
   <tr align="left"> <!-- HEADER -->
     <th></th>
@@ -119,7 +161,11 @@ end</code></td>
 </table>
 
 
+`Meta.quot(x)` equal with `Expr(:quote, x)` (Macro hygenie does not apply... so no `esc` required)
+Similar: `QuoteNode(c)` but prevents interpolation. So if `$`(literal) is in the args, it won't interpolate, just "will be interpolated when evaluated".
+Difference between Meta.quot() and QuoteNode() is the interpolation.
 
+Advanced: 
 Case - Expression interpolation (@ip, note: l=left, r=r):
 <table>
   <tr align="left"> <!-- HEADER -->
