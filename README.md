@@ -124,7 +124,7 @@ p=7     # Main.p
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#250#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#345#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex);	return esc(ex); end</code></td>
@@ -288,69 +288,68 @@ Case - Medium expression:
 
 ```julia
 ex=:ey  # Main.ex
-x=:p    # Main.x
 p=7     # Main.p
 ```
 <table>
   <tr>
     <td></td>
-    <td><code>@macroexpand(@fn z=x^2)</code></td>
-    <td><code>@fn z=x^2</code></td>
-    <td><code>eval(@fn z=x^2)</code></td>
-    <td><code>eval(eval(@fn z=x^2))</code></td>
+    <td><code>@macroexpand(@fn z=p^2)</code></td>
+    <td><code>@fn z=p^2</code></td>
+    <td><code>eval(@fn z=p^2)</code></td>
+    <td><code>eval(eval(@fn z=p^2))</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#251#z" = Main.x ^ 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>:(var"#346#z" = Main.p ^ 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#258#z" = Main.x ^ 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>:(var"#353#z" = Main.p ^ 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#265#z" = Main.x ^ 2
+    var"#360#z" = Main.p ^ 2
 end</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(esc(ex))); end</code></td>
-    <td><code>:(z = x ^ 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>:(z = p ^ 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quote; $(esc(ex)); end end</code></td>
     <td><code>quote
-    z = x ^ 2
+    z = p ^ 2
 end</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quot(ex); end</code></td>
-    <td><code>:($(Expr(:copyast, :($(QuoteNode(:(z = x ^ 2)))))))</code></td>
-    <td><code>:(z = x ^ 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>:($(Expr(:copyast, :($(QuoteNode(:(z = p ^ 2)))))))</code></td>
+    <td><code>:(z = p ^ 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); QuoteNode(ex); end</code></td>
-    <td><code>:($(QuoteNode(:(z = x ^ 2))))</code></td>
-    <td><code>:(z = x ^ 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>:($(QuoteNode(:(z = p ^ 2))))</code></td>
+    <td><code>:(z = p ^ 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :ex; end</code></td>
@@ -412,24 +411,24 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#282#z"), :(Main.x ^ 2)))))</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
-    <td><code>MethodError: ^(:p, 2)</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#377#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>"49"</code></td>
+    <td><code>"49"</code></td>
+    <td><code>"49"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); string(ex); end</code></td>
-    <td><code>"z = x ^ 2"</code></td>
-    <td><code>"z = x ^ 2"</code></td>
-    <td><code>"z = x ^ 2"</code></td>
-    <td><code>"z = x ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(string(ex))); end</code></td>
-    <td><code>"z = x ^ 2"</code></td>
-    <td><code>"z = x ^ 2"</code></td>
-    <td><code>"z = x ^ 2"</code></td>
-    <td><code>"z = x ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
   </tr>
 </table>
 Sources: https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-

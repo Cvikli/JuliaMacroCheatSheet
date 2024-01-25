@@ -257,7 +257,6 @@ medium_expression_generation_tests(stdout)
 advanced_expression_generation_tests(io) = begin
 	title = "Case - Medium expression:"
 	init  = "ex=:$(ex)  # Main.ex\n"*
-					"x=:$(x)    # Main.x\n"*
 					"p=$(p)     # Main.p"
 	tests = [
 		"macro fn(ex); ex; end",
@@ -281,10 +280,10 @@ advanced_expression_generation_tests(io) = begin
 		# "macro fn(ex); :(string(esc(\$ex))); end",
 		]
 	cases = [
-		"@macroexpand(@fn z=x^2)",
-		"@fn z=x^2",
-		"eval(@fn z=x^2)",
-		"eval(eval(@fn z=x^2))",
+		"@macroexpand(@fn z=p^2)",
+		"@fn z=p^2",
+		"eval(@fn z=p^2)",
+		"eval(eval(@fn z=p^2))",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
