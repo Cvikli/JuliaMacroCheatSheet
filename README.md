@@ -254,6 +254,36 @@ end</code></td>
   </tr>
 </table>
 
+Case - Expression hygenie:
+
+```julia
+ex=:ey  # Main.ex
+p=7     # Main.p
+```
+<table>
+  <tr>
+    <td></td>
+    <td><code>@dummy yy=p^2</code></td>
+    <td><code>@macroexpand @dummy yy=p^2</code></td>
+    <td><code>let p=3;	@dummy yy=p^2; end</code></td>
+    <td><code>let p=3; @macroexpand @dummy yy=p^2; end</code></td>
+  </tr>
+  <tr>
+    <td><code>macro dummy(ex);	return ex; end</code></td>
+    <td><code>49</code></td>
+    <td><code>:(var"#115#yy" = Main.p ^ 2)</code></td>
+    <td><code>49</code></td>
+    <td><code>:(var"#117#yy" = Main.p ^ 2)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro dummy(ex);	return esc(ex); end</code></td>
+    <td><code>49</code></td>
+    <td><code>:(yy = p ^ 2)</code></td>
+    <td><code>9</code></td>
+    <td><code>:(yy = p ^ 2)</code></td>
+  </tr>
+</table>
+
 Case - Basic:
 
 ```julia
