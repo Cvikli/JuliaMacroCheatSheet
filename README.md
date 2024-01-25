@@ -70,7 +70,11 @@ end</code></th>
 
 
 
-Case - Expression evaluation (`x=8`):
+Case - Expression evaluation:
+```julia
+p=8
+x=:p
+```
 <table>
   <tr>
     <td></td>
@@ -81,40 +85,82 @@ Case - Expression evaluation (`x=8`):
   <tr>
     <td><code>macro sym(); :x; end</code></td>
     <td><code>Main.x</code></td>
-    <td><code>8</code></td>
+    <td><code>p</code></td>
     <td><code>8</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(x); end</code></td>
     <td><code>Main.x</code></td>
-    <td><code>8</code></td>
+    <td><code>p</code></td>
     <td><code>8</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(:x); end</code></td>
     <td><code>:x</code></td>
     <td><code>x</code></td>
-    <td><code>8</code></td>
+    <td><code>p</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); Meta.quot(x); end</code></td>
-    <td><code>8</code></td>
-    <td><code>8</code></td>
+    <td><code>:p</code></td>
+    <td><code>p</code></td>
     <td><code>8</code></td>
   </tr>
   <tr>
   <td><code>macro sym(); Meta.quot(:x); end</code></td>
     <td><code>:x</code></td>
     <td><code>x</code></td>
-    <td><code>8</code></td>
+    <td><code>p</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); Meta.QuoteNode(:x); end</code></td>
     <td><code>:x</code></td>
     <td><code>x</code></td>
-    <td><code>8</code></td>
+    <td><code>p</code></td>
   </tr>
 </table>
+
+```julia
+using Base.Meta: quot, QuoteNode
+ex=7
+y=:p
+p=8
+```
+<table>
+  <tr>
+    <td></td>
+    <td><code>@macroexpand(@sym y)</code></td>
+    <td><code>@macroexpand(@sym p)</code></td>
+    <td><code>@sym y</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(7); end</code></td>
+    <td><code>Main.y</code></td>
+    <td><code>$Main.y</code></td>
+    <td><code>p</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(:(7)); end</code></td>
+    <td><code>Main.ex</code></td>
+    <td><code>Main.ex</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(quot(7)); end</code></td>
+    <td><code>Main.quot(Main.y)</code></td>
+    <td><code>Main.quot($Main.y)</code></td>
+    <td><code>:p</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(QuoteNode(7)); end</code></td>
+    <td><code>Main.QuoteNode(Main.y)</code></td>
+    <td><code>Main.QuoteNode($Main.y)</code></td>
+    <td><code>:p</code></td>
+  </tr>
+</table>
+
+
+
 <table>
   <tr align="left"> <!-- HEADER -->
     <th></th>
