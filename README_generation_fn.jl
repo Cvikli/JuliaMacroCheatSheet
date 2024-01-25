@@ -110,23 +110,23 @@ basic_tests(io) = begin
 	init  = "ex=:ey"*
 					"x=:p"*
 					"p=9"
-	tests = [("macro fn(ex)
+	tests = [("macro fn(ex,io)
  ","
 end"),
-("macro fn(ex)
+("macro fn(ex,io)
  :(",")
 end"),
-("macro fn(ex)
+("macro fn(ex,io)
  quote
   ","
  end
 end"),
 ]
 	cases = [
-		"print(ex)",
-		"print(\$(ex))",
-		"print(\$(esc(ex)))",
-		"print(\$(string(ex)))",
+		"print(io,ex)",
+		"print(io,\$(ex))",
+		"print(io,\$(esc(ex)))",
+		"print(io,\$(string(ex)))",
 	]
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)

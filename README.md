@@ -7,13 +7,13 @@ ex=:eyx=:pp=9
 <table>
   <tr>
     <td></td>
-    <td><code>print(ex)</code></td>
-    <td><code>print($(ex))</code></td>
-    <td><code>print($(esc(ex)))</code></td>
-    <td><code>print($(string(ex)))</code></td>
+    <td><code>print(io,ex)</code></td>
+    <td><code>print(io,$(ex))</code></td>
+    <td><code>print(io,$(esc(ex)))</code></td>
+    <td><code>print(io,$(string(ex)))</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex)
+    <td><code>macro fn(ex,io)
  ...
 end</code></td>
     <td><code></code></td>
@@ -22,7 +22,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex)
+    <td><code>macro fn(ex,io)
  :(...)
 end</code></td>
     <td><code></code></td>
@@ -31,7 +31,7 @@ end</code></td>
     <td><code></code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex)
+    <td><code>macro fn(ex,io)
  quote
   ...
  end
