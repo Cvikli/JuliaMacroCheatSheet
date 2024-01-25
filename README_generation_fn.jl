@@ -70,19 +70,20 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 		println(io,"  <tr>")
 		print(io,"    <td><code>"); print(io,outer_space_first,"...",outer_space_last);  println(io,"</code></td>"); 
 		for inner_space in cases
-			mac = join((outer_space_first,inner_space,outer_space_last), "")
-			@show mac
 			print(io,"    <td><code>"); 
 			try	
-				eval(Meta.parse(mac));
-				show(TextDisplay(io).io, MIME"text/plain"(),
+				mac = join((outer_space_first,inner_space,outer_space_last), "")
+				eval(Meta.parse(mac))
+
+				MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(call))))
+				# print("7")
+				# show(TextDisplay(io).io, MIME"text/plain"(), aa
 				# replace("$(
-					MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(call))))
 				# )",
 				# "    #= none:1 =#\n"=>"", 
 				# "    #= none:2 =#\n"=>"", 
 				# "    "=>"  ")
-				); 
+				# ); 
 			catch e
 				if isa(e,UndefVarError)
 					print(io,e)
@@ -110,25 +111,25 @@ basic_tests(io) = begin
 					"x=:p"*
 					"p=9"
 	tests = [("macro fn(ex)
-  ","
+ ","
 end"),
 ("macro fn(ex)
-  :(",")
+ :(",")
 end"),
 ("macro fn(ex)
  quote
-	","
+  ","
  end
 end"),
 ]
-cases = [
-	"println(ex)",
-	"println(\$(ex))",
-	"println(\$(esc(ex)))",
-	"println(\$(string(ex)))",
-]
-call = "@fn x"
-gen_all_cases_internal(io,title,init,tests,cases, call)
+	cases = [
+		"print(ex)",
+		"print(\$(ex))",
+		"print(\$(esc(ex)))",
+		"print(\$(string(ex)))",
+	]
+	call = "@fn x"
+	gen_all_cases_internal(io,title,init,tests,cases, call)
 end
 basic_tests(stdout)
 #%%

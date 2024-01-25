@@ -7,39 +7,39 @@ ex=:eyx=:pp=9
 <table>
   <tr>
     <td></td>
-    <td><code>println(ex)</code></td>
-    <td><code>println($(ex))</code></td>
-    <td><code>println($(esc(ex)))</code></td>
-    <td><code>println($(string(ex)))</code></td>
+    <td><code>print(ex)</code></td>
+    <td><code>print($(ex))</code></td>
+    <td><code>print($(esc(ex)))</code></td>
+    <td><code>print($(string(ex)))</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
-  ...
+ ...
 end</code></td>
-    <td><code>nothing</code></td>
+    <td><code></code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
-  :(...)
+ :(...)
 end</code></td>
-    <td><code>nothing</code></td>
-    <td><code>nothing</code></td>
-    <td><code>nothing</code></td>
-    <td><code>nothing</code></td>
+    <td><code></code></td>
+    <td><code></code></td>
+    <td><code></code></td>
+    <td><code></code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
  quote
-	...
+  ...
  end
 end</code></td>
-    <td><code>nothing</code></td>
-    <td><code>nothing</code></td>
-    <td><code>nothing</code></td>
-    <td><code>nothing</code></td>
+    <td><code></code></td>
+    <td><code></code></td>
+    <td><code></code></td>
+    <td><code></code></td>
   </tr>
 </table>
 
