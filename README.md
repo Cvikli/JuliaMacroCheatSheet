@@ -17,48 +17,48 @@ p=7   # Main.p
 <table>
   <tr>
     <td></td>
-    <td><code>@macroexpand(@sym)</code></td>
-    <td><code>@sym</code></td>
-    <td><code>eval(@sym)</code></td>
-    <td><code>eval(eval(@sym))</code></td>
+    <td><code>@macroexpand(@fn)</code></td>
+    <td><code>@fn</code></td>
+    <td><code>eval(@fn)</code></td>
+    <td><code>eval(eval(@fn))</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); :x; end</code></td>
+    <td><code>macro fn(); :x; end</code></td>
     <td><code>:(Main.x)</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); :(x); end</code></td>
+    <td><code>macro fn(); :(x); end</code></td>
     <td><code>:(Main.x)</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); quot(:x); end</code></td>
+    <td><code>macro fn(); quot(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); QuoteNode(:x); end</code></td>
+    <td><code>macro fn(); QuoteNode(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); :(:x); end</code></td>
+    <td><code>macro fn(); :(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); quote; :x; end end</code></td>
+    <td><code>macro fn(); quote; :x; end end</code></td>
     <td><code>quote
     :x
 end</code></td>
@@ -77,27 +77,27 @@ p=7   # Main.p
 <table>
   <tr>
     <td></td>
-    <td><code>@macroexpand(@sym)</code></td>
-    <td><code>@sym</code></td>
-    <td><code>eval(@sym)</code></td>
-    <td><code>eval(eval(@sym))</code></td>
+    <td><code>@macroexpand(@fn)</code></td>
+    <td><code>@fn</code></td>
+    <td><code>eval(@fn)</code></td>
+    <td><code>eval(eval(@fn))</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); :($x); end</code></td>
+    <td><code>macro fn(); :($x); end</code></td>
     <td><code>:(Main.p)</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); :($(esc(x))); end</code></td>
+    <td><code>macro fn(); :($(esc(x))); end</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); quot(x); end</code></td>
+    <td><code>macro fn(); quot(x); end</code></td>
     <td><code>:(:p)</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
@@ -408,14 +408,14 @@ p=7      #  Main.p
 <table>
   <tr>
     <td></td>
-    <td><code>@macroexpand(@sym x)</code></td>
-    <td><code>@macroexpand(@sym $x)</code></td>
-    <td><code>@sym x</code></td>
-    <td><code>eval(@sym x)</code></td>
-    <td><code>@sym $x</code></td>
+    <td><code>@macroexpand(@fn x)</code></td>
+    <td><code>@macroexpand(@fn $x)</code></td>
+    <td><code>@fn x</code></td>
+    <td><code>eval(@fn x)</code></td>
+    <td><code>@fn $x</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  ex
 end</code></td>
     <td><code>:(Main.x)</code></td>
@@ -425,7 +425,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  :(ex)
 end</code></td>
     <td><code>:(Main.ex)</code></td>
@@ -435,7 +435,7 @@ end</code></td>
     <td><code>:ey</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  :($ex)
 end</code></td>
     <td><code>:(Main.x)</code></td>
@@ -445,7 +445,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  :($:($ex))
 end</code></td>
     <td><code>:(Main.x)</code></td>
@@ -455,7 +455,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  :(quot($ex))
 end</code></td>
     <td><code>:(Main.quot(Main.x))</code></td>
@@ -465,7 +465,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  QuoteNode(ex)
 end</code></td>
     <td><code>:(:x)</code></td>
@@ -475,7 +475,7 @@ end</code></td>
     <td><code>:($(Expr(:$, :x)))</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  :(QuoteNode($ex))
 end</code></td>
     <td><code>:(Main.QuoteNode(Main.x))</code></td>
@@ -485,7 +485,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex)
+    <td><code>macro fn(ex)
  :($(QuoteNode(ex)))
 end</code></td>
     <td><code>:(:x)</code></td>
@@ -495,7 +495,7 @@ end</code></td>
     <td><code>:($(Expr(:$, :x)))</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); quote 
+    <td><code>macro fn(ex); quote 
  QuoteNode($ex)
 end; end</code></td>
     <td><code>quote
@@ -509,7 +509,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); quote
+    <td><code>macro fn(ex); quote
  $(QuoteNode(ex))
 end; end</code></td>
     <td><code>quote

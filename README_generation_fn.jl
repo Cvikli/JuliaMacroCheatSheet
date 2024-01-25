@@ -181,18 +181,18 @@ basic_expression_generation_tests(io) = begin
 	init  = "x=:$(x)   # Main.x\n"*
 					"p=$(p)   # Main.p"
 	tests = [
-		"macro sym(); :x; end",
-		"macro sym(); :(x); end",
-		"macro sym(); quot(:x); end",
-		"macro sym(); QuoteNode(:x); end",
-		"macro sym(); :(:x); end",
-		"macro sym(); quote; :x; end end",
+		"macro fn(); :x; end",
+		"macro fn(); :(x); end",
+		"macro fn(); quot(:x); end",
+		"macro fn(); QuoteNode(:x); end",
+		"macro fn(); :(:x); end",
+		"macro fn(); quote; :x; end end",
 		]
 	cases = [
-		"@macroexpand(@sym)",
-		"@sym",
-		"eval(@sym)",
-		"eval(eval(@sym))",
+		"@macroexpand(@fn)",
+		"@fn",
+		"eval(@fn)",
+		"eval(eval(@fn))",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
@@ -201,15 +201,15 @@ global_basic_expression_generation_tests(io) = begin
 	init  = "x=:$(x)   # Main.x\n"*
 					"p=$(p)   # Main.p"
 	tests = [
-		"macro sym(); :(\$x); end",
-		"macro sym(); :(\$(esc(x))); end",
-		"macro sym(); quot(x); end",
+		"macro fn(); :(\$x); end",
+		"macro fn(); :(\$(esc(x))); end",
+		"macro fn(); quot(x); end",
 		]
 	cases = [
-		"@macroexpand(@sym)",
-		"@sym",
-		"eval(@sym)",
-		"eval(eval(@sym))",
+		"@macroexpand(@fn)",
+		"@fn",
+		"eval(@fn)",
+		"eval(eval(@fn))",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
@@ -258,43 +258,43 @@ expression_interpolation_tests(io) = begin
 				"x=:$(x)     #  Main.x\n"*
 				"p=$(p)      #  Main.p"
 	tests = [
-"macro sym(ex)
+"macro fn(ex)
  ex
 end",
-"macro sym(ex)
+"macro fn(ex)
  :(ex)
 end",
-"macro sym(ex)
+"macro fn(ex)
  :(\$ex)
 end",
-"macro sym(ex)
+"macro fn(ex)
  :(\$:(\$ex))
 end",
-"macro sym(ex)
+"macro fn(ex)
  :(quot(\$ex))
 end",
-"macro sym(ex)
+"macro fn(ex)
  QuoteNode(ex)
 end",
-"macro sym(ex)
+"macro fn(ex)
  :(QuoteNode(\$ex))
 end",
-"macro sym(ex)
+"macro fn(ex)
  :(\$(QuoteNode(ex)))
 end",
-"macro sym(ex); quote 
+"macro fn(ex); quote 
  QuoteNode(\$ex)
 end; end",
-"macro sym(ex); quote
+"macro fn(ex); quote
  \$(QuoteNode(ex))
 end; end",
 		]
 	cases = [
-"@macroexpand(@sym x)",
-"@macroexpand(@sym \$x)",
-"@sym x",
-"eval(@sym x)",
-"@sym \$x",
+"@macroexpand(@fn x)",
+"@macroexpand(@fn \$x)",
+"@fn x",
+"eval(@fn x)",
+"@fn \$x",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
