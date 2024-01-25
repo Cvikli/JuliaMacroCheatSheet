@@ -166,22 +166,20 @@ end</code></td>
 </table>
 
 
+
 <table>
   <tr>
     <td></td>
-    <td>macro sym(ex); QuoteNode(ex); end</td>
-    <td>macro sym(ex); :(QuoteNode($ex)); end</td>
-    <td>macro sym(ex); :($QuoteNode(ex)); end</td>
-    <td>macro sym(ex); :($QuoteNode($ex)); end</td>
-    <td>macro sym(ex); quote (QuoteNode($ex)); end; end</td>
-    <td>macro sym(ex); quote ($QuoteNode(ex)); end; end</td>
-    <td>macro sym(ex); quote ($QuoteNode($ex)); end; end</td>
+    <td><code>@macroexpand(@sym y)</code></td>
+    <td><code>@macroexpand(@sym $y)</code></td>
+    <td><code>@sym y</code></td>
+    <td><code>@sym $y</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex); QuoteNode(ex); end</code></td>
     <td><code>:y</code></td>
     <td><code>$(QuoteNode(:($(Expr(:$, :y)))))</code></td>
-    <td><code>:p</code></td>
+    <td><code>y</code></td>
     <td><code>$y</code></td>
   </tr>
   <tr>
@@ -195,7 +193,7 @@ end</code></td>
     <td><code>macro sym(ex); :($QuoteNode(ex)); end</code></td>
     <td><code>(QuoteNode)(Main.ex)</code></td>
     <td><code>(QuoteNode)(Main.ex)</code></td>
-    <td><code>:p</code></td>
+    <td><code>:ey</code></td>
     <td><code>:ey</code></td>
   </tr>
   <tr>
@@ -228,7 +226,7 @@ end</code></td>
     #= none:1 =#
     (QuoteNode)(Main.ex)
 end</code></td>
-    <td><code>:p</code></td>
+    <td><code>:ey</code></td>
     <td><code>:ey</code></td>
   </tr>
   <tr>

@@ -366,11 +366,17 @@ fn() = begin
 		"macro sym(ex); quote (\$QuoteNode(ex)); end; end",
 		"macro sym(ex); quote (\$QuoteNode(\$ex)); end; end",
 		]
+	cases = [
+		"@macroexpand(@sym y)",
+		"@macroexpand(@sym \$y)",
+		"@sym y",
+		"@sym \$y",
+	]
 		
 	println("  <tr>")
 	println("    <td></td>")
-	for mac in tests
-		println("    <td>",mac,"</td>")
+	for case in cases
+		println("    <td><code>",case,"</code></td>")
 	end
 	println("  </tr>")
 
@@ -379,12 +385,17 @@ fn() = begin
 		println("  <tr>")
 		eval(Meta.parse(mac))
 		print("    <td><code>"); print(mac);  println("</code></td>"); 
-		print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
-		print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
-		print("    <td><code>"); print(@sym y);  println("</code></td>"); 
-		print("    <td><code>"); 
-		try	print(eval(Meta.parse("@sym \$y"))); catch e; print(e.msg); end
-		println("</code></td>"); 
+		for case = cases
+			print("    <td><code>"); 
+			try	print(eval(Meta.parse(case))); catch e; print(e.msg); end
+			println("</code></td>"); 
+		end
+		# print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
+		# print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
+		# print("    <td><code>"); print(@sym y);  println("</code></td>"); 
+		# print("    <td><code>"); 
+		# try	print(eval(Meta.parse("@sym \$y"))); catch e; print(e.msg); end
+		# println("</code></td>"); 
 		println("  </tr>")
 	end
 end
