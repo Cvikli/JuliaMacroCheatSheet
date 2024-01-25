@@ -215,9 +215,9 @@ medium_expression_generation_tests(io) = begin
 		"macro fn(ex); :(:ex); end",
 		"macro fn(ex); quote; :ex; end end",
 		# "macro sym(ex); :\$ex; end",
-		"macro fn(ex); :(\$ex); end",
 		# "macro sym(ex); quot(\$ex); end",
 		# "macro sym(ex); QuoteNode(\$ex); end",
+		"macro fn(ex); :(\$ex); end",
 		"macro fn(ex); quote; \$ex; end end",
 		"macro fn(ex); string(ex); end",
 		"macro fn(ex); :(string(ex)); end",
@@ -226,10 +226,10 @@ medium_expression_generation_tests(io) = begin
 		"macro fn(ex); :(\$(string(ex))); end",
 		]
 	cases = [
-		"@macroexpand(@sym x)",
-		"@sym x",
-		"eval(@sym x)",
-		"eval(eval(@sym x))",
+		"@macroexpand(@fn x)",
+		"@fn x",
+		"eval(@fn x)",
+		"eval(eval(@fn x))",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end

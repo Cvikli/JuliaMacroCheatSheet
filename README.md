@@ -85,145 +85,119 @@ p=7     # Main.p
 <table>
   <tr>
     <td></td>
-    <td><code>@macroexpand(@sym x)</code></td>
-    <td><code>@sym x</code></td>
-    <td><code>eval(@sym x)</code></td>
-    <td><code>eval(eval(@sym x))</code></td>
+    <td><code>@macroexpand(@fn x)</code></td>
+    <td><code>@fn x</code></td>
+    <td><code>eval(@fn x)</code></td>
+    <td><code>eval(eval(@fn x))</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :ex; end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(Main.ex)</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(ex); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(Main.ex)</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(:ex)); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(Main.ex)</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quot(ex); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
+    <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quot(:ex); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); QuoteNode(:ex); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(:ex); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quote; :ex; end end</code></td>
     <td><code>quote
-    :x
+    :ex
 end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
+    <td><code>:(Main.x)</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    :x
+    Main.x
 end</code></td>
-    <td><code>:x</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); string(ex); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string(ex)); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(Main.string(Main.ex))</code></td>
+    <td><code>"ey"</code></td>
+    <td><code>"ey"</code></td>
+    <td><code>"ey"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string(esc($ex))); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(Main.string(Main.esc(Main.x)))</code></td>
+    <td><code>"\$(Expr(:escape, :p))"</code></td>
+    <td><code>"\$(Expr(:escape, :p))"</code></td>
+    <td><code>"\$(Expr(:escape, :p))"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>:(Main.string(Main.x))</code></td>
+    <td><code>"p"</code></td>
+    <td><code>"p"</code></td>
+    <td><code>"p"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(string(ex))); end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
   </tr>
 </table>
 
