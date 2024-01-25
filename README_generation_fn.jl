@@ -164,11 +164,11 @@ end",
    :(\$x+\$x))
 end"]
 cases = [
-	"@quo 2",
-	"@quo 2 + 2",
-	"@quo 2 + \$(sin(1))",
-	"@quo 2 + \$q",
-	"eval(@quo 2 + \$q)",
+"@quo 2",
+"@quo 2 + 2",
+"@quo 2 + \$(sin(1))",
+"@quo 2 + \$q",
+"eval(@quo 2 + \$q)",
 ]
 	gen_all_cases(io,title,init,tests,cases)
 end
@@ -234,11 +234,11 @@ end; end",
 end; end",
 		]
 	cases = [
-		"@macroexpand(@sym y)",
-		"@macroexpand(@sym \$y)",
-		"@sym y",
-		"eval(@sym y)",
-		"@sym \$y",
+"@macroexpand(@sym y)",
+"@macroexpand(@sym \$y)",
+"@sym y",
+"eval(@sym y)",
+"@sym \$y",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
@@ -294,17 +294,17 @@ end
 end",
 		]
 	cases = [
-		"@ip x=1 x x",
-		"eval(@ip x=1 x x)",
-		"eval(eval(@ip x=1 x x))",
-		"@ip x=1 x/2 x",
-		"eval(@ip x=1 x/2 x)",
-		"@ip x=1 1/2 1/4",
-		"eval(@ip x=1 1/2 1/4)",
-		"@ip x=1 \$x \$x",
-		"eval(@ip x=1 1+\$x \$x)",
-		"@ip x=1 \$x/2 \$x",
-		"eval(@ip x=1 \$x/2 \$x)",
+"@ip x=1 x x",
+"eval(@ip x=1 x x)",
+"eval(eval(@ip x=1 x x))",
+"@ip x=1 x/2 x",
+"eval(@ip x=1 x/2 x)",
+"@ip x=1 1/2 1/4",
+"eval(@ip x=1 1/2 1/4)",
+"@ip x=1 \$x \$x",
+"eval(@ip x=1 1+\$x \$x)",
+"@ip x=1 \$x/2 \$x",
+"eval(@ip x=1 \$x/2 \$x)",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end

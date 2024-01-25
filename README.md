@@ -102,11 +102,11 @@ p=7   # Main.p
 <table>
   <tr>
     <td></td>
-    <td><code>@quo 2</code></td>
-    <td><code>@quo 2 + 2</code></td>
-    <td><code>@quo 2 + $(sin(1))</code></td>
-    <td><code>@quo 2 + $q</code></td>
-    <td><code>eval(@quo 2 + $q)</code></td>
+    <td><code>@quo 2</code></td>
+    <td><code>@quo 2 + 2</code></td>
+    <td><code>@quo 2 + $(sin(1))</code></td>
+    <td><code>@quo 2 + $q</code></td>
+    <td><code>eval(@quo 2 + $q)</code></td>
   </tr>
   <tr>
     <td><code>macro quo(ex)
@@ -204,11 +204,11 @@ p=7      #  Main.p
 <table>
   <tr>
     <td></td>
-    <td><code>@macroexpand(@sym y)</code></td>
-    <td><code>@macroexpand(@sym $y)</code></td>
-    <td><code>@sym y</code></td>
-    <td><code>eval(@sym y)</code></td>
-    <td><code>@sym $y</code></td>
+    <td><code>@macroexpand(@sym y)</code></td>
+    <td><code>@macroexpand(@sym $y)</code></td>
+    <td><code>@sym y</code></td>
+    <td><code>eval(@sym y)</code></td>
+    <td><code>@sym $y</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
@@ -325,17 +325,17 @@ Case - Advanced expression interpolation  (note: @ip: interpolation, l: left, r:
 <table>
   <tr>
     <td></td>
-    <td><code>@ip x=1 x x</code></td>
-    <td><code>eval(@ip x=1 x x)</code></td>
-    <td><code>eval(eval(@ip x=1 x x))</code></td>
-    <td><code>@ip x=1 x/2 x</code></td>
-    <td><code>eval(@ip x=1 x/2 x)</code></td>
-    <td><code>@ip x=1 1/2 1/4</code></td>
-    <td><code>eval(@ip x=1 1/2 1/4)</code></td>
-    <td><code>@ip x=1 $x $x</code></td>
-    <td><code>eval(@ip x=1 1+$x $x)</code></td>
-    <td><code>@ip x=1 $x/2 $x</code></td>
-    <td><code>eval(@ip x=1 $x/2 $x)</code></td>
+    <td><code>@ip x=1 x x</code></td>
+    <td><code>eval(@ip x=1 x x)</code></td>
+    <td><code>eval(eval(@ip x=1 x x))</code></td>
+    <td><code>@ip x=1 x/2 x</code></td>
+    <td><code>eval(@ip x=1 x/2 x)</code></td>
+    <td><code>@ip x=1 1/2 1/4</code></td>
+    <td><code>eval(@ip x=1 1/2 1/4)</code></td>
+    <td><code>@ip x=1 $x $x</code></td>
+    <td><code>eval(@ip x=1 1+$x $x)</code></td>
+    <td><code>@ip x=1 $x/2 $x</code></td>
+    <td><code>eval(@ip x=1 $x/2 $x)</code></td>
   </tr>
   <tr>
     <td><code>macro ip(ex, l, r)
