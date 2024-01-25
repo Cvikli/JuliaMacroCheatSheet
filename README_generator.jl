@@ -7,4 +7,5 @@ open(pwd()*"/JuliaMacroCheatSheet/README.md", "w") do file
 	expression_interpolation_tests(file)
 end
 
-
+run(`git add .`)
+run(`git add .`)

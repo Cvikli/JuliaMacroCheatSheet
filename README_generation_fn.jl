@@ -1,6 +1,7 @@
 
 using Base.Meta: quot, QuoteNode
-gen_all_cases(io,init, tests, cases) = begin
+gen_all_cases(io,title, init, tests, cases) = begin
+	println(io,'\n',title,'\n')
 	println(io,"""```julia
 	$init
 	```""")
@@ -48,6 +49,7 @@ gen_all_cases(io,init, tests, cases) = begin
 end
 #%%
 value_interpolation_tests(io) = begin
+	title = "Case - Value interpolation:"
 	init  = "q=:p  # Main.q\n"*
 	        "p=7   # Main.p"
 	tests = ["macro quo(ex)
@@ -66,12 +68,13 @@ cases = [
 	"@quo 2 + \$q",
 	"eval(@quo 2 + \$q)",
 ]
-	gen_all_cases(io,init,tests,cases)
+	gen_all_cases(io,title,init,tests,cases)
 end
 value_interpolation_tests(stdout)
 #%%
 
 expression_generation_tests(io) = begin
+	title = "Case - Expression generation:"
 	init  = "x=:p  # Main.x\n"*
 					"p=8   # Main.p"
 	tests = [
@@ -87,11 +90,12 @@ expression_generation_tests(io) = begin
 		"@sym",
 		"eval(@sym)",
 	]
-	gen_all_cases(io,init,tests,cases)
+	gen_all_cases(io,title,init,tests,cases)
 end
 # expression_generation_tests(stdout)
 #%%
 expression_interpolation_tests(io) = begin
+	title = "Case - Expression interpolation:"
 	init= "ex=:ey   #  Main.ex\n"*
 				"y=:p     #  Main.y\n"*
 				"p=8      #  Main.p"
@@ -134,6 +138,6 @@ end; end",
 		"eval(@sym y)",
 		"@sym \$y",
 	]
-	gen_all_cases(io,init,tests,cases)
+	gen_all_cases(io,title,init,tests,cases)
 end
 # expression_interpolation_tests(stdout)
