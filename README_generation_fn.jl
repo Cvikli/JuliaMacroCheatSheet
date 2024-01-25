@@ -22,7 +22,8 @@ gen_all_cases(io,title, init, tests, cases) = begin
 		eval(Meta.parse(mac))
 		for case in cases
 			print(io,"    <td><code>"); 
-			try	show(TextDisplay(io).io, MIME"text/plain"(),
+			try	
+				show(TextDisplay(io).io, MIME"text/plain"(),
 				# replace("$(
 					MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(case))))
 				# )",
@@ -77,13 +78,7 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 
 				aa=MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(call))))
 				# print("7")
-				print(io,aa
-				# replace("$(
-				# )",
-				# "    #= none:1 =#\n"=>"", 
-				# "    #= none:2 =#\n"=>"", 
-				# "    "=>"  ")
-				); 
+				show(TextDisplay(io).io, MIME"text/plain"(),aa) 
 			catch e
 				if isa(e,UndefVarError)
 					print(io,e)
@@ -133,9 +128,9 @@ end"),
 		"string(ex)",
 		":ey",
 		":(ey)",
-		"string(\$(ex))",
-		"string(\$(esc(ex)))",
-		"string(\$(string(ex)))",
+		"(\$(ex))",
+		"(\$(esc(ex)))",
+		"(\$(string(ex)))",
 	]
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)
