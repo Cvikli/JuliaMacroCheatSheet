@@ -62,38 +62,38 @@ p=8   # Main.p
   <tr>
     <td><code>macro sym(); :x; end</code></td>
     <td><code>:(Main.x)</code></td>
-    <td><code>:p</code></td>
-    <td><code>8</code></td>
+    <td><code>1</code></td>
+    <td><code>1</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(x); end</code></td>
     <td><code>:(Main.x)</code></td>
-    <td><code>:p</code></td>
-    <td><code>8</code></td>
+    <td><code>1</code></td>
+    <td><code>1</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
-    <td><code>:p</code></td>
+    <td><code>1</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); quot(x); end</code></td>
-    <td><code>:(:p)</code></td>
-    <td><code>:p</code></td>
-    <td><code>8</code></td>
+    <td><code>1</code></td>
+    <td><code>1</code></td>
+    <td><code>1</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); quot(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
-    <td><code>:p</code></td>
+    <td><code>1</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); QuoteNode(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
-    <td><code>:p</code></td>
+    <td><code>1</code></td>
   </tr>
 </table>
 
@@ -198,11 +198,9 @@ end</code></td>
  QuoteNode($ex)
 end; end</code></td>
     <td><code>quote
-    #= none:2 =#
     Main.QuoteNode(Main.y)
 end</code></td>
     <td><code>quote
-    #= none:2 =#
     Main.QuoteNode($(Expr(:$, :(Main.y))))
 end</code></td>
     <td><code>:(:p)</code></td>
@@ -214,15 +212,219 @@ end</code></td>
  $(QuoteNode(ex))
 end; end</code></td>
     <td><code>quote
-    #= none:2 =#
     :y
 end</code></td>
     <td><code>quote
-    #= none:2 =#
     $(QuoteNode(:($(Expr(:$, :y)))))
 end</code></td>
     <td><code>:y</code></td>
     <td><code>:p</code></td>
     <td><code>:($(Expr(:$, :y)))</code></td>
+  </tr>
+</table>
+
+Case - Advanced expression interpolation  (note: @ip: interpolation, l: left, r: r):
+
+```julia
+ex=:ey   #  Main.ex
+y=:p     #  Main.y
+p=8      #  Main.p
+```
+<table>
+  <tr>
+    <td></td>
+    <td><code>@ip x=1 x x</code></td>
+    <td><code>eval(@ip x=1 x x)</code></td>
+    <td><code>eval(eval(@ip x=1 x x))</code></td>
+    <td><code>@ip x=1 x/2 x</code></td>
+    <td><code>eval(@ip x=1 x/2 x)</code></td>
+    <td><code>@ip x=1 1/2 1/4</code></td>
+    <td><code>eval(@ip x=1 1/2 1/4)</code></td>
+    <td><code>@ip x=1 $x $x</code></td>
+    <td><code>eval(@ip x=1 1+$x $x)</code></td>
+    <td><code>@ip x=1 $x/2 $x</code></td>
+    <td><code>eval(@ip x=1 $x/2 $x)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro ip(ex, l, r)
+quote
+ Meta.quot($ex)
+ :($$(Meta.quot(l)) + $$(Meta.quot(r)))
+end
+end</code></td>
+    <td><code>:(x + x)</code></td>
+    <td><code>2</code></td>
+    <td><code>2</code></td>
+    <td><code>:(x / 2 + x)</code></td>
+    <td><code>1.5</code></td>
+    <td><code>:(1 / 2 + 1 / 4)</code></td>
+    <td><code>0.75</code></td>
+    <td><code>:(1 + 1)</code></td>
+    <td><code>3</code></td>
+    <td><code>:(1 / 2 + 1)</code></td>
+    <td><code>1.5</code></td>
+  </tr>
+  <tr>
+    <td><code>macro ip(ex, l, r)
+quote
+ $(Meta.quot(ex))
+	 :($$(Meta.quot(l)) + $$(Meta.quot(r)))
+ end
+end</code></td>
+    <td><code>:(x + x)</code></td>
+    <td><code>2</code></td>
+    <td><code>2</code></td>
+    <td><code>:(x / 2 + x)</code></td>
+    <td><code>1.5</code></td>
+    <td><code>:(1 / 2 + 1 / 4)</code></td>
+    <td><code>0.75</code></td>
+    <td><code>:(1 + 1)</code></td>
+    <td><code>3</code></td>
+    <td><code>:(1 / 2 + 1)</code></td>
+    <td><code>1.5</code></td>
+  </tr>
+  <tr>
+    <td><code>macro ip(ex, l, r)
+quote
+ quote
+	$$(Meta.quot(ex))
+	:($$$(Meta.quot(l)) + $$$(Meta.quot(r)))
+ end
+end
+end</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
+end</code></td>
+    <td><code>:(1 + 1)</code></td>
+    <td><code>2</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
+end</code></td>
+    <td><code>:(0.5 + 1)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
+end</code></td>
+    <td><code>:(0.5 + 0.25)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
+end</code></td>
+    <td><code>:(2 + 1)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
+end</code></td>
+    <td><code>:(0.5 + 1)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro ip(ex, l, r)
+quote
+ quote
+	$$(Meta.quot(ex))
+	:($$$(Meta.quot(l)) + $$$(Meta.quot(r)))
+ end
+end
+end</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
+end</code></td>
+    <td><code>:(1 + 1)</code></td>
+    <td><code>2</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
+end</code></td>
+    <td><code>:(0.5 + 1)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
+end</code></td>
+    <td><code>:(0.5 + 0.25)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
+end</code></td>
+    <td><code>:(2 + 1)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
+end</code></td>
+    <td><code>:(0.5 + 1)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro ip(ex, l, r)
+quote
+ quote
+	$$(Meta.quot(ex))
+	:($$(Meta.quot($(Meta.quot(l)))) + $$(Meta.quot($(Meta.quot(r)))))
+ end
+end
+end</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+end</code></td>
+    <td><code>:(x + x)</code></td>
+    <td><code>2</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+end</code></td>
+    <td><code>:(x / 2 + x)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
+end</code></td>
+    <td><code>:(1 / 2 + 1 / 4)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, 1))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+end</code></td>
+    <td><code>:((1 + 1) + 1)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
+end</code></td>
+    <td><code>:(1 / 2 + 1)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro ip(ex, l, r)
+quote
+ quote
+	$$(Meta.quot(ex))
+	:($$(Meta.quot($(QuoteNode(l)))) + $$(Meta.quot($(QuoteNode(r)))))
+ end
+end
+end</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+end</code></td>
+    <td><code>:(x + x)</code></td>
+    <td><code>2</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+end</code></td>
+    <td><code>:(x / 2 + x)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
+end</code></td>
+    <td><code>:(1 / 2 + 1 / 4)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+end</code></td>
+    <td><code>:((1 + 1) + 1)</code></td>
+    <td><code>quote
+    x = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)) / 2)))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+end</code></td>
+    <td><code>:(1 / 2 + 1)</code></td>
   </tr>
 </table>

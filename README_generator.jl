@@ -6,6 +6,7 @@ open("README.md", "w") do file
 	value_interpolation_tests(file)
 	expression_generation_tests(file)
 	expression_interpolation_tests(file)
+	advanced_expression_interpolation_tests(file)
 end
 
 @show pwd()
