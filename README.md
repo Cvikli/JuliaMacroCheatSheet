@@ -8,6 +8,185 @@ All test has included: `using Base.Meta: quot, QuoteNode`
 Big mistakes: `$QuoteNode(…)` instead of `$(QuoteNode(…))` 
 
 
+Case - Basic expression generation:
+
+```julia
+x=:p   # Main.x
+p=7   # Main.p
+```
+<table>
+  <tr>
+    <td></td>
+    <td><code>@macroexpand(@sym)</code></td>
+    <td><code>@sym</code></td>
+    <td><code>eval(@sym)</code></td>
+    <td><code>eval(eval(@sym))</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :x; end</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :(x); end</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); quot(x); end</code></td>
+    <td><code>:(:p)</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); quot(:x); end</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); QuoteNode(:x); end</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :(:x); end</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); quote; :x; end end</code></td>
+    <td><code>quote
+    :x
+end</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+  </tr>
+</table>
+
+Case - Basic expression generation:
+
+```julia
+ex=:ey  # Main.ex
+x=:p    # Main.x
+p=7     # Main.p
+```
+<table>
+  <tr>
+    <td></td>
+    <td><code>@macroexpand(@sym x)</code></td>
+    <td><code>@sym x</code></td>
+    <td><code>eval(@sym x)</code></td>
+    <td><code>eval(eval(@sym x))</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :ex; end</code></td>
+    <td><code>:(Main.ex)</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(ex); end</code></td>
+    <td><code>:(Main.ex)</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quot(ex); end</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quot(:ex); end</code></td>
+    <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); QuoteNode(:ex); end</code></td>
+    <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(:ex); end</code></td>
+    <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quote; :ex; end end</code></td>
+    <td><code>quote
+    :ex
+end</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :ey; end</code></td>
+    <td><code>:(Main.ey)</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(ey); end</code></td>
+    <td><code>:(Main.ey)</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quot(ey); end</code></td>
+    <td><code>:(:ez)</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); QuoteNode(ey); end</code></td>
+    <td><code>:(:ez)</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(ey); end</code></td>
+    <td><code>:(Main.ey)</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quote; ey; end end</code></td>
+    <td><code>quote
+    Main.ey
+end</code></td>
+    <td><code>:ez</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+    <td><code>UndefVarError(:ez)</code></td>
+  </tr>
+</table>
+
 Case - Basic:
 
 ```julia
@@ -35,8 +214,8 @@ end</code></td>
     <td><code>:p</code></td>
     <td><code>:ey</code></td>
     <td><code>"x"</code></td>
-    <td><code>UndefVarError(:ey)</code></td>
-    <td><code>UndefVarError(:ey)</code></td>
+    <td><code>:ez</code></td>
+    <td><code>:ez</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -152,73 +331,6 @@ end</code></td>
   </tr>
 </table>
 
-Case - Expression generation:
-
-```julia
-x=:p   # Main.x
-p=7   # Main.p
-```
-<table>
-  <tr>
-    <td></td>
-    <td><code>@macroexpand(@sym)</code></td>
-    <td><code>@sym</code></td>
-    <td><code>eval(@sym)</code></td>
-    <td><code>eval(eval(@sym))</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(); :x; end</code></td>
-    <td><code>:(Main.x)</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-    <td><code>7</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(); :(x); end</code></td>
-    <td><code>:(Main.x)</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-    <td><code>7</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(); quot(x); end</code></td>
-    <td><code>:(:p)</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-    <td><code>7</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(); quot(:x); end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(); QuoteNode(:x); end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(); :(:x); end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(); quote; :x; end end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-  </tr>
-</table>
-
 Case - Expression interpolation:
 
 ```julia
@@ -252,7 +364,7 @@ end</code></td>
     <td><code>:(Main.ex)</code></td>
     <td><code>:(Main.ex)</code></td>
     <td><code>:ey</code></td>
-    <td><code>UndefVarError(:ey)</code></td>
+    <td><code>:ez</code></td>
     <td><code>:ey</code></td>
   </tr>
   <tr>

@@ -3,6 +3,7 @@ using Base.Meta: quot, QuoteNode
 using MacroTools
 
 ex=Symbol("ey")  # Main.ex
+ey=Symbol("ez")  # Main.ex
 x=Symbol("p")    # Main.x
 q=Symbol("p")    # Main.q
 y=Symbol("p")    # Main.y
@@ -175,8 +176,8 @@ end
 # value_interpolation_tests(stdout)
 #%%
 
-expression_generation_tests(io) = begin
-	title = "Case - Expression generation:"
+basic_expression_generation_tests(io) = begin
+	title = "Case - Basic expression generation:"
 	init  = "x=:$(x)   # Main.x\n"*
 					"p=$(p)   # Main.p"
 	tests = [
@@ -196,7 +197,38 @@ expression_generation_tests(io) = begin
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-# expression_generation_tests(stdout)
+# baisc_expression_generation_tests(stdout)
+#%%
+
+medium_expression_generation_tests(io) = begin
+	title = "Case - Basic expression generation:"
+	init  = "ex=:$(ex)  # Main.ex\n"*
+					"x=:$(x)    # Main.x\n"*
+					"p=$(p)     # Main.p"
+	tests = [
+		"macro sym(ex); :ex; end",
+		"macro sym(ex); :(ex); end",
+		"macro sym(ex); quot(ex); end",
+		"macro sym(ex); quot(:ex); end",
+		"macro sym(ex); QuoteNode(:ex); end",
+		"macro sym(ex); :(:ex); end",
+		"macro sym(ex); quote; :ex; end end",
+		"macro sym(ex); :$ex; end",
+		"macro sym(ex); :($ex); end",
+		"macro sym(ex); quot($ex); end",
+		"macro sym(ex); QuoteNode($ex); end",
+		"macro sym(ex); :($ex); end",
+		"macro sym(ex); quote; $ex; end end",
+		]
+	cases = [
+		"@macroexpand(@sym x)",
+		"@sym x",
+		"eval(@sym x)",
+		"eval(eval(@sym x))",
+	]
+	gen_all_cases(io,title,init,tests,cases)
+end
+medium_expression_generation_tests(stdout)
 #%%
 expression_interpolation_tests(io) = begin
 	title = "Case - Expression interpolation:"
