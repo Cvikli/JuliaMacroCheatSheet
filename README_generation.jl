@@ -292,16 +292,11 @@ end",
 end"]
 cases = [
 	"@quo 1",
-	"eval(@quo 1)",
 	"@quo 1 + 1",
-	"eval(@quo 1 + 1)",
 	"@quo 1 + \$(sin(1))",
 	"let q = 0.5 
   @quo 1 + \$q
 end",
-	"let q = 0.5 
-  eval(@quo 1 + \$q)
-end"
 ]
 	gen_all_cases(io,init,tests,cases)
 end

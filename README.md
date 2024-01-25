@@ -171,20 +171,14 @@ end</code></td>
     <td style="background-color: #2f2; color: #222">:((1 + $(Expr(:$, :q))) + (1 + $(Expr(:$, :q))))</td>
   </tr>
 
-</table>
 <table>
   <tr>
     <td></td>
     <td><code>@quo 1</code></td>
-    <td><code>eval(@quo 1)</code></td>
     <td><code>@quo 1 + 1</code></td>
-    <td><code>eval(@quo 1 + 1)</code></td>
     <td><code>@quo 1 + $(sin(1))</code></td>
     <td><code>let q = 0.5 
   @quo 1 + $q
-end</code></td>
-    <td><code>let q = 0.5 
-  eval(@quo 1 + $q)
 end</code></td>
   </tr>
   <tr>
@@ -192,10 +186,7 @@ end</code></td>
  :( x = $(esc(ex)); :($x + $x) )
 end</code></td>
     <td><code>1 + 1</code></td>
-    <td><code>2</code></td>
     <td><code>2 + 2</code></td>
-    <td><code>4</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
@@ -204,11 +195,8 @@ end</code></td>
  :( x = $(quot(ex)); :($x + $x) )
 end</code></td>
     <td><code>1 + 1</code></td>
-    <td><code>2</code></td>
     <td><code>(1 + 1) + (1 + 1)</code></td>
-    <td><code>4</code></td>
     <td><code>(1 + 0.8414709848078965) + (1 + 0.8414709848078965)</code></td>
-    <td><code>UndefVarError(:q)</code></td>
     <td><code>UndefVarError(:q)</code></td>
   </tr>
   <tr>
@@ -216,12 +204,9 @@ end</code></td>
  :( x = $(QuoteNode(ex)); :($x + $x) )
 end</code></td>
     <td><code>1 + 1</code></td>
-    <td><code>2</code></td>
     <td><code>(1 + 1) + (1 + 1)</code></td>
-    <td><code>4</code></td>
     <td><code>(1 + $(sin(1))) + (1 + $(sin(1)))</code></td>
     <td><code>(1 + $q) + (1 + $q)</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
 </table>
 
