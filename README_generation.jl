@@ -233,134 +233,106 @@ end
 
 
 #%%
-
+#%%
 using Base.Meta: quot, QuoteNode
+gen_all_cases(io,init, tests, cases) = begin
+	println(io,"""```julia
+	$init
+	```""")
+	println(io,"<table>")
+	println(io,"  <tr>")
+	println(io,"    <td></td>")
+	for case in cases
+		println(io,"    <td><code>",case,"</code></td>")
+	end
+	println(io,"  </tr>")
 
-#%%
-p=8
-x=:p
-println("<table>")
-println("  <tr>
-    <td></td>
-    <td><code>@macroexpand(@sym)</code></td>
-    <td><code>@sym</code></td>
-    <td><code>eval(@sym)</code></td>
-  </tr>")
-println("  <tr>")
-macro sym(); :x; end
-println("    <td><code>","macro sym(); :x; end","</code></td>")
-print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>")
-print("    <td><code>"); print(@sym); println("</code></td>")
-print("    <td><code>"); print(eval(@sym)); println("</code></td>")
-println("  </tr>
-  <tr>")
-macro sym(); :(x); end
-println("    <td><code>","macro sym(); :(x); end","</code></td>")
-print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
-print("    <td><code>"); print(@sym); println("</code></td>"); 
-print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(); :(:x); end
-println("    <td><code>","macro sym(); :(:x); end","</code></td>")
-print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
-print("    <td><code>"); print(@sym); println("</code></td>"); 
-print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(); quot(x); end
-println("    <td><code>","macro sym(); quot(x); end","</code></td>")
-print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
-print("    <td><code>"); print(@sym); println("</code></td>"); 
-print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(); quot(:x); end
-println("  <td><code>","macro sym(); quot(:x); end","</code></td>")
-print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
-print("    <td><code>"); print(@sym); println("</code></td>"); 
-print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(); QuoteNode(:x); end
-println("    <td><code>","macro sym(); QuoteNode(:x); end","</code></td>")
-print("    <td><code>"); print(@macroexpand((@sym))); println("</code></td>"); 
-print("    <td><code>"); print(@sym); println("</code></td>"); 
-print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
-println("  </tr>")
-println("</table>")
-println()
-#%%
-println("""```julia
-using Base.Meta: quot, QuoteNode
-ex=:ey
-y=:p
-p=8
-```""")
-ex=:ey
-y=:p
-p=8
-println("<table>")
-println("  <tr>
-    <td></td>
-    <td><code>@macroexpand(@sym y)</code></td>
-    <td><code>@macroexpand(@sym \$y)</code></td>
-    <td><code>@sym y</code></td>
-  </tr>")
-println("  <tr>")
-macro sym(ex); :($ex); end
-print("    <td><code>"); print("macro sym(ex); :(\$ex); end"); println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand(@sym y)); println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand(@sym $y)); println("</code></td>"); 
-print("    <td><code>"); print(@sym y); println("</code></td>"); 
-# print("    <td><code>"); print(@sym $y); println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(ex); :(:($ex)); end
-print("    <td><code>"); print("macro sym(ex); :(:(\$ex)); end");  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
-print("    <td><code>"); print(@sym y);  println("</code></td>"); 
-# print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(ex); :($:($ex)); end
-print("    <td><code>"); print("macro sym(ex); :(\$:(\$ex)); end");  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
-print("    <td><code>"); print(@sym y);  println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(ex); :(quot($ex)); end
-print("    <td><code>"); print("macro sym(ex) 
-  :(quot(\$ex))
-end");  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
-print("    <td><code>"); print(@sym y);  println("</code></td>"); 
-# print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
-println("  </tr>
-  <tr>")
-macro sym(ex); :(QuoteNode($ex)); end
-print("    <td><code>"); print("macro sym(ex)
-  :(QuoteNode(\$ex))
-end");  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
-print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
-print("    <td><code>"); print(@sym y);  println("</code></td>"); 
-# print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
-println("  </tr>")
-println("</table>")
-#%%
-macro literal(s)
-	s
+	eval(init)
+	for mac in tests
+		println(io,"  <tr>")
+		print(io,"    <td><code>"); print(io,mac);  println(io,"</code></td>"); 
+		eval(Meta.parse(mac))
+		for case in cases
+			print(io,"    <td><code>"); 
+			try	print(io,replace("$(eval(Meta.parse(case)))",
+				"    #= none:1 =#\n"=>"", 
+				"    #= none:2 =#\n"=>"", 
+				"    "=>"  ")); 
+			catch e
+				if isa(e,UndefVarError)
+					print(io,e)
+				elseif isa(e,ErrorException)
+					print(io,e.msg)
+				else
+					println(io)
+					print(io,e)
+					print(io,typeof(e))
+					print(io,fieldnames(typeof(e)))
+					@assert false ""
+				end
+			end
+			println(io,"</code></td>"); 
+		end
+		println(io,"  </tr>")
+	end
+	println(io,"</table>")
 end
-println("<table>")
-fn() = begin
-	ex=:ey
-y=:p
-p=8
-tests = [
+#%%
+
+value_interpolation_tests(io) = begin
+	init  = ""
+	tests = ["macro quo(ex)
+ :( x = \$(esc(ex)); :(\$x + \$x) )
+end",
+"macro quo(ex)
+ :( x = \$(quot(ex)); :(\$x + \$x) )
+end",
+"macro quo(ex)
+ :( x = \$(QuoteNode(ex)); :(\$x + \$x) )
+end"]
+cases = [
+	"@quo 1",
+	"eval(@quo 1)",
+	"@quo 1 + 1",
+	"eval(@quo 1 + 1)",
+	"@quo 1 + \$(sin(1))",
+	"let q = 0.5 
+  @quo 1 + \$q
+end",
+	"let q = 0.5 
+  eval(@quo 1 + \$q)
+end"
+]
+	gen_all_cases(io,init,tests,cases)
+end
+value_interpolation_tests(stdout)
+#%%
+
+expression_generation_tests(io) = begin
+	init  = "x=:p  # Main.x\n"*
+					"p=8   # Main.p"
+	tests = [
+		"macro sym(); :x; end",
+		"macro sym(); :(x); end",
+		"macro sym(); :(:x); end",
+		"macro sym(); quot(x); end",
+		"macro sym(); quot(:x); end",
+		"macro sym(); QuoteNode(:x); end",
+		]
+	cases = [
+		"@macroexpand(@sym)",
+		"@sym",
+		"eval(@sym)",
+	]
+	gen_all_cases(io,init,tests,cases)
+end
+expression_generation_tests(stdout)
+#%%
+expression_interpolation_tests(io) = begin
+	init= "ex=:ey   #  Main.ex"*
+				"y=:p     #  Main.y"*
+				"p=8      #  Main.p"
+	tests = [
 "macro sym(ex)
  ex
 end",
@@ -399,53 +371,9 @@ end; end",
 		"eval(@sym y)",
 		"@sym \$y",
 	]
-		
-	println("  <tr>")
-	println("    <td></td>")
-	for case in cases
-		println("    <td><code>",case,"</code></td>")
-	end
-	println("  </tr>")
-
-
-	for mac in tests
-		println("  <tr>")
-		eval(Meta.parse(mac))
-		print("    <td><code>"); print(mac);  println("</code></td>"); 
-		for case in cases
-			print("    <td><code>"); 
-			try	print(replace("$(eval(Meta.parse(case)))",
-				"    #= none:1 =#\n"=>"", 
-				"    #= none:2 =#\n"=>"", 
-				"    "=>"  ")); 
-			catch e
-				if isa(e,UndefVarError)
-					print(e)
-				elseif isa(e,ErrorException)
-					print(e.msg)
-				else
-					println()
-					print(e)
-					print(typeof(e))
-					print(fieldnames(typeof(e)))
-					@assert false ""
-				end
-			end
-			println("</code></td>"); 
-		end
-		println("  </tr>")
-	end
+	gen_all_cases(io,init,tests,cases)
 end
-fn()
-println("</table>")
-#%%
-"This macro \t escapes \n any special (characters) for you."
-#%%
-try
-	eval(Meta.parse("@sym \$y"))
-catch e
-
-end
+expression_interpolation_tests(stdout)
 #%%
 println("  </tr>
   <tr>")
