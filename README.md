@@ -21,7 +21,7 @@ p=7      # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex)
- ...
+ …
 end</code></td>
     <td><code>:p</code></td>
     <td><code>:ey</code></td>
@@ -35,7 +35,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
- quot(...)
+ quot(…)
 end</code></td>
     <td><code>:x</code></td>
     <td><code>:ex</code></td>
@@ -49,7 +49,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
- QuoteNode(...)
+ QuoteNode(…)
 end</code></td>
     <td><code>:x</code></td>
     <td><code>:ex</code></td>
@@ -63,7 +63,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
- :(...)
+ :(…)
 end</code></td>
     <td><code>:ey</code></td>
     <td><code>:ex</code></td>
@@ -78,7 +78,7 @@ end</code></td>
   <tr>
     <td><code>macro fn(ex)
  quote
-  ...
+  …
  end
 end</code></td>
     <td><code>:ey</code></td>
