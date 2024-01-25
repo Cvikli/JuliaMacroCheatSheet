@@ -73,7 +73,7 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 	end
 	println(io,"  </tr>")
 
-	@edit eval(init)
+	eval(init)
 	for (outer_space_first,outer_space_last) in tests
 		println(io,"  <tr>")
 		print(io,"    <td><code>"); print(io,outer_space_first,"...",outer_space_last);  println(io,"</code></td>"); 
