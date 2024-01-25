@@ -118,6 +118,12 @@ end"),
  :(",")
 end"),
 ("macro fn(ex)
+ quot(",")
+end"),
+("macro fn(ex)
+ QuoteNode(",")
+end"),
+("macro fn(ex)
  quote
   ","
  end
@@ -125,6 +131,7 @@ end"),
 ]
 	cases = [
 		"string(ex)",
+		":ey",
 		"string(\$(ex))",
 		"string(\$(esc(ex)))",
 		"string(\$(string(ex)))",
