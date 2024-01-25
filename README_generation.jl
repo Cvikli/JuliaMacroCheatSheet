@@ -411,7 +411,7 @@ end; end",
 		println("  <tr>")
 		eval(Meta.parse(mac))
 		print("    <td><code>"); print(mac);  println("</code></td>"); 
-		for case = cases
+		for case in cases
 			print("    <td><code>"); 
 			try	print(replace("$(eval(Meta.parse(case)))",
 				"    #= none:1 =#\n"=>"", 
@@ -419,12 +419,6 @@ end; end",
 				"    "=>"  ")); catch e; print(e.msg); end
 			println("</code></td>"); 
 		end
-		# print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
-		# print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
-		# print("    <td><code>"); print(@sym y);  println("</code></td>"); 
-		# print("    <td><code>"); 
-		# try	print(eval(Meta.parse("@sym \$y"))); catch e; print(e.msg); end
-		# println("</code></td>"); 
 		println("  </tr>")
 	end
 end

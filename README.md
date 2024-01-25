@@ -195,93 +195,102 @@ p=8
     <td><code>macro sym(ex)
  ex
 end</code></td>
-    <td><code>"Main.y"</code></td>
-    <td><code>"\$Main.y"</code></td>
-    <td><code>"p"</code></td>
+    <td><code>Main.y</code></td>
+    <td><code>$Main.y</code></td>
+    <td><code>p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  :(ex)
 end</code></td>
-    <td><code>"Main.ex"</code></td>
-    <td><code>"Main.ex"</code></td>
-    <td><code>"ey"</code></td>
-    <td><code>"ey"</code></td>
+    <td><code>Main.ex</code></td>
+    <td><code>Main.ex</code></td>
+    <td><code>ey</code></td>
+    <td><code>ey</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  :($ex)
 end</code></td>
-    <td><code>"Main.y"</code></td>
-    <td><code>"\$Main.y"</code></td>
-    <td><code>"p"</code></td>
+    <td><code>Main.y</code></td>
+    <td><code>$Main.y</code></td>
+    <td><code>p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  :($:($ex))
 end</code></td>
-    <td><code>"Main.y"</code></td>
-    <td><code>"\$Main.y"</code></td>
-    <td><code>"p"</code></td>
+    <td><code>Main.y</code></td>
+    <td><code>$Main.y</code></td>
+    <td><code>p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  :(quot($ex))
 end</code></td>
-    <td><code>"Main.quot(Main.y)"</code></td>
-    <td><code>"Main.quot(\$Main.y)"</code></td>
-    <td><code>":p"</code></td>
+    <td><code>Main.quot(Main.y)</code></td>
+    <td><code>Main.quot($Main.y)</code></td>
+    <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  QuoteNode(ex)
 end</code></td>
-    <td><code>":y"</code></td>
-    <td><code>"\$(QuoteNode(:(\$(Expr(:\$, :y)))))"</code></td>
-    <td><code>"y"</code></td>
-    <td><code>"\$y"</code></td>
+    <td><code>:y</code></td>
+    <td><code>$(QuoteNode(:($(Expr(:$, :y)))))</code></td>
+    <td><code>y</code></td>
+    <td><code>$y</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  :(QuoteNode($ex))
 end</code></td>
-    <td><code>"Main.QuoteNode(Main.y)"</code></td>
-    <td><code>"Main.QuoteNode(\$Main.y)"</code></td>
-    <td><code>":p"</code></td>
+    <td><code>Main.QuoteNode(Main.y)</code></td>
+    <td><code>Main.QuoteNode($Main.y)</code></td>
+    <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  :($(QuoteNode(ex)))
 end</code></td>
-    <td><code>":y"</code></td>
-    <td><code>"\$(QuoteNode(:(\$(Expr(:\$, :y)))))"</code></td>
-    <td><code>"y"</code></td>
-    <td><code>"\$y"</code></td>
+    <td><code>:y</code></td>
+    <td><code>$(QuoteNode(:($(Expr(:$, :y)))))</code></td>
+    <td><code>y</code></td>
+    <td><code>$y</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex); quote 
  QuoteNode($ex)
 end; end</code></td>
-    <td><code>"begin\n  Main.QuoteNode(Main.y)\nend"</code></td>
-    <td><code>"begin\n  Main.QuoteNode(\$Main.y)\nend"</code></td>
-    <td><code>":p"</code></td>
+    <td><code>begin
+  Main.QuoteNode(Main.y)
+end</code></td>
+    <td><code>begin
+  Main.QuoteNode($Main.y)
+end</code></td>
+    <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex); quote
  $(QuoteNode(ex))
 end; end</code></td>
-    <td><code>"begin\n  :y\nend"</code></td>
-    <td><code>"begin\n  \$(QuoteNode(:(\$(Expr(:\$, :y)))))\nend"</code></td>
-    <td><code>"y"</code></td>
-    <td><code>"\$y"</code></td>
+    <td><code>begin
+  :y
+end</code></td>
+    <td><code>begin
+  $(QuoteNode(:($(Expr(:$, :y)))))
+end</code></td>
+    <td><code>y</code></td>
+    <td><code>$y</code></td>
   </tr>
 </table>
+
 
 Advanced: 
 Case - Expression interpolation (@ip, note: l=left, r=r):
