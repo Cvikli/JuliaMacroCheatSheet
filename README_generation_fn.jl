@@ -282,6 +282,7 @@ advanced_expression_generation_tests(io) = begin
 	cases = [
 		"@macroexpand(@fn z=p^2)",
 		"@fn z=p^2",
+		"let p=3; @fn z=p^2; end",
 		"eval(@fn z=p^2)",
 		"eval(eval(@fn z=p^2))",
 	]

@@ -132,7 +132,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#440#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#539#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -303,19 +303,22 @@ p=7     # Main.p
     <td></td>
     <td><code>@macroexpand(@fn z=p^2)</code></td>
     <td><code>@fn z=p^2</code></td>
+    <td><code>let p=3; @fn z=p^2; end</code></td>
     <td><code>eval(@fn z=p^2)</code></td>
     <td><code>eval(eval(@fn z=p^2))</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#441#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#540#z" = Main.p ^ 2)</code></td>
+    <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#448#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#548#z" = Main.p ^ 2)</code></td>
+    <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -323,8 +326,9 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#455#z" = Main.p ^ 2
+    var"#556#z" = Main.p ^ 2
 end</code></td>
+    <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -333,6 +337,7 @@ end</code></td>
     <td><code>macro fn(ex); :($(esc(ex))); end</code></td>
     <td><code>:(z = p ^ 2)</code></td>
     <td><code>49</code></td>
+    <td><code>9</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
   </tr>
@@ -342,12 +347,14 @@ end</code></td>
     z = p ^ 2
 end</code></td>
     <td><code>49</code></td>
+    <td><code>9</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quot(ex); end</code></td>
     <td><code>:($(Expr(:copyast, :($(QuoteNode(:(z = p ^ 2)))))))</code></td>
+    <td><code>:(z = p ^ 2)</code></td>
     <td><code>:(z = p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -356,12 +363,14 @@ end</code></td>
     <td><code>macro fn(ex); QuoteNode(ex); end</code></td>
     <td><code>:($(QuoteNode(:(z = p ^ 2))))</code></td>
     <td><code>:(z = p ^ 2)</code></td>
+    <td><code>:(z = p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :ex; end</code></td>
     <td><code>:(Main.ex)</code></td>
+    <td><code>:ey</code></td>
     <td><code>:ey</code></td>
     <td><code>:ez</code></td>
     <td><code>UndefVarError(:ez)</code></td>
@@ -370,12 +379,14 @@ end</code></td>
     <td><code>macro fn(ex); :(ex); end</code></td>
     <td><code>:(Main.ex)</code></td>
     <td><code>:ey</code></td>
+    <td><code>:ey</code></td>
     <td><code>:ez</code></td>
     <td><code>UndefVarError(:ez)</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(:ex)); end</code></td>
     <td><code>:(Main.ex)</code></td>
+    <td><code>:ey</code></td>
     <td><code>:ey</code></td>
     <td><code>:ez</code></td>
     <td><code>UndefVarError(:ez)</code></td>
@@ -384,6 +395,7 @@ end</code></td>
     <td><code>macro fn(ex); :(:ex); end</code></td>
     <td><code>:(:ex)</code></td>
     <td><code>:ex</code></td>
+    <td><code>:ex</code></td>
     <td><code>:ey</code></td>
     <td><code>:ez</code></td>
   </tr>
@@ -391,12 +403,14 @@ end</code></td>
     <td><code>macro fn(ex); quot(:ex); end</code></td>
     <td><code>:(:ex)</code></td>
     <td><code>:ex</code></td>
+    <td><code>:ex</code></td>
     <td><code>:ey</code></td>
     <td><code>:ez</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); QuoteNode(:ex); end</code></td>
     <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
     <td><code>:ex</code></td>
     <td><code>:ey</code></td>
     <td><code>:ez</code></td>
@@ -407,6 +421,7 @@ end</code></td>
     :ex
 end</code></td>
     <td><code>:ex</code></td>
+    <td><code>:ex</code></td>
     <td><code>:ey</code></td>
     <td><code>:ez</code></td>
   </tr>
@@ -416,10 +431,12 @@ end</code></td>
     <td><code>"ey"</code></td>
     <td><code>"ey"</code></td>
     <td><code>"ey"</code></td>
+    <td><code>"ey"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#472#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#574#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -430,9 +447,11 @@ end</code></td>
     <td><code>"z = p ^ 2"</code></td>
     <td><code>"z = p ^ 2"</code></td>
     <td><code>"z = p ^ 2"</code></td>
+    <td><code>"z = p ^ 2"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(string(ex))); end</code></td>
+    <td><code>"z = p ^ 2"</code></td>
     <td><code>"z = p ^ 2"</code></td>
     <td><code>"z = p ^ 2"</code></td>
     <td><code>"z = p ^ 2"</code></td>
