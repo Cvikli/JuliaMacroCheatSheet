@@ -151,14 +151,17 @@ value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
 	init  = "q=:$(q)  # Main.q\n"*
 	        "p=$(p)   # Main.p"
-	tests = ["macro quo(ex)
- :( x = \$(esc(ex)); :(\$x + \$x) )
+	tests = ["macro quo(ex)
+ :(x=\$(esc(ex));
+   :(\$x+\$x))
 end",
-"macro quo(ex)
- :( x = \$(quot(ex)); :(\$x + \$x) )
+"macro quo(ex)
+ :(x=\$(quot(ex));
+   :(\$x+\$x))
 end",
-"macro quo(ex)
- :( x = \$(QuoteNode(ex)); :(\$x + \$x) )
+"macro quo(ex)
+ :(x=\$(QuoteNode(ex));
+   :(\$x+\$x))
 end"]
 cases = [
 	"@quo 2",
@@ -200,34 +203,34 @@ expression_interpolation_tests(io) = begin
 				"p=$(p)      #  Main.p"
 	tests = [
 "macro sym(ex)
- ex
+ ex
 end",
 "macro sym(ex)
- :(ex)
+ :(ex)
 end",
 "macro sym(ex)
- :(\$ex)
+ :(\$ex)
 end",
 "macro sym(ex)
- :(\$:(\$ex))
+ :(\$:(\$ex))
 end",
 "macro sym(ex)
- :(quot(\$ex))
+ :(quot(\$ex))
 end",
 "macro sym(ex)
- QuoteNode(ex)
+ QuoteNode(ex)
 end",
 "macro sym(ex)
- :(QuoteNode(\$ex))
+ :(QuoteNode(\$ex))
 end",
 "macro sym(ex)
- :(\$(QuoteNode(ex)))
+ :(\$(QuoteNode(ex)))
 end",
 "macro sym(ex); quote 
- QuoteNode(\$ex)
+ QuoteNode(\$ex)
 end; end",
 "macro sym(ex); quote
- \$(QuoteNode(ex))
+ \$(QuoteNode(ex))
 end; end",
 		]
 	cases = [
@@ -247,45 +250,45 @@ advanced_expression_interpolation_tests(io) = begin
 	tests = [
 "macro ip(ex, l, r)
 quote
- Meta.quot(\$ex)
- :(\$\$(Meta.quot(l)) + \$\$(Meta.quot(r)))
+ Meta.quot(\$ex)
+ :(\$\$(Meta.quot(l)) + \$\$(Meta.quot(r)))
 end
 end",
 "macro ip(ex, l, r)
 quote
- \$(Meta.quot(ex))
-	 :(\$\$(Meta.quot(l)) + \$\$(Meta.quot(r)))
+ \$(Meta.quot(ex))
+ :(\$\$(Meta.quot(l)) + \$\$(Meta.quot(r)))
  end
 end",
 "macro ip(ex, l, r)
 quote
- quote
-	\$\$(Meta.quot(ex))
-	:(\$\$\$(Meta.quot(l)) + \$\$\$(Meta.quot(r)))
- end
-end
-end",
-"macro ip(ex, l, r)
-quote
- quote
-	\$\$(Meta.quot(ex))
-	:(\$\$\$(Meta.quot(l)) + \$\$\$(Meta.quot(r)))
+ quote
+  \$\$(Meta.quot(ex))
+  :(\$\$\$(Meta.quot(l)) + \$\$\$(Meta.quot(r)))
  end
 end
 end",
 "macro ip(ex, l, r)
 quote
  quote
-	\$\$(Meta.quot(ex))
-	:(\$\$(Meta.quot(\$(Meta.quot(l)))) + \$\$(Meta.quot(\$(Meta.quot(r)))))
+  \$\$(Meta.quot(ex))
+  :(\$\$\$(Meta.quot(l)) + \$\$\$(Meta.quot(r)))
  end
 end
 end",
 "macro ip(ex, l, r)
 quote
  quote
-	\$\$(Meta.quot(ex))
-	:(\$\$(Meta.quot(\$(QuoteNode(l)))) + \$\$(Meta.quot(\$(QuoteNode(r)))))
+  \$\$(Meta.quot(ex))
+  :(\$\$(Meta.quot(\$(Meta.quot(l)))) + \$\$(Meta.quot(\$(Meta.quot(r)))))
+ end
+end
+end",
+"macro ip(ex, l, r)
+quote
+ quote
+  \$\$(Meta.quot(ex))
+  :(\$\$(Meta.quot(\$(QuoteNode(l)))) + \$\$(Meta.quot(\$(QuoteNode(r)))))
  end
 end
 end",

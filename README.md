@@ -109,8 +109,9 @@ p=7   # Main.p
     <td><code>eval(@quo 2 + $q)</code></td>
   </tr>
   <tr>
-    <td><code>macro quo(ex)
- :( x = $(esc(ex)); :($x + $x) )
+    <td><code>macro quo(ex)
+ :(x=$(esc(ex));
+   :($x+$x))
 end</code></td>
     <td><code>:(2 + 2)</code></td>
     <td><code>:(4 + 4)</code></td>
@@ -119,8 +120,9 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro quo(ex)
- :( x = $(quot(ex)); :($x + $x) )
+    <td><code>macro quo(ex)
+ :(x=$(quot(ex));
+   :($x+$x))
 end</code></td>
     <td><code>:(2 + 2)</code></td>
     <td><code>:((2 + 2) + (2 + 2))</code></td>
@@ -129,8 +131,9 @@ end</code></td>
     <td><code>18</code></td>
   </tr>
   <tr>
-    <td><code>macro quo(ex)
- :( x = $(QuoteNode(ex)); :($x + $x) )
+    <td><code>macro quo(ex)
+ :(x=$(QuoteNode(ex));
+   :($x+$x))
 end</code></td>
     <td><code>:(2 + 2)</code></td>
     <td><code>:((2 + 2) + (2 + 2))</code></td>
@@ -209,7 +212,7 @@ p=7      #  Main.p
   </tr>
   <tr>
     <td><code>macro sym(ex)
- ex
+ ex
 end</code></td>
     <td><code>:(Main.y)</code></td>
     <td><code>:($(Expr(:$, :(Main.y))))</code></td>
@@ -219,7 +222,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- :(ex)
+ :(ex)
 end</code></td>
     <td><code>:(Main.ex)</code></td>
     <td><code>:(Main.ex)</code></td>
@@ -229,7 +232,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- :($ex)
+ :($ex)
 end</code></td>
     <td><code>:(Main.y)</code></td>
     <td><code>:($(Expr(:$, :(Main.y))))</code></td>
@@ -239,7 +242,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- :($:($ex))
+ :($:($ex))
 end</code></td>
     <td><code>:(Main.y)</code></td>
     <td><code>:($(Expr(:$, :(Main.y))))</code></td>
@@ -249,7 +252,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- :(quot($ex))
+ :(quot($ex))
 end</code></td>
     <td><code>:(Main.quot(Main.y))</code></td>
     <td><code>:(Main.quot($(Expr(:$, :(Main.y)))))</code></td>
@@ -259,7 +262,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- QuoteNode(ex)
+ QuoteNode(ex)
 end</code></td>
     <td><code>:(:y)</code></td>
     <td><code>:($(QuoteNode(:($(Expr(:$, :y))))))</code></td>
@@ -269,7 +272,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- :(QuoteNode($ex))
+ :(QuoteNode($ex))
 end</code></td>
     <td><code>:(Main.QuoteNode(Main.y))</code></td>
     <td><code>:(Main.QuoteNode($(Expr(:$, :(Main.y)))))</code></td>
@@ -279,7 +282,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- :($(QuoteNode(ex)))
+ :($(QuoteNode(ex)))
 end</code></td>
     <td><code>:(:y)</code></td>
     <td><code>:($(QuoteNode(:($(Expr(:$, :y))))))</code></td>
@@ -289,7 +292,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex); quote 
- QuoteNode($ex)
+ QuoteNode($ex)
 end; end</code></td>
     <td><code>quote
     Main.QuoteNode(Main.y)
@@ -303,7 +306,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex); quote
- $(QuoteNode(ex))
+ $(QuoteNode(ex))
 end; end</code></td>
     <td><code>quote
     :y
@@ -337,8 +340,8 @@ Case - Advanced expression interpolation  (note: @ip: interpolation, l: left, r:
   <tr>
     <td><code>macro ip(ex, l, r)
 quote
- Meta.quot($ex)
- :($$(Meta.quot(l)) + $$(Meta.quot(r)))
+ Meta.quot($ex)
+ :($$(Meta.quot(l)) + $$(Meta.quot(r)))
 end
 end</code></td>
     <td><code>:(x + x)</code></td>
@@ -356,8 +359,8 @@ end</code></td>
   <tr>
     <td><code>macro ip(ex, l, r)
 quote
- $(Meta.quot(ex))
-	 :($$(Meta.quot(l)) + $$(Meta.quot(r)))
+ $(Meta.quot(ex))
+ :($$(Meta.quot(l)) + $$(Meta.quot(r)))
  end
 end</code></td>
     <td><code>:(x + x)</code></td>
@@ -375,9 +378,9 @@ end</code></td>
   <tr>
     <td><code>macro ip(ex, l, r)
 quote
- quote
-	$$(Meta.quot(ex))
-	:($$$(Meta.quot(l)) + $$$(Meta.quot(r)))
+ quote
+  $$(Meta.quot(ex))
+  :($$$(Meta.quot(l)) + $$$(Meta.quot(r)))
  end
 end
 end</code></td>
@@ -412,8 +415,8 @@ end</code></td>
     <td><code>macro ip(ex, l, r)
 quote
  quote
-	$$(Meta.quot(ex))
-	:($$$(Meta.quot(l)) + $$$(Meta.quot(r)))
+  $$(Meta.quot(ex))
+  :($$$(Meta.quot(l)) + $$$(Meta.quot(r)))
  end
 end
 end</code></td>
@@ -448,8 +451,8 @@ end</code></td>
     <td><code>macro ip(ex, l, r)
 quote
  quote
-	$$(Meta.quot(ex))
-	:($$(Meta.quot($(Meta.quot(l)))) + $$(Meta.quot($(Meta.quot(r)))))
+  $$(Meta.quot(ex))
+  :($$(Meta.quot($(Meta.quot(l)))) + $$(Meta.quot($(Meta.quot(r)))))
  end
 end
 end</code></td>
@@ -484,8 +487,8 @@ end</code></td>
     <td><code>macro ip(ex, l, r)
 quote
  quote
-	$$(Meta.quot(ex))
-	:($$(Meta.quot($(QuoteNode(l)))) + $$(Meta.quot($(QuoteNode(r)))))
+  $$(Meta.quot(ex))
+  :($$(Meta.quot($(QuoteNode(l)))) + $$(Meta.quot($(QuoteNode(r)))))
  end
 end
 end</code></td>
