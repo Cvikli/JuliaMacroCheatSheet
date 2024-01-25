@@ -29,8 +29,9 @@ Big mistakes: `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`
 end
 
 ll = split(read(`git ls-files --modified`, String), '\n')
-if length(ll)>0
+if length(ll)>1
 	run(`git add .`)
 	run(`git commit -m "autocommit"`)
 	run(`git push`)
 end
+#%%
