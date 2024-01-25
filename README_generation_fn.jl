@@ -52,6 +52,86 @@ gen_all_cases(io,title, init, tests, cases) = begin
 	println(io,"</table>")
 end
 #%%
+gen_all_cases_internal(io,title, init, tests, cases, call) = begin
+	println(io,'\n',title,'\n')
+	!isempty(init) && println(io,"""```julia
+	$init
+	```""")
+	println(io,"<table>")
+	println(io,"  <tr>")
+	println(io,"    <td></td>")
+	for case in cases
+		println(io,"    <td><code>",case,"</code></td>")
+	end
+	println(io,"  </tr>")
+
+	eval(init)
+	for (outer_space_first,outer_space_last) in tests
+		println(io,"  <tr>")
+		print(io,"    <td><code>"); print(io,outer_space_first,"...",outer_space_last);  println(io,"</code></td>"); 
+		for inner_space in cases
+			mac = join((outer_space_first,inner_space,outer_space_last), "")
+			@show mac
+			print(io,"    <td><code>"); 
+			try	
+				eval(Meta.parse(mac));
+				show(TextDisplay(io).io, MIME"text/plain"(),
+				# replace("$(
+					MacroTools.striplines(eval(MacroTools.striplines(Meta.parse(call))))
+				# )",
+				# "    #= none:1 =#\n"=>"", 
+				# "    #= none:2 =#\n"=>"", 
+				# "    "=>"  ")
+				); 
+			catch e
+				if isa(e,UndefVarError)
+					print(io,e)
+				elseif isa(e,ErrorException)
+					print(io,e.msg)
+				elseif isa(e,MethodError)
+					print(io,"MethodError: $(e.f)$(e.args)")
+				else
+					println(io)
+					print(io,e)
+					print(io,typeof(e))
+					print(io,fieldnames(typeof(e)))
+					@assert false ""
+				end
+			end
+			println(io,"</code></td>"); 
+		end
+		println(io,"  </tr>")
+	end
+	println(io,"</table>")
+end
+basic_tests(io) = begin
+	title = "Case - Basic:"
+	init  = "ex=:ey"*
+					"x=:p"*
+					"p=9"
+	tests = [("macro fn(ex)
+  ","
+end"),
+("macro fn(ex)
+  :(",")
+end"),
+("macro fn(ex)
+ quote
+	","
+ end
+end"),
+]
+cases = [
+	"println(ex)",
+	"println(\$(ex))",
+	"println(\$(esc(ex)))",
+	"println(\$(string(ex)))",
+]
+call = "@fn x"
+gen_all_cases_internal(io,title,init,tests,cases, call)
+end
+basic_tests(stdout)
+#%%
 value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
 	init  = "q=:p  # Main.q\n"*

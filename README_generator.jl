@@ -3,6 +3,7 @@ include("README_generation_fn.jl")
 isdir("./JuliaMacroCheatSheet") && cd("./JuliaMacroCheatSheet")
 
 open("README.md", "w") do file
+	basic_tests(file)
 	value_interpolation_tests(file)
 	expression_generation_tests(file)
 	expression_interpolation_tests(file)
