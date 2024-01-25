@@ -9,6 +9,8 @@ p=7      # Main.p
 <table>
   <tr>
     <td>@fn x</td>
+    <td><code>ex</code></td>
+    <td><code>:ex</code></td>
     <td><code>string(ex)</code></td>
     <td><code>:ey</code></td>
     <td><code>:(ey)</code></td>
@@ -21,6 +23,8 @@ p=7      # Main.p
     <td><code>macro fn(ex)
  ...
 end</code></td>
+    <td><code>:p</code></td>
+    <td><code>:ey</code></td>
     <td><code>"x"</code></td>
     <td><code>UndefVarError(:ey)</code></td>
     <td><code>UndefVarError(:ey)</code></td>
@@ -33,6 +37,8 @@ end</code></td>
     <td><code>macro fn(ex)
  quot(...)
 end</code></td>
+    <td><code>:x</code></td>
+    <td><code>:ex</code></td>
     <td><code>"x"</code></td>
     <td><code>:ey</code></td>
     <td><code>:ey</code></td>
@@ -45,6 +51,8 @@ end</code></td>
     <td><code>macro fn(ex)
  QuoteNode(...)
 end</code></td>
+    <td><code>:x</code></td>
+    <td><code>:ex</code></td>
     <td><code>"x"</code></td>
     <td><code>:ey</code></td>
     <td><code>:ey</code></td>
@@ -57,6 +65,8 @@ end</code></td>
     <td><code>macro fn(ex)
  :(...)
 end</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ex</code></td>
     <td><code>"ey"</code></td>
     <td><code>:ey</code></td>
     <td><code>:ey</code></td>
@@ -71,6 +81,8 @@ end</code></td>
   ...
  end
 end</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ex</code></td>
     <td><code>"ey"</code></td>
     <td><code>:ey</code></td>
     <td><code>:ey</code></td>

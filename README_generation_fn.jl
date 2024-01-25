@@ -132,6 +132,8 @@ end"),
 end"),
 ]
 	cases = [
+		"ex",
+		":ex",
 		"string(ex)",
 		":ey",
 		":(ey)",
