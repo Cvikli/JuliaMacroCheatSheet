@@ -206,12 +206,10 @@ end</code></td>
   <tr>
     <td><code>macro sym(ex); quote (QuoteNode($ex)); end; end</code></td>
     <td><code>begin
-    #= none:1 =#
-    Main.QuoteNode(Main.y)
+  Main.QuoteNode(Main.y)
 end</code></td>
     <td><code>begin
-    #= none:1 =#
-    Main.QuoteNode($Main.y)
+  Main.QuoteNode($Main.y)
 end</code></td>
     <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -219,12 +217,10 @@ end</code></td>
   <tr>
     <td><code>macro sym(ex); quote ($QuoteNode(ex)); end; end</code></td>
     <td><code>begin
-    #= none:1 =#
-    (QuoteNode)(Main.ex)
+  (QuoteNode)(Main.ex)
 end</code></td>
     <td><code>begin
-    #= none:1 =#
-    (QuoteNode)(Main.ex)
+  (QuoteNode)(Main.ex)
 end</code></td>
     <td><code>:ey</code></td>
     <td><code>:ey</code></td>
@@ -232,12 +228,10 @@ end</code></td>
   <tr>
     <td><code>macro sym(ex); quote ($QuoteNode($ex)); end; end</code></td>
     <td><code>begin
-    #= none:1 =#
-    (QuoteNode)(Main.y)
+  (QuoteNode)(Main.y)
 end</code></td>
     <td><code>begin
-    #= none:1 =#
-    (QuoteNode)($Main.y)
+  (QuoteNode)($Main.y)
 end</code></td>
     <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
