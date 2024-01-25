@@ -48,8 +48,8 @@ gen_all_cases(io,init, tests, cases) = begin
 end
 #%%
 value_interpolation_tests(io) = begin
-	init  = "q=:p\n"*
-	        "p=7"
+	init  = "q=:p  # Main.q\n"*
+	        "p=7   # Main.p"
 	tests = ["macro quo(ex)
  :( x = \$(esc(ex)); :(\$x + \$x) )
 end",
@@ -92,8 +92,8 @@ end
 # expression_generation_tests(stdout)
 #%%
 expression_interpolation_tests(io) = begin
-	init= "ex=:ey   #  Main.ex"*
-				"y=:p     #  Main.y"*
+	init= "ex=:ey   #  Main.ex\n"*
+				"y=:p     #  Main.y\n"*
 				"p=8      #  Main.p"
 	tests = [
 "macro sym(ex)

@@ -1,46 +1,8 @@
 ```julia
-q=:p
-p=7
+q=:p  # Main.q
+p=7   # Main.p
 ```
 <table>
-  <tr>
-    <td></td>
-    <td><code>@quo 2</code></td>
-    <td><code>@quo 2 + 2</code></td>
-    <td><code>@quo 2 + $(sin(1))</code></td>
-    <td><code>@quo 2 + $q</code></td>
-    <td><code>eval(@quo 2 + $q)</code></td>
-  </tr>
-  <tr>
-    <td><code>macro quo(ex)
- :( x = $(esc(ex)); :($x + $x) )
-end</code></td>
-    <td><code>:(2 + 2)</code></td>
-    <td><code>:(4 + 4)</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-  <tr>
-    <td><code>macro quo(ex)
- :( x = $(quot(ex)); :($x + $x) )
-end</code></td>
-    <td><code>:(2 + 2)</code></td>
-    <td><code>:((2 + 2) + (2 + 2))</code></td>
-    <td><code>:((2 + 0.8414709848078965) + (2 + 0.8414709848078965))</code></td>
-    <td><code>:((2 + p) + (2 + p))</code></td>
-    <td><code>20</code></td>
-  </tr>
-  <tr>
-    <td><code>macro quo(ex)
- :( x = $(QuoteNode(ex)); :($x + $x) )
-end</code></td>
-    <td><code>:(2 + 2)</code></td>
-    <td><code>:((2 + 2) + (2 + 2))</code></td>
-    <td><code>:((2 + $(Expr(:$, :(sin(1))))) + (2 + $(Expr(:$, :(sin(1))))))</code></td>
-    <td><code>:((2 + $(Expr(:$, :q))) + (2 + $(Expr(:$, :q))))</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
 </table>
 ```julia
 x=:p  # Main.x
@@ -91,7 +53,9 @@ p=8   # Main.p
   </tr>
 </table>
 ```julia
-ex=:ey   #  Main.exy=:p     #  Main.yp=8      #  Main.p
+ex=:ey   #  Main.ex
+y=:p     #  Main.y
+p=8      #  Main.p
 ```
 <table>
   <tr>
