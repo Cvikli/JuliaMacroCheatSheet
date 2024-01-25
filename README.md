@@ -136,25 +136,25 @@ p=8
     <td><code>@sym y</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); :(7); end</code></td>
+    <td><code>macro sym(ex); :($ex); end</code></td>
     <td><code>Main.y</code></td>
     <td><code>$Main.y</code></td>
     <td><code>p</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); :(:(7)); end</code></td>
+    <td><code>macro sym(ex); :(:($ex)); end</code></td>
     <td><code>Main.ex</code></td>
     <td><code>Main.ex</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); :(quot(7)); end</code></td>
+    <td><code>macro sym(ex); :(quot($ex)); end</code></td>
     <td><code>Main.quot(Main.y)</code></td>
     <td><code>Main.quot($Main.y)</code></td>
     <td><code>:p</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); :(QuoteNode(7)); end</code></td>
+    <td><code>macro sym(ex); :(QuoteNode($ex)); end</code></td>
     <td><code>Main.QuoteNode(Main.y)</code></td>
     <td><code>Main.QuoteNode($Main.y)</code></td>
     <td><code>:p</code></td>
