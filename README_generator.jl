@@ -19,3 +19,7 @@ if length(ll)>0
 	run(`git commit -m "autocommit"`)
 	run(`git push`)
 end
+
+#%%
+
+show(:lk)

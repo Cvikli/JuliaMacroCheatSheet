@@ -2,9 +2,9 @@
 Case - Basic:
 
 ```julia
-ex=ey  # Main.ex
-x=p    # Main.x
-p=7     # Main.p
+ex=nothing  # Main.ex
+x=nothing    # Main.x
+p=nothing     # Main.p
 ```
 <table>
   <tr>
@@ -84,8 +84,8 @@ end</code></td>
 Case - Value interpolation:
 
 ```julia
-q=p  # Main.q
-p=7   # Main.p
+q=nothing  # Main.q
+p=nothing   # Main.p
 ```
 <table>
   <tr>
@@ -131,8 +131,8 @@ end</code></td>
 Case - Expression generation:
 
 ```julia
-x=p   # Main.x
-p=7   # Main.p
+x=nothing   # Main.x
+p=nothing   # Main.p
 ```
 <table>
   <tr>

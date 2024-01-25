@@ -2,10 +2,10 @@
 using Base.Meta: quot, QuoteNode
 using MacroTools
 
-ex=:ey  # Main.ex
-x=:p    # Main.x
-q=:p    # Main.q
-y=:p    # Main.y
+ex=Symbol("ey")  # Main.ex
+x=Symbol("p")    # Main.x
+q=Symbol("p")    # Main.q
+y=Symbol("p")    # Main.y
 p=7     # Main.p
 
 
@@ -110,9 +110,9 @@ end
 #%%
 basic_tests(io) = begin
 	title = "Case - Basic:"
-	init  = "ex=$ex  # Main.ex\n"*
-					"x=$x    # Main.x\n"*
-					"p=$p     # Main.p"
+	init  = "ex=$(show(ex))  # Main.ex\n"*
+					"x=$(show(x))    # Main.x\n"*
+					"p=$(show(p))     # Main.p"
 	tests = [("macro fn(ex)
  ","
 end"),
@@ -147,8 +147,8 @@ basic_tests(stdout)
 #%%
 value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
-	init  = "q=$q  # Main.q\n"*
-	        "p=$p   # Main.p"
+	init  = "q=$(show(q))  # Main.q\n"*
+	        "p=$(show(p))   # Main.p"
 	tests = ["macro quo(ex)
  :( x = \$(esc(ex)); :(\$x + \$x) )
 end",
@@ -172,8 +172,8 @@ end
 
 expression_generation_tests(io) = begin
 	title = "Case - Expression generation:"
-	init  = "x=$x   # Main.x\n"*
-					"p=$p   # Main.p"
+	init  = "x=$(show(x))   # Main.x\n"*
+					"p=$(show(p))   # Main.p"
 	tests = [
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
