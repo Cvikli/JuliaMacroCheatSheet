@@ -2,9 +2,9 @@
 Case - Basic:
 
 ```julia
-ex=:ey  # Main.ex
-x=:p    # Main.x
-p=9     # Main.p
+ex=ey  # Main.ex
+x=p    # Main.x
+p=7     # Main.p
 ```
 <table>
   <tr>
@@ -60,10 +60,10 @@ end</code></td>
     <td><code>"ey"</code></td>
     <td><code>:ey</code></td>
     <td><code>:ey</code></td>
-    <td><code>1</code></td>
-    <td><code>1</code></td>
+    <td><code>:p</code></td>
+    <td><code>:p</code></td>
     <td><code>"x"</code></td>
-    <td><code>"1"</code></td>
+    <td><code>"p"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
@@ -74,17 +74,17 @@ end</code></td>
     <td><code>"ey"</code></td>
     <td><code>:ey</code></td>
     <td><code>:ey</code></td>
-    <td><code>1</code></td>
-    <td><code>1</code></td>
+    <td><code>:p</code></td>
+    <td><code>:p</code></td>
     <td><code>"x"</code></td>
-    <td><code>"1"</code></td>
+    <td><code>"p"</code></td>
   </tr>
 </table>
 
 Case - Value interpolation:
 
 ```julia
-q=:p  # Main.q
+q=p  # Main.q
 p=7   # Main.p
 ```
 <table>
@@ -114,7 +114,7 @@ end</code></td>
     <td><code>:((2 + 2) + (2 + 2))</code></td>
     <td><code>:((2 + 0.8414709848078965) + (2 + 0.8414709848078965))</code></td>
     <td><code>:((2 + p) + (2 + p))</code></td>
-    <td><code>20</code></td>
+    <td><code>18</code></td>
   </tr>
   <tr>
     <td><code>macro quo(ex)
@@ -131,8 +131,8 @@ end</code></td>
 Case - Expression generation:
 
 ```julia
-x=:p  # Main.x
-p=8   # Main.p
+x=p   # Main.x
+p=7   # Main.p
 ```
 <table>
   <tr>
@@ -144,47 +144,47 @@ p=8   # Main.p
   <tr>
     <td><code>macro sym(); :x; end</code></td>
     <td><code>:(Main.x)</code></td>
-    <td><code>1</code></td>
-    <td><code>1</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(x); end</code></td>
     <td><code>:(Main.x)</code></td>
-    <td><code>1</code></td>
-    <td><code>1</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
-    <td><code>1</code></td>
+    <td><code>:p</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); quot(x); end</code></td>
-    <td><code>1</code></td>
-    <td><code>1</code></td>
-    <td><code>1</code></td>
+    <td><code>:(:p)</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); quot(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
-    <td><code>1</code></td>
+    <td><code>:p</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); QuoteNode(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
-    <td><code>1</code></td>
+    <td><code>:p</code></td>
   </tr>
 </table>
 
 Case - Expression interpolation:
 
 ```julia
-ex=:ey   #  Main.ex
-y=:p     #  Main.y
-p=8      #  Main.p
+ex=ey   #  Main.ex
+y=p     #  Main.y
+p=7     #  Main.p
 ```
 <table>
   <tr>
@@ -202,7 +202,7 @@ end</code></td>
     <td><code>:(Main.y)</code></td>
     <td><code>:($(Expr(:$, :(Main.y))))</code></td>
     <td><code>:p</code></td>
-    <td><code>8</code></td>
+    <td><code>7</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -222,7 +222,7 @@ end</code></td>
     <td><code>:(Main.y)</code></td>
     <td><code>:($(Expr(:$, :(Main.y))))</code></td>
     <td><code>:p</code></td>
-    <td><code>8</code></td>
+    <td><code>7</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -232,7 +232,7 @@ end</code></td>
     <td><code>:(Main.y)</code></td>
     <td><code>:($(Expr(:$, :(Main.y))))</code></td>
     <td><code>:p</code></td>
-    <td><code>8</code></td>
+    <td><code>7</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -330,10 +330,10 @@ quote
 end
 end</code></td>
     <td><code>:(x + x)</code></td>
-    <td><code>2</code></td>
-    <td><code>2</code></td>
+    <td><code>MethodError: +(:p, :p)</code></td>
+    <td><code>MethodError: +(:p, :p)</code></td>
     <td><code>:(x / 2 + x)</code></td>
-    <td><code>1.5</code></td>
+    <td><code>MethodError: /(:p, 2)</code></td>
     <td><code>:(1 / 2 + 1 / 4)</code></td>
     <td><code>0.75</code></td>
     <td><code>:(1 + 1)</code></td>
@@ -349,16 +349,16 @@ quote
  end
 end</code></td>
     <td><code>:(x + x)</code></td>
-    <td><code>2</code></td>
-    <td><code>2</code></td>
+    <td><code>MethodError: +(:p, :p)</code></td>
+    <td><code>MethodError: +(:p, :p)</code></td>
     <td><code>:(x / 2 + x)</code></td>
-    <td><code>1.5</code></td>
+    <td><code>MethodError: /(:p, 2)</code></td>
     <td><code>:(1 / 2 + 1 / 4)</code></td>
     <td><code>0.75</code></td>
-    <td><code>:(1 + 1)</code></td>
-    <td><code>3</code></td>
-    <td><code>:(1 / 2 + 1)</code></td>
-    <td><code>1.5</code></td>
+    <td><code>:(p + p)</code></td>
+    <td><code>15</code></td>
+    <td><code>:(p / 2 + p)</code></td>
+    <td><code>10.5</code></td>
   </tr>
   <tr>
     <td><code>macro ip(ex, l, r)

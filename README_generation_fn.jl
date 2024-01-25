@@ -2,6 +2,13 @@
 using Base.Meta: quot, QuoteNode
 using MacroTools
 
+ex=:ey  # Main.ex
+x=:p    # Main.x
+q=:p    # Main.q
+y=:p    # Main.y
+p=7     # Main.p
+
+
 gen_all_cases(io,title, init, tests, cases) = begin
 	println(io,'\n',title,'\n')
 	!isempty(init) && println(io,"""```julia
@@ -66,7 +73,7 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 	end
 	println(io,"  </tr>")
 
-	eval(init)
+	@edit eval(init)
 	for (outer_space_first,outer_space_last) in tests
 		println(io,"  <tr>")
 		print(io,"    <td><code>"); print(io,outer_space_first,"...",outer_space_last);  println(io,"</code></td>"); 
@@ -103,9 +110,9 @@ end
 #%%
 basic_tests(io) = begin
 	title = "Case - Basic:"
-	init  = "ex=:ey  # Main.ex\n"*
-					"x=:p    # Main.x\n"*
-					"p=9     # Main.p"
+	init  = "ex=$ex  # Main.ex\n"*
+					"x=$x    # Main.x\n"*
+					"p=$p     # Main.p"
 	tests = [("macro fn(ex)
  ","
 end"),
@@ -140,8 +147,8 @@ basic_tests(stdout)
 #%%
 value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
-	init  = "q=:p  # Main.q\n"*
-	        "p=7   # Main.p"
+	init  = "q=$q  # Main.q\n"*
+	        "p=$p   # Main.p"
 	tests = ["macro quo(ex)
  :( x = \$(esc(ex)); :(\$x + \$x) )
 end",
@@ -165,8 +172,8 @@ end
 
 expression_generation_tests(io) = begin
 	title = "Case - Expression generation:"
-	init  = "x=:p  # Main.x\n"*
-					"p=8   # Main.p"
+	init  = "x=$x   # Main.x\n"*
+					"p=$p   # Main.p"
 	tests = [
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
@@ -186,9 +193,9 @@ end
 #%%
 expression_interpolation_tests(io) = begin
 	title = "Case - Expression interpolation:"
-	init= "ex=:ey   #  Main.ex\n"*
-				"y=:p     #  Main.y\n"*
-				"p=8      #  Main.p"
+	init= "ex=$ex   #  Main.ex\n"*
+				"y=$y     #  Main.y\n"*
+				"p=$p     #  Main.p"
 	tests = [
 "macro sym(ex)
  ex
