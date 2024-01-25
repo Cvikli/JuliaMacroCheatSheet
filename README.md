@@ -11,6 +11,7 @@ p=9     # Main.p
     <td>@fn x</td>
     <td><code>string(ex)</code></td>
     <td><code>:ey</code></td>
+    <td><code>:(ey)</code></td>
     <td><code>string($(ex))</code></td>
     <td><code>string($(esc(ex)))</code></td>
     <td><code>string($(string(ex)))</code></td>
@@ -20,6 +21,7 @@ p=9     # Main.p
  ...
 end</code></td>
     <td><code>x</code></td>
+    <td><code>UndefVarError(:ey)</code></td>
     <td><code>UndefVarError(:ey)</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -31,6 +33,7 @@ end</code></td>
 end</code></td>
     <td><code>x</code></td>
     <td><code>ey</code></td>
+    <td><code>ey</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -41,6 +44,7 @@ end</code></td>
 end</code></td>
     <td><code>x</code></td>
     <td><code>ey</code></td>
+    <td><code>ey</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -49,6 +53,7 @@ end</code></td>
     <td><code>macro fn(ex)
  :(...)
 end</code></td>
+    <td><code>ey</code></td>
     <td><code>ey</code></td>
     <td><code>ey</code></td>
     <td><code>1</code></td>
@@ -61,6 +66,7 @@ end</code></td>
   ...
  end
 end</code></td>
+    <td><code>ey</code></td>
     <td><code>ey</code></td>
     <td><code>ey</code></td>
     <td><code>1</code></td>

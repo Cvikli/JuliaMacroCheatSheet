@@ -132,6 +132,7 @@ end"),
 	cases = [
 		"string(ex)",
 		":ey",
+		":(ey)",
 		"string(\$(ex))",
 		"string(\$(esc(ex)))",
 		"string(\$(string(ex)))",
@@ -139,7 +140,7 @@ end"),
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)
 end
-# basic_tests(stdout)
+basic_tests(stdout)
 #%%
 value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
