@@ -112,7 +112,7 @@ basic_tests(io) = begin
 	title = "Case - Basic:"
 	init  = "ex=:$(ex)   # Main.ex\n"*
 					"x=:$(x)     # Main.x\n"*
-					"p=$(p)     # Main.p"
+					"p=$(p)      # Main.p"
 	tests = [("macro fn(ex)
  ","
 end"),
@@ -135,10 +135,10 @@ end"),
 		"string(ex)",
 		":ey",
 		":(ey)",
-		"(\$(ex))",
-		"(\$(esc(ex)))",
-		"(\$(string(ex)))",
-		"((string(\$ex)))",
+		"\$(ex)",
+		"\$(esc(ex))",
+		"\$(string(ex))",
+		"string(\$ex)",
 	]
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)

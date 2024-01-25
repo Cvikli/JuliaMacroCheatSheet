@@ -4,7 +4,7 @@ Case - Basic:
 ```julia
 ex=:ey   # Main.ex
 x=:p     # Main.x
-p=7     # Main.p
+p=7      # Main.p
 ```
 <table>
   <tr>
@@ -12,10 +12,10 @@ p=7     # Main.p
     <td><code>string(ex)</code></td>
     <td><code>:ey</code></td>
     <td><code>:(ey)</code></td>
-    <td><code>($(ex))</code></td>
-    <td><code>($(esc(ex)))</code></td>
-    <td><code>($(string(ex)))</code></td>
-    <td><code>((string($ex)))</code></td>
+    <td><code>$(ex)</code></td>
+    <td><code>$(esc(ex))</code></td>
+    <td><code>$(string(ex))</code></td>
+    <td><code>string($ex)</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
