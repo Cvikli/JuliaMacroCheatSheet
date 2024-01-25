@@ -5,8 +5,8 @@ using MacroTools
 ex=Symbol("ey")  # Main.ex
 ey=Symbol("ez")  # Main.ex
 x=Symbol("p")    # Main.x
-q=Symbol("p")    # Main.q
 y=Symbol("p")    # Main.y
+q=Symbol("p")    # Main.q
 p=7     # Main.p
 
 
@@ -184,6 +184,7 @@ basic_expression_generation_tests(io) = begin
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
 		"macro sym(); :(\$x); end",
+		"macro sym(); :(\$(esc(x))); end",
 		"macro sym(); quot(x); end",
 		"macro sym(); quot(:x); end",
 		"macro sym(); QuoteNode(:x); end",

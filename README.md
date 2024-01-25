@@ -44,6 +44,13 @@ p=7   # Main.p
     <td><code>7</code></td>
   </tr>
   <tr>
+    <td><code>macro sym(); :($(esc(x))); end</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
     <td><code>macro sym(); quot(x); end</code></td>
     <td><code>:(:p)</code></td>
     <td><code>:p</code></td>
