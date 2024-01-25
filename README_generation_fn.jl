@@ -19,7 +19,7 @@ gen_all_cases(io,init, tests, cases) = begin
 		eval(Meta.parse(mac))
 		for case in cases
 			print(io,"    <td><code>"); 
-			try	show(TextDisplay(stdout).io, MIME"text/plain"(),
+			try	show(TextDisplay(io).io, MIME"text/plain"(),
 				# replace("$(
 				eval(Meta.parse(case))
 				# )",
@@ -68,7 +68,7 @@ cases = [
 ]
 	gen_all_cases(io,init,tests,cases)
 end
-# value_interpolation_tests(stdout)
+value_interpolation_tests(stdout)
 #%%
 
 expression_generation_tests(io) = begin
