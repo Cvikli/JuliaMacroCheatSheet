@@ -15,6 +15,7 @@ Calling function or macro behavior can be different: `fn(var) or @fn var`
 Note: Linenumbers are removed from the CheatSheet!
 All test has included: `using Base.Meta: quot, QuoteNode`
 
+Big mistakes: $QuoteNode(...) instead of $(QuoteNode(...)) 
 
 Case - variable in Main module:
 ```julia
@@ -190,18 +191,11 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); :($QuoteNode(ex)); end</code></td>
-    <td><code>(QuoteNode)(Main.ex)</code></td>
-    <td><code>(QuoteNode)(Main.ex)</code></td>
-    <td><code>:ey</code></td>
-    <td><code>:ey</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(ex); :($QuoteNode($ex)); end</code></td>
-    <td><code>(QuoteNode)(Main.y)</code></td>
-    <td><code>(QuoteNode)($Main.y)</code></td>
-    <td><code>:p</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
+    <td><code>macro sym(ex); :($(QuoteNode(ex))); end</code></td>
+    <td><code>:y</code></td>
+    <td><code>$(QuoteNode(:($(Expr(:$, :y)))))</code></td>
+    <td><code>y</code></td>
+    <td><code>$y</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex); quote (QuoteNode($ex)); end; end</code></td>
@@ -215,26 +209,15 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); quote ($QuoteNode(ex)); end; end</code></td>
+    <td><code>macro sym(ex); quote ($(QuoteNode(ex))); end; end</code></td>
     <td><code>begin
-  (QuoteNode)(Main.ex)
+  :y
 end</code></td>
     <td><code>begin
-  (QuoteNode)(Main.ex)
+  $(QuoteNode(:($(Expr(:$, :y)))))
 end</code></td>
-    <td><code>:ey</code></td>
-    <td><code>:ey</code></td>
-  </tr>
-  <tr>
-    <td><code>macro sym(ex); quote ($QuoteNode($ex)); end; end</code></td>
-    <td><code>begin
-  (QuoteNode)(Main.y)
-end</code></td>
-    <td><code>begin
-  (QuoteNode)($Main.y)
-end</code></td>
-    <td><code>:p</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
+    <td><code>y</code></td>
+    <td><code>$y</code></td>
   </tr>
 </table>
 
