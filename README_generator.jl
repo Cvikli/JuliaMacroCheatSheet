@@ -1,6 +1,7 @@
 include("README_generation_fn.jl")
 
 isdir("./JuliaMacroCheatSheet") && cd("./JuliaMacroCheatSheet")
+println(pwd())
 
 open("README.md", "w") do file
 	basic_tests(file)

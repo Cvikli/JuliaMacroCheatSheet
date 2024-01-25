@@ -114,21 +114,21 @@ basic_tests(io) = begin
 					"x=:$(x)     # Main.x\n"*
 					"p=$(p)      # Main.p"
 	tests = [("macro fn(ex)
- ","
+ ","
 end"),
 ("macro fn(ex)
- quot(",")
+ quot(",")
 end"),
 ("macro fn(ex)
- QuoteNode(",")
+ QuoteNode(",")
 end"),
 ("macro fn(ex)
- :(",")
+ :(",")
 end"),
 ("macro fn(ex)
- quote
-  ","
- end
+ quote
+  ","
+ end
 end"),
 ]
 	cases = [
