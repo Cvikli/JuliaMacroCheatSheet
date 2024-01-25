@@ -131,6 +131,7 @@ end"),
 		"(\$(ex))",
 		"(\$(esc(ex)))",
 		"(\$(string(ex)))",
+		"((string(\$ex)))",
 	]
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)
