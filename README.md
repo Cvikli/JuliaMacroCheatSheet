@@ -156,6 +156,13 @@ end</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
+    <td><code>macro fn(ex); :($(esc(ex))); end</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
     Main.x
@@ -165,13 +172,6 @@ end</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex); string(ex); end</code></td>
-    <td><code>"x"</code></td>
-    <td><code>"x"</code></td>
-    <td><code>"x"</code></td>
-    <td><code>"x"</code></td>
-  </tr>
-  <tr>
     <td><code>macro fn(ex); :(string(ex)); end</code></td>
     <td><code>:(Main.string(Main.ex))</code></td>
     <td><code>"ey"</code></td>
@@ -179,18 +179,18 @@ end</code></td>
     <td><code>"ey"</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex); :(string(esc($ex))); end</code></td>
-    <td><code>:(Main.string(Main.esc(Main.x)))</code></td>
-    <td><code>"\$(Expr(:escape, :p))"</code></td>
-    <td><code>"\$(Expr(:escape, :p))"</code></td>
-    <td><code>"\$(Expr(:escape, :p))"</code></td>
-  </tr>
-  <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
     <td><code>:(Main.string(Main.x))</code></td>
     <td><code>"p"</code></td>
     <td><code>"p"</code></td>
     <td><code>"p"</code></td>
+  </tr>
+  <tr>
+    <td><code>macro fn(ex); string(ex); end</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(string(ex))); end</code></td>

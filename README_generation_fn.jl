@@ -218,12 +218,13 @@ medium_expression_generation_tests(io) = begin
 		# "macro sym(ex); quot(\$ex); end",
 		# "macro sym(ex); QuoteNode(\$ex); end",
 		"macro fn(ex); :(\$ex); end",
+		"macro fn(ex); :(\$(esc(ex))); end",
 		"macro fn(ex); quote; \$ex; end end",
-		"macro fn(ex); string(ex); end",
 		"macro fn(ex); :(string(ex)); end",
-		"macro fn(ex); :(string(esc(\$ex))); end",
 		"macro fn(ex); :(string(\$ex)); end",
+		"macro fn(ex); string(ex); end",
 		"macro fn(ex); :(\$(string(ex))); end",
+		# "macro fn(ex); :(string(esc(\$ex))); end",
 		]
 	cases = [
 		"@macroexpand(@fn x)",
