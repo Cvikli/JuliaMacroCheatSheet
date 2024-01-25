@@ -139,7 +139,7 @@ end"),
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)
 end
-basic_tests(stdout)
+# basic_tests(stdout)
 #%%
 value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
@@ -299,4 +299,4 @@ end",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-advanced_expression_interpolation_tests(stdout)
+# advanced_expression_interpolation_tests(stdout)
