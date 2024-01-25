@@ -178,7 +178,7 @@ end
 expression_generation_tests(io) = begin
 	title = "Case - Expression generation:"
 	init  = "x=:$(x)   # Main.x\n"*
-					"p=:$(p)   # Main.p"
+					"p=$(p)   # Main.p"
 	tests = [
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
@@ -192,6 +192,7 @@ expression_generation_tests(io) = begin
 		"@macroexpand(@sym)",
 		"@sym",
 		"eval(@sym)",
+		"eval(eval(@sym))",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end

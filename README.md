@@ -156,7 +156,7 @@ Case - Expression generation:
 
 ```julia
 x=:p   # Main.x
-p=:7   # Main.p
+p=7   # Main.p
 ```
 <table>
   <tr>
@@ -164,11 +164,13 @@ p=:7   # Main.p
     <td><code>@macroexpand(@sym)</code></td>
     <td><code>@sym</code></td>
     <td><code>eval(@sym)</code></td>
+    <td><code>eval(eval(@sym))</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :x; end</code></td>
     <td><code>:(Main.x)</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
@@ -176,11 +178,13 @@ p=:7   # Main.p
     <td><code>:(Main.x)</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); quot(x); end</code></td>
     <td><code>:(:p)</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
@@ -188,18 +192,21 @@ p=:7   # Main.p
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); QuoteNode(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(:x); end</code></td>
     <td><code>:(:x)</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); quote; :x; end end</code></td>
@@ -208,6 +215,7 @@ p=:7   # Main.p
 end</code></td>
     <td><code>:x</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
   </tr>
 </table>
 
