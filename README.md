@@ -13,6 +13,8 @@ Calling function or macro behavior can be different: `fn(var) or @fn var`
 
 
 Note: Linenumbers are removed from the CheatSheet!
+All test has included: `using Base.Meta: quot, QuoteNode`
+
 
 Case - variable in Main module:
 ```julia
@@ -101,19 +103,19 @@ x=:p
     <td><code>p</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); Meta.quot(x); end</code></td>
+    <td><code>macro sym(); quot(x); end</code></td>
     <td><code>:p</code></td>
     <td><code>p</code></td>
     <td><code>8</code></td>
   </tr>
   <tr>
-  <td><code>macro sym(); Meta.quot(:x); end</code></td>
+  <td><code>macro sym(); quot(:x); end</code></td>
     <td><code>:x</code></td>
     <td><code>x</code></td>
     <td><code>p</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); Meta.QuoteNode(:x); end</code></td>
+    <td><code>macro sym(); QuoteNode(:x); end</code></td>
     <td><code>:x</code></td>
     <td><code>x</code></td>
     <td><code>p</code></td>
@@ -130,7 +132,7 @@ p=8
   <tr>
     <td></td>
     <td><code>@macroexpand(@sym y)</code></td>
-    <td><code>@macroexpand(@sym p)</code></td>
+    <td><code>@macroexpand(@sym $y)</code></td>
     <td><code>@sym y</code></td>
   </tr>
   <tr>
