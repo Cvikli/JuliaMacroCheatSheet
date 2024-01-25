@@ -115,13 +115,13 @@ basic_tests(io) = begin
  ","
 end"),
 ("macro fn(ex)
- :(",")
-end"),
-("macro fn(ex)
  quot(",")
 end"),
 ("macro fn(ex)
  QuoteNode(",")
+end"),
+("macro fn(ex)
+ :(",")
 end"),
 ("macro fn(ex)
  quote

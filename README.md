@@ -27,16 +27,6 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
- :(...)
-end</code></td>
-    <td><code>ey</code></td>
-    <td><code>ey</code></td>
-    <td><code>1</code></td>
-    <td><code>1</code></td>
-    <td><code>x</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
  quot(...)
 end</code></td>
     <td><code>x</code></td>
@@ -54,6 +44,16 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro fn(ex)
+ :(...)
+end</code></td>
+    <td><code>ey</code></td>
+    <td><code>ey</code></td>
+    <td><code>1</code></td>
+    <td><code>1</code></td>
+    <td><code>x</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex)
