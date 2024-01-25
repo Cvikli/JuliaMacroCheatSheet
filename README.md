@@ -98,17 +98,17 @@ p=7     # Main.p
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex); quote; $ex; end end</code></td>
-    <td><code>quote
-    Main.x
-end</code></td>
+    <td><code>macro fn(ex); :($ex); end</code></td>
+    <td><code>:(Main.x)</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(Main.x)</code></td>
+    <td><code>macro fn(ex); quote; $ex; end end</code></td>
+    <td><code>quote
+    Main.x
+end</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
@@ -130,6 +130,20 @@ end</code></td>
     <td><code>7</code></td>
   </tr>
   <tr>
+    <td><code>macro fn(ex); quot(ex); end</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro fn(ex); QuoteNode(ex); end</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:x</code></td>
+    <td><code>:p</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
     <td><code>macro fn(ex); :ex; end</code></td>
     <td><code>:(Main.ex)</code></td>
     <td><code>:ey</code></td>
@@ -144,13 +158,6 @@ end</code></td>
     <td><code>UndefVarError(:ez)</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex); :(:ex); end</code></td>
-    <td><code>:(:ex)</code></td>
-    <td><code>:ex</code></td>
-    <td><code>:ey</code></td>
-    <td><code>:ez</code></td>
-  </tr>
-  <tr>
     <td><code>macro fn(ex); :($(:ex)); end</code></td>
     <td><code>:(Main.ex)</code></td>
     <td><code>:ey</code></td>
@@ -158,11 +165,11 @@ end</code></td>
     <td><code>UndefVarError(:ez)</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex); quot(ex); end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
+    <td><code>macro fn(ex); :(:ex); end</code></td>
+    <td><code>:(:ex)</code></td>
+    <td><code>:ex</code></td>
+    <td><code>:ey</code></td>
+    <td><code>:ez</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); quot(:ex); end</code></td>
@@ -170,13 +177,6 @@ end</code></td>
     <td><code>:ex</code></td>
     <td><code>:ey</code></td>
     <td><code>:ez</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex); QuoteNode(ex); end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); QuoteNode(:ex); end</code></td>
