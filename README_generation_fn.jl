@@ -59,7 +59,7 @@ gen_all_cases_internal(io,title, init, tests, cases, call) = begin
 	```""")
 	println(io,"<table>")
 	println(io,"  <tr>")
-	println(io,"    <td></td>")
+	println(io,"    <td>$(call)</td>")
 	for case in cases
 		println(io,"    <td><code>",case,"</code></td>")
 	end

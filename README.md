@@ -8,7 +8,7 @@ p=9     # Main.p
 ```
 <table>
   <tr>
-    <td></td>
+    <td>@fn x</td>
     <td><code>string(ex)</code></td>
     <td><code>string($(ex))</code></td>
     <td><code>string($(esc(ex)))</code></td>
