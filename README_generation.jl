@@ -396,6 +396,7 @@ end; end",
 		"@macroexpand(@sym y)",
 		"@macroexpand(@sym \$y)",
 		"@sym y",
+		"eval(@sym y)",
 		"@sym \$y",
 	]
 		
@@ -416,7 +417,20 @@ end; end",
 			try	print(replace("$(eval(Meta.parse(case)))",
 				"    #= none:1 =#\n"=>"", 
 				"    #= none:2 =#\n"=>"", 
-				"    "=>"  ")); catch e; print(e.msg); end
+				"    "=>"  ")); 
+			catch e
+				if isa(e,UndefVarError)
+					print(e)
+				elseif isa(e,ErrorException)
+					print(e.msg)
+				else
+					println()
+					print(e)
+					print(typeof(e))
+					print(fieldnames(typeof(e)))
+					@assert false ""
+				end
+			end
 			println("</code></td>"); 
 		end
 		println("  </tr>")

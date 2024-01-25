@@ -189,6 +189,7 @@ p=8
     <td><code>@macroexpand(@sym y)</code></td>
     <td><code>@macroexpand(@sym $y)</code></td>
     <td><code>@sym y</code></td>
+    <td><code>eval(@sym y)</code></td>
     <td><code>@sym $y</code></td>
   </tr>
   <tr>
@@ -198,6 +199,7 @@ end</code></td>
     <td><code>Main.y</code></td>
     <td><code>$Main.y</code></td>
     <td><code>p</code></td>
+    <td><code>8</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -207,6 +209,7 @@ end</code></td>
     <td><code>Main.ex</code></td>
     <td><code>Main.ex</code></td>
     <td><code>ey</code></td>
+    <td><code>UndefVarError(:ey)</code></td>
     <td><code>ey</code></td>
   </tr>
   <tr>
@@ -216,6 +219,7 @@ end</code></td>
     <td><code>Main.y</code></td>
     <td><code>$Main.y</code></td>
     <td><code>p</code></td>
+    <td><code>8</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -225,6 +229,7 @@ end</code></td>
     <td><code>Main.y</code></td>
     <td><code>$Main.y</code></td>
     <td><code>p</code></td>
+    <td><code>8</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -234,6 +239,7 @@ end</code></td>
     <td><code>Main.quot(Main.y)</code></td>
     <td><code>Main.quot($Main.y)</code></td>
     <td><code>:p</code></td>
+    <td><code>p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -243,6 +249,7 @@ end</code></td>
     <td><code>:y</code></td>
     <td><code>$(QuoteNode(:($(Expr(:$, :y)))))</code></td>
     <td><code>y</code></td>
+    <td><code>p</code></td>
     <td><code>$y</code></td>
   </tr>
   <tr>
@@ -252,6 +259,7 @@ end</code></td>
     <td><code>Main.QuoteNode(Main.y)</code></td>
     <td><code>Main.QuoteNode($Main.y)</code></td>
     <td><code>:p</code></td>
+    <td><code>p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -261,6 +269,7 @@ end</code></td>
     <td><code>:y</code></td>
     <td><code>$(QuoteNode(:($(Expr(:$, :y)))))</code></td>
     <td><code>y</code></td>
+    <td><code>p</code></td>
     <td><code>$y</code></td>
   </tr>
   <tr>
@@ -274,6 +283,7 @@ end</code></td>
   Main.QuoteNode($Main.y)
 end</code></td>
     <td><code>:p</code></td>
+    <td><code>p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
@@ -287,6 +297,7 @@ end</code></td>
   $(QuoteNode(:($(Expr(:$, :y)))))
 end</code></td>
     <td><code>y</code></td>
+    <td><code>p</code></td>
     <td><code>$y</code></td>
   </tr>
 </table>
