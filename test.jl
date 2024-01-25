@@ -171,7 +171,7 @@ end
 ww
 #%%
 macro mysym(); :x; end
-macro mysym2(); Meta.quot(:x); end
+macro mysym2(); quot(:x); end
 
 
 #%%
@@ -203,7 +203,7 @@ end
 
 #%%
 macro quo(arg)
-	:( x = $(Meta.quot(arg)); :($x + $x) )
+	:( x = $(quot(arg)); :($x + $x) )
 end
 
 #%%
@@ -232,45 +232,175 @@ end
 
 
 
+#%%
+
+using Base.Meta: quot, QuoteNode
 
 #%%
-macro ip(expr, left, right)
+p=8
+x=:p
+println("<table>")
+println("  <tr>
+    <td></td>
+    <td><code>@macroexpand(@sym)</code></td>
+    <td><code>@sym</code></td>
+    <td><code>eval(@sym)</code></td>
+  </tr>")
+println("  <tr>")
+macro sym(); :x; end
+println("    <td><code>","macro sym(); :x; end","</code></td>")
+print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>")
+print("    <td><code>"); print(@sym); println("</code></td>")
+print("    <td><code>"); print(eval(@sym)); println("</code></td>")
+println("  </tr>
+  <tr>")
+macro sym(); :(x); end
+println("    <td><code>","macro sym(); :(x); end","</code></td>")
+print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
+print("    <td><code>"); print(@sym); println("</code></td>"); 
+print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
+println("  </tr>
+  <tr>")
+macro sym(); :(:x); end
+println("    <td><code>","macro sym(); :(:x); end","</code></td>")
+print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
+print("    <td><code>"); print(@sym); println("</code></td>"); 
+print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
+println("  </tr>
+  <tr>")
+macro sym(); quot(x); end
+println("    <td><code>","macro sym(); quot(x); end","</code></td>")
+print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
+print("    <td><code>"); print(@sym); println("</code></td>"); 
+print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
+println("  </tr>
+  <tr>")
+macro sym(); quot(:x); end
+println("  <td><code>","macro sym(); quot(:x); end","</code></td>")
+print("    <td><code>"); print(@macroexpand(@sym)); println("</code></td>"); 
+print("    <td><code>"); print(@sym); println("</code></td>"); 
+print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
+println("  </tr>
+  <tr>")
+macro sym(); QuoteNode(:x); end
+println("    <td><code>","macro sym(); QuoteNode(:x); end","</code></td>")
+print("    <td><code>"); print(@macroexpand((@sym))); println("</code></td>"); 
+print("    <td><code>"); print(@sym); println("</code></td>"); 
+print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
+println("  </tr>")
+println("</table>")
+#%%
+ex=7
+y=:p
+p=8
+println("<table>")
+println("  <tr>
+    <td></td>
+    <td><code>@macroexpand(@sym y)</code></td>
+    <td><code>@macroexpand(@sym \$y)</code></td>
+    <td><code>@sym y</code></td>
+  </tr>")
+println("  <tr>")
+macro sym(ex); :($ex); end
+print("    <td><code>"); print("macro sym(ex); :(\$ex); end"); println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand(@sym y)); println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand(@sym $y)); println("</code></td>"); 
+print("    <td><code>"); print(@sym y); println("</code></td>"); 
+# print("    <td><code>"); print(@sym $y); println("</code></td>"); 
+println("  </tr>
+  <tr>")
+macro sym(ex); :(:($ex)); end
+print("    <td><code>"); print("macro sym(ex); :(:(\$ex)); end");  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
+print("    <td><code>"); print(@sym y);  println("</code></td>"); 
+# print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
+println("  </tr>
+  <tr>")
+macro sym(ex); :(quot($ex)); end
+print("    <td><code>"); print("macro sym(ex) 
+  :(quot(\$ex))
+end");  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
+print("    <td><code>"); print(@sym y);  println("</code></td>"); 
+# print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
+println("  </tr>
+  <tr>")
+macro sym(ex); :(QuoteNode($ex)); end
+print("    <td><code>"); print("macro sym(ex)
+  :(QuoteNode(\$ex))
+end");  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
+print("    <td><code>"); print(@sym y);  println("</code></td>"); 
+# print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
+println("  </tr>")
+println("</table>")
+#%%
+macro ip(ex, l, r)
 	quote
-		Meta.quot($expr)
-		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
+		($ex)
+		((($l)) + (($r)))
+	end
+end
+macro ip(l, r)
+	# :($(quot(l)) + $(quot(r)))
+	:((quot($l)) + (quot($r)))
+end
+macro ip3(ex, l, r)
+	quote
+		quot($ex)
+		:($$(quot(l)) + $$(quot(r)))
+	end
+end
+y=1
+display(@macroexpand @ip $y $y)
+display(@ip $y $y)
+display(eval(@ip $y $y))
+display(@ip x=3 x x)
+display(@ip3 x=1 $x $x)
+display(eval(@ip3 x=1 $x $x))
+
+
+#%%
+macro ip(ex, l, r)
+	quote
+		quot($ex)
+		:($$(quot(l)) + $$(quot(r)))
 	end
 end
 #%%
-macro ip(expr, left, right)
+macro ip(ex, l, r)
 	quote
-		$(Meta.quot(expr))
-		:($$(Meta.quot(left)) + $$(Meta.quot(right)))
+		$(quot(ex))
+		:($$(quot(l)) + $$(quot(r)))
 	end
 end
 #%%
-macro ip(expr, left, right)
+macro ip(ex, l, r)
 	quote
 		quote
-			$$(Meta.quot(expr))
-			:($$$(Meta.quot(left)) + $$$(Meta.quot(right)))
+			$$(quot(ex))
+			:($$$(quot(l)) + $$$(quot(r)))
 		end
 	end
 end
 #%%
-macro ip(expr, left, right)
+macro ip(ex, l, r)
 	quote
 		quote
-			$$(Meta.quot(expr))
-			:($$(Meta.quot($(Meta.quot(left)))) + $$(Meta.quot($(Meta.quot(right)))))
+			$$(quot(ex))
+			:($$(quot($(quot(l)))) + $$(quot($(quot(r)))))
 		end
 	end
 end
 #%%
-macro ip(expr, left, right)
+macro ip(ex, l, r)
 	quote
 		quote
-			$$(Meta.quot(expr))
-			:($$(Meta.quot($(QuoteNode(left)))) + $$(Meta.quot($(QuoteNode(right)))))
+			$$(quot(ex))
+			:($$(quot($(QuoteNode(l)))) + $$(quot($(QuoteNode(r)))))
 		end
 	end
 end
@@ -280,19 +410,19 @@ macro qq(out)
 end
 col=1
 @show "EFEEFEFE"
-# display(@interpolate x=1 x x)
-# display(eval(@interpolate x=1 x x))
-# display(eval(eval(@interpolate x=1 x x)))
-# display(@interpolate x=1 x/2 x)
-# display(eval(@interpolate x=1 x/2 x))
-# display(@interpolate x=1 1/2 1/4)
-# display(eval(@interpolate x=1 1/2 1/4))
-display(@interpolate x=1 $x $x)
-display(eval(@interpolate x=1 $x $x))
-display(@interpolate x=1 1+$x $x)
-display(eval(@interpolate x=1 1+$x $x))
-display(@interpolate x=1 $x/2 $x)
-display(eval(@interpolate x=1 $x/2 $x))
+# display(@ip x=1 x x)
+# display(eval(@ip x=1 x x))
+# display(eval(eval(@ip x=1 x x)))
+# display(@ip x=1 x/2 x)
+# display(eval(@ip x=1 x/2 x))
+# display(@ip x=1 1/2 1/4)
+# display(eval(@ip x=1 1/2 1/4))
+display(@ip x=1 $x $x)
+display(eval(@ip x=1 $x $x))
+display(@ip x=1 1+$x $x)
+display(eval(@ip x=1 1+$x $x))
+display(@ip x=1 $x/2 $x)
+display(eval(@ip x=1 $x/2 $x))
 #%%
 #%%
 #%%
