@@ -357,14 +357,37 @@ macro literal(s)
 end
 println("<table>")
 fn() = begin
-	tests = [
-		"macro sym(ex); QuoteNode(ex); end",
-		"macro sym(ex); :(QuoteNode(\$ex)); end",
-		"macro sym(ex); :(\$QuoteNode(ex)); end",
-		"macro sym(ex); :(\$QuoteNode(\$ex)); end",
-		"macro sym(ex); quote (QuoteNode(\$ex)); end; end",
-		"macro sym(ex); quote (\$QuoteNode(ex)); end; end",
-		"macro sym(ex); quote (\$QuoteNode(\$ex)); end; end",
+	ex=:ey
+y=:p
+p=8
+tests = [
+"macro sym(ex)
+ ex
+end",
+"macro sym(ex)
+ QuoteNode(ex)
+end",
+"macro sym(ex)
+ :(\$ex)
+end",
+"macro sym(ex)
+ :(\$:(\$ex))
+end",
+"macro sym(ex)
+ :(quot(\$ex))
+end",
+"macro sym(ex)
+ :(QuoteNode(\$ex))
+end",
+"macro sym(ex)
+ :(\$(QuoteNode(ex)))
+end",
+"macro sym(ex); quote 
+ QuoteNode(\$ex)
+end; end",
+"macro sym(ex); quote
+ \$(QuoteNode(ex))
+end; end",
 		]
 	cases = [
 		"@macroexpand(@sym y)",
@@ -387,7 +410,10 @@ fn() = begin
 		print("    <td><code>"); print(mac);  println("</code></td>"); 
 		for case = cases
 			print("    <td><code>"); 
-			try	print(eval(Meta.parse(case))); catch e; print(e.msg); end
+			try	print(replace("$(eval(Meta.parse(case)))",
+				"    #= none:1 =#\n"=>"", 
+				"    #= none:2 =#\n"=>"", 
+				"    "=>"  ")); catch e; print(e.msg); end
 			println("</code></td>"); 
 		end
 		# print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 

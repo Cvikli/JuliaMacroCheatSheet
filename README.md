@@ -178,6 +178,15 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
+ ex
+end</code></td>
+    <td><code>Main.y</code></td>
+    <td><code>$Main.y</code></td>
+    <td><code>p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex)
  QuoteNode(ex)
 end</code></td>
     <td><code>:y</code></td>
@@ -187,7 +196,34 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
- :(QuoteNode($ex)); 
+ :($ex)
+end</code></td>
+    <td><code>Main.y</code></td>
+    <td><code>$Main.y</code></td>
+    <td><code>p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex)
+ :($:($ex))
+end</code></td>
+    <td><code>Main.y</code></td>
+    <td><code>$Main.y</code></td>
+    <td><code>p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex)
+ :(quot($ex))
+end</code></td>
+    <td><code>Main.quot(Main.y)</code></td>
+    <td><code>Main.quot($Main.y)</code></td>
+    <td><code>:p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex)
+ :(QuoteNode($ex))
 end</code></td>
     <td><code>Main.QuoteNode(Main.y)</code></td>
     <td><code>Main.QuoteNode($Main.y)</code></td>
@@ -195,7 +231,7 @@ end</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); 
+    <td><code>macro sym(ex)
  :($(QuoteNode(ex)))
 end</code></td>
     <td><code>:y</code></td>
@@ -208,26 +244,22 @@ end</code></td>
  QuoteNode($ex)
 end; end</code></td>
     <td><code>begin
-  #= none:2 =#
   Main.QuoteNode(Main.y)
 end</code></td>
     <td><code>begin
-  #= none:2 =#
   Main.QuoteNode($Main.y)
 end</code></td>
     <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(ex); quote 
- $(QuoteNode(ex)) 
+    <td><code>macro sym(ex); quote
+ $(QuoteNode(ex))
 end; end</code></td>
     <td><code>begin
-  #= none:2 =#
   :y
 end</code></td>
     <td><code>begin
-  #= none:2 =#
   $(QuoteNode(:($(Expr(:$, :y)))))
 end</code></td>
     <td><code>y</code></td>
