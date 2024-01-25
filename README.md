@@ -174,159 +174,159 @@ _____________________________________</th>
     <td><code>@ip x=1 x x</code></td>
     <td style="background-color: #2f2; color: #222">:(x + x)</td>
     <td style="background-color: #2f2; color: #222">:(x + x)</td>
-    <td style="background-color: #2f2; color: #222">quote
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
-end</td>
+end</code></td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
     <td><code>eval(@ip x=1 x x)</code></td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #e55; color: #222">:(1+1)</td>
-    <td style="background-color: #e55; color: #222">:(x + x)</td>
-    <td style="background-color: #e55; color: #222">:(x + x)</td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #e55; color: #222"><code>:(1+1)</code></td>
+    <td style="background-color: #e55; color: #222"><code>:(x + x)</code></td>
+    <td style="background-color: #e55; color: #222"><code>:(x + x)</code></td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
     <td><code>eval(eval(@ip x=1 x x))</code></td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #e55; color: #222">2</td>
-    <td style="background-color: #e55; color: #222">2</td>
-    <td style="background-color: #e55; color: #222">2</td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #e55; color: #222"><code>2</code></td>
+    <td style="background-color: #e55; color: #222"><code>2</code></td>
+    <td style="background-color: #e55; color: #222"><code>2</code></td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
     <td><code>@ip x=1 x/2 x</code></td>
-    <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
-    <td style="background-color: #2f2; color: #222">:(x / 2 + x)</td>
-    <td style="background-color: #2f2; color: #222">quote
+    <td style="background-color: #2f2; color: #222"><code>:(x / 2 + x)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(x / 2 + x)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end<code></td>
+    <td style="background-color: #2f2; color: #222"></code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end<code></td>
+    <td style="background-color: #2f2; color: #222"></code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
-end</td>
+end</code></td>
   </tr>
   <tr align="left"><!-- ROW 2 -->
     <td><code>eval(@ip x=1 x/2 x)</code></td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #e55; color: #222">:(0.5 + 1)</td>
-    <td style="background-color: #e55; color: #222">:(x / 2 + x)</td>
-    <td style="background-color: #e55; color: #222">:(x / 2 + x)</td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined<code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined<code></td>
+    <td style="background-color: #e55; color: #222"><code>:(0.5 + 1)<code></td>
+    <td style="background-color: #e55; color: #222"><code>:(x / 2 + x)<code></td>
+    <td style="background-color: #e55; color: #222"><code>:(x / 2 + x)<code></td>
   </tr>
   <tr align="left"><!-- ROW 3 -->
     <td><code>@ip x=1 1/2 1/4</code></td>
-    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
-    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
-    <td style="background-color: #2f2; color: #222">quote
+    <td style="background-color: #2f2; color: #222"><code>:(1 / 2 + 1 / 4)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 / 2 + 1 / 4)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
-end</td>
+end</code></td>
   </tr>
   <tr align="left"><!-- ROW 3 -->
     <td><code>eval(@ip x=1 1/2 1/4)</code></td>
-    <td style="background-color: #2f2; color: #222">0.75</td>
-    <td style="background-color: #2f2; color: #222">0.75</td>
-    <td style="background-color: #2f2; color: #222">:(0.5 + 0.25)</td>
-    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
-    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1 / 4)</td>
+    <td style="background-color: #2f2; color: #222"><code>0.75</code></td>
+    <td style="background-color: #2f2; color: #222"><code>0.75</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(0.5 + 0.25)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 / 2 + 1 / 4)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 / 2 + 1 / 4)</code></td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
     <td><code>@ip x=1 $x $x</code></td>
-    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #2f2; color: #222">quote
+    <td style="background-color: #2f2; color: #222"><code>:(1 + 1)</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, 1))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
-end</td>
+end</code></td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
     <td><code>eval(@ip x=1 $x $x)</code></td>
-    <td style="background-color: #2f2; color: #222">2</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
-    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
-    <td style="background-color: #2f2; color: #222">:(1 + 1)</td>
+    <td style="background-color: #2f2; color: #222"><code>2</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 + 1)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 + 1)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 + 1)</code></td>
   </tr>
   <tr align="left"><!-- ROW 6 -->
     <td><code>@ip x=1 1+$x $x</code></td>
-    <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #2f2; color: #222">quote
+    <td style="background-color: #2f2; color: #222"><code>:((1 + 1) + 1)</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :(1 + 1))) + $(Expr(:$, 1)))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + 1)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 + $(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
-end</td>
+end</code></td>
   </tr>
   <tr align="left"><!-- ROW 4 -->
     <td><code>eval(@ip x=1 1+$x $x)</code></td>
-    <td style="background-color: #2f2; color: #222">3</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #2f2; color: #222">:(2 + 1)</td>
-    <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
-    <td style="background-color: #2f2; color: #222">:((1 + 1) + 1)</td>
+    <td style="background-color: #2f2; color: #222"><code>3</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(2 + 1)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:((1 + 1) + 1)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:((1 + 1) + 1)</code></td>
   </tr>
   <tr align="left"><!-- ROW 7 -->
     <td><code>@ip x=1 $x/2 $x</code></td>
-    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #2f2; color: #222">quote
+    <td style="background-color: #2f2; color: #222"><code>:(1 / 2 + 1)</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
-end</td>
-    <td style="background-color: #2f2; color: #222">quote
+end</code></td>
+    <td style="background-color: #2f2; color: #222"><code>quote
  x = 1
  $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)) / 2)))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
-end</td>
+end</code></td>
   </tr>
   <tr align="left"><!-- ROW 7 -->
     <td><code>eval(@ip x=1 $x/2 $x)</code></td>
-    <td style="background-color: #2f2; color: #222">1.5</td>
-    <td style="background-color: #e55; color: #222">Error: `x` not defined</td>
-    <td style="background-color: #2f2; color: #222">:(0.5 + 1)</td>
-    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
-    <td style="background-color: #2f2; color: #222">:(1 / 2 + 1)</td>
+    <td style="background-color: #2f2; color: #222"><code>1.5</code></td>
+    <td style="background-color: #e55; color: #222"><code>Error: `x` not defined</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(0.5 + 1)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 / 2 + 1)</code></td>
+    <td style="background-color: #2f2; color: #222"><code>:(1 / 2 + 1)</code></td>
   </tr>
 </table>
 
