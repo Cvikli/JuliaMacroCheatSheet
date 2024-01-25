@@ -289,8 +289,15 @@ print("    <td><code>"); print(@sym); println("</code></td>");
 print("    <td><code>"); print(eval(@sym)); println("</code></td>"); 
 println("  </tr>")
 println("</table>")
+println()
 #%%
-ex=7
+println("""```julia
+using Base.Meta: quot, QuoteNode
+ex=:ey
+y=:p
+p=8
+```""")
+ex=:ey
 y=:p
 p=8
 println("<table>")
@@ -317,6 +324,13 @@ print("    <td><code>"); print(@sym y);  println("</code></td>");
 # print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
 println("  </tr>
   <tr>")
+macro sym(ex); :($:($ex)); end
+print("    <td><code>"); print("macro sym(ex); :(\$:(\$ex)); end");  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
+print("    <td><code>"); print(@sym y);  println("</code></td>"); 
+println("  </tr>
+  <tr>")
 macro sym(ex); :(quot($ex)); end
 print("    <td><code>"); print("macro sym(ex) 
   :(quot(\$ex))
@@ -337,6 +351,99 @@ print("    <td><code>"); print(@sym y);  println("</code></td>");
 # print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
 println("  </tr>")
 println("</table>")
+#%%
+macro literal(s)
+	s
+end
+println("<table>")
+fn() = begin
+	tests = [
+		"macro sym(ex); QuoteNode(ex); end",
+		"macro sym(ex); :(QuoteNode(\$ex)); end",
+		"macro sym(ex); :(\$QuoteNode(ex)); end",
+		"macro sym(ex); :(\$QuoteNode(\$ex)); end",
+		"macro sym(ex); quote (QuoteNode(\$ex)); end; end",
+		"macro sym(ex); quote (\$QuoteNode(ex)); end; end",
+		"macro sym(ex); quote (\$QuoteNode(\$ex)); end; end",
+		]
+		
+	println("  <tr>")
+	println("    <td></td>")
+	for mac in tests
+		println("    <td>",mac,"</td>")
+	end
+	println("  </tr>")
+
+
+	for mac in tests
+		println("  <tr>")
+		eval(Meta.parse(mac))
+		print("    <td><code>"); print(mac);  println("</code></td>"); 
+		print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
+		print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
+		print("    <td><code>"); print(@sym y);  println("</code></td>"); 
+		print("    <td><code>"); 
+		try	print(eval(Meta.parse("@sym \$y"))); catch e; print(e.msg); end
+		println("</code></td>"); 
+		println("  </tr>")
+	end
+end
+fn()
+println("</table>")
+#%%
+"This macro \t escapes \n any special (characters) for you."
+#%%
+try
+	eval(Meta.parse("@sym \$y"))
+catch e
+
+end
+#%%
+println("  </tr>
+  <tr>")
+
+print("    <td><code>"); print("macro sym(ex)
+  :(QuoteNode(\$ex))
+end");  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym y)));  println("</code></td>"); 
+print("    <td><code>"); print(@macroexpand((@sym $y)));  println("</code></td>"); 
+print("    <td><code>"); print(@sym y);  println("</code></td>"); 
+print("    <td><code>"); print(@sym $y);  println("</code></td>"); 
+
+#%%
+macro quo(arg)
+	:( x = $(esc(arg)); :($x + $x) )
+end
+
+#%%
+macro quo(arg)
+	:( x = $(quot(arg)); :($x + $x) )
+end
+
+#%%
+macro quo(arg)
+	:( x = $(QuoteNode(arg)); :($x + $x) )
+end
+#%%
+@quo 1
+#%%
+eval(@quo 1)
+#%%
+@quo 1 + 1
+#%%
+eval(@quo 1 + 1)
+#%%
+@quo 1 + $(sin(1))
+#%%
+let q = 0.5 
+  @quo 1 + $q
+end
+#%%
+let q = 0.5 
+	eval(@quo 1 + $q)
+end
+
+
 #%%
 macro ip(ex, l, r)
 	quote

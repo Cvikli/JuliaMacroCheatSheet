@@ -124,7 +124,7 @@ x=:p
 
 ```julia
 using Base.Meta: quot, QuoteNode
-ex=7
+ex=:ey
 y=:p
 p=8
 ```
@@ -145,7 +145,7 @@ p=8
     <td><code>macro sym(ex); :(:($ex)); end</code></td>
     <td><code>Main.ex</code></td>
     <td><code>Main.ex</code></td>
-    <td><code>7</code></td>
+    <td><code>ey</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex) 
@@ -162,6 +162,87 @@ end</code></td>
     <td><code>Main.QuoteNode(Main.y)</code></td>
     <td><code>Main.QuoteNode($Main.y)</code></td>
     <td><code>:p</code></td>
+  </tr>
+</table>
+
+
+<table>
+  <tr>
+    <td></td>
+    <td>macro sym(ex); QuoteNode(ex); end</td>
+    <td>macro sym(ex); :(QuoteNode($ex)); end</td>
+    <td>macro sym(ex); :($QuoteNode(ex)); end</td>
+    <td>macro sym(ex); :($QuoteNode($ex)); end</td>
+    <td>macro sym(ex); quote (QuoteNode($ex)); end; end</td>
+    <td>macro sym(ex); quote ($QuoteNode(ex)); end; end</td>
+    <td>macro sym(ex); quote ($QuoteNode($ex)); end; end</td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); QuoteNode(ex); end</code></td>
+    <td><code>:y</code></td>
+    <td><code>$(QuoteNode(:($(Expr(:$, :y)))))</code></td>
+    <td><code>:p</code></td>
+    <td><code>$y</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :(QuoteNode($ex)); end</code></td>
+    <td><code>Main.QuoteNode(Main.y)</code></td>
+    <td><code>Main.QuoteNode($Main.y)</code></td>
+    <td><code>:p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :($QuoteNode(ex)); end</code></td>
+    <td><code>(QuoteNode)(Main.ex)</code></td>
+    <td><code>(QuoteNode)(Main.ex)</code></td>
+    <td><code>:p</code></td>
+    <td><code>:ey</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); :($QuoteNode($ex)); end</code></td>
+    <td><code>(QuoteNode)(Main.y)</code></td>
+    <td><code>(QuoteNode)($Main.y)</code></td>
+    <td><code>:p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quote (QuoteNode($ex)); end; end</code></td>
+    <td><code>begin
+    #= none:1 =#
+    Main.QuoteNode(Main.y)
+end</code></td>
+    <td><code>begin
+    #= none:1 =#
+    Main.QuoteNode($Main.y)
+end</code></td>
+    <td><code>:p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quote ($QuoteNode(ex)); end; end</code></td>
+    <td><code>begin
+    #= none:1 =#
+    (QuoteNode)(Main.ex)
+end</code></td>
+    <td><code>begin
+    #= none:1 =#
+    (QuoteNode)(Main.ex)
+end</code></td>
+    <td><code>:p</code></td>
+    <td><code>:ey</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(ex); quote ($QuoteNode($ex)); end; end</code></td>
+    <td><code>begin
+    #= none:1 =#
+    (QuoteNode)(Main.y)
+end</code></td>
+    <td><code>begin
+    #= none:1 =#
+    (QuoteNode)($Main.y)
+end</code></td>
+    <td><code>:p</code></td>
+    <td><code>syntax: "$" expression outside quote</code></td>
   </tr>
 </table>
 
