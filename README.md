@@ -66,10 +66,10 @@ p=8   # Main.p
     <td><code>8</code></td>
   </tr>
   <tr>
-    <td><code>macro sym(); :(x,); end</code></td>
-    <td><code>:((Main.x,))</code></td>
-    <td><code>(:p,)</code></td>
-    <td><code>(:p,)</code></td>
+    <td><code>macro sym(); :(x); end</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:p</code></td>
+    <td><code>8</code></td>
   </tr>
   <tr>
     <td><code>macro sym(); :(:x); end</code></td>

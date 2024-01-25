@@ -79,7 +79,7 @@ expression_generation_tests(io) = begin
 					"p=8   # Main.p"
 	tests = [
 		"macro sym(); :x; end",
-		"macro sym(); :(x,); end",
+		"macro sym(); :(x); end",
 		"macro sym(); :(:x); end",
 		"macro sym(); quot(x); end",
 		"macro sym(); quot(:x); end",
