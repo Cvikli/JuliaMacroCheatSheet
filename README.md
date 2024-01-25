@@ -8,7 +8,7 @@ All test has included: `using Base.Meta: quot, QuoteNode`
 Big mistakes: `$QuoteNode(…)` instead of `$(QuoteNode(…))` 
 
 
-Case - Basic expression generation:
+Case - Basic expressions:
 
 ```julia
 x=:p   # Main.x
@@ -33,6 +33,13 @@ p=7   # Main.p
     <td><code>macro sym(); :(x); end</code></td>
     <td><code>:(Main.x)</code></td>
     <td><code>:p</code></td>
+    <td><code>7</code></td>
+    <td><code>7</code></td>
+  </tr>
+  <tr>
+    <td><code>macro sym(); :($x); end</code></td>
+    <td><code>:(Main.p)</code></td>
+    <td><code>7</code></td>
     <td><code>7</code></td>
     <td><code>7</code></td>
   </tr>
@@ -75,7 +82,7 @@ end</code></td>
   </tr>
 </table>
 
-Case - Basic expression generation:
+Case - Medium expression:
 
 ```julia
 ex=:ey  # Main.ex
@@ -195,13 +202,6 @@ end</code></td>
     <td><code>:ez</code></td>
   </tr>
   <tr>
-    <td><code>macro fn(ex); string(ex); end</code></td>
-    <td><code>"x"</code></td>
-    <td><code>"x"</code></td>
-    <td><code>"x"</code></td>
-    <td><code>"x"</code></td>
-  </tr>
-  <tr>
     <td><code>macro fn(ex); :(string(ex)); end</code></td>
     <td><code>:(Main.string(Main.ex))</code></td>
     <td><code>"ey"</code></td>
@@ -214,6 +214,13 @@ end</code></td>
     <td><code>"p"</code></td>
     <td><code>"p"</code></td>
     <td><code>"p"</code></td>
+  </tr>
+  <tr>
+    <td><code>macro fn(ex); string(ex); end</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
+    <td><code>"x"</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :($(string(ex))); end</code></td>
@@ -372,24 +379,24 @@ Case - Expression interpolation:
 
 ```julia
 ex=:ey   #  Main.ex
-y=:p     #  Main.y
+x=:p     #  Main.x
 p=7      #  Main.p
 ```
 <table>
   <tr>
     <td></td>
-    <td><code>@macroexpand(@sym y)</code></td>
-    <td><code>@macroexpand(@sym $y)</code></td>
-    <td><code>@sym y</code></td>
-    <td><code>eval(@sym y)</code></td>
-    <td><code>@sym $y</code></td>
+    <td><code>@macroexpand(@sym x)</code></td>
+    <td><code>@macroexpand(@sym $x)</code></td>
+    <td><code>@sym x</code></td>
+    <td><code>eval(@sym x)</code></td>
+    <td><code>@sym $x</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  ex
 end</code></td>
-    <td><code>:(Main.y)</code></td>
-    <td><code>:($(Expr(:$, :(Main.y))))</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:($(Expr(:$, :(Main.x))))</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -408,8 +415,8 @@ end</code></td>
     <td><code>macro sym(ex)
  :($ex)
 end</code></td>
-    <td><code>:(Main.y)</code></td>
-    <td><code>:($(Expr(:$, :(Main.y))))</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:($(Expr(:$, :(Main.x))))</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -418,8 +425,8 @@ end</code></td>
     <td><code>macro sym(ex)
  :($:($ex))
 end</code></td>
-    <td><code>:(Main.y)</code></td>
-    <td><code>:($(Expr(:$, :(Main.y))))</code></td>
+    <td><code>:(Main.x)</code></td>
+    <td><code>:($(Expr(:$, :(Main.x))))</code></td>
     <td><code>:p</code></td>
     <td><code>7</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -428,8 +435,8 @@ end</code></td>
     <td><code>macro sym(ex)
  :(quot($ex))
 end</code></td>
-    <td><code>:(Main.quot(Main.y))</code></td>
-    <td><code>:(Main.quot($(Expr(:$, :(Main.y)))))</code></td>
+    <td><code>:(Main.quot(Main.x))</code></td>
+    <td><code>:(Main.quot($(Expr(:$, :(Main.x)))))</code></td>
     <td><code>:(:p)</code></td>
     <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -438,18 +445,18 @@ end</code></td>
     <td><code>macro sym(ex)
  QuoteNode(ex)
 end</code></td>
-    <td><code>:(:y)</code></td>
-    <td><code>:($(QuoteNode(:($(Expr(:$, :y))))))</code></td>
-    <td><code>:y</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:($(QuoteNode(:($(Expr(:$, :x))))))</code></td>
+    <td><code>:x</code></td>
     <td><code>:p</code></td>
-    <td><code>:($(Expr(:$, :y)))</code></td>
+    <td><code>:($(Expr(:$, :x)))</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex)
  :(QuoteNode($ex))
 end</code></td>
-    <td><code>:(Main.QuoteNode(Main.y))</code></td>
-    <td><code>:(Main.QuoteNode($(Expr(:$, :(Main.y)))))</code></td>
+    <td><code>:(Main.QuoteNode(Main.x))</code></td>
+    <td><code>:(Main.QuoteNode($(Expr(:$, :(Main.x)))))</code></td>
     <td><code>:(:p)</code></td>
     <td><code>:p</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
@@ -458,21 +465,21 @@ end</code></td>
     <td><code>macro sym(ex)
  :($(QuoteNode(ex)))
 end</code></td>
-    <td><code>:(:y)</code></td>
-    <td><code>:($(QuoteNode(:($(Expr(:$, :y))))))</code></td>
-    <td><code>:y</code></td>
+    <td><code>:(:x)</code></td>
+    <td><code>:($(QuoteNode(:($(Expr(:$, :x))))))</code></td>
+    <td><code>:x</code></td>
     <td><code>:p</code></td>
-    <td><code>:($(Expr(:$, :y)))</code></td>
+    <td><code>:($(Expr(:$, :x)))</code></td>
   </tr>
   <tr>
     <td><code>macro sym(ex); quote 
  QuoteNode($ex)
 end; end</code></td>
     <td><code>quote
-    Main.QuoteNode(Main.y)
+    Main.QuoteNode(Main.x)
 end</code></td>
     <td><code>quote
-    Main.QuoteNode($(Expr(:$, :(Main.y))))
+    Main.QuoteNode($(Expr(:$, :(Main.x))))
 end</code></td>
     <td><code>:(:p)</code></td>
     <td><code>:p</code></td>
@@ -483,14 +490,14 @@ end</code></td>
  $(QuoteNode(ex))
 end; end</code></td>
     <td><code>quote
-    :y
+    :x
 end</code></td>
     <td><code>quote
-    $(QuoteNode(:($(Expr(:$, :y)))))
+    $(QuoteNode(:($(Expr(:$, :x)))))
 end</code></td>
-    <td><code>:y</code></td>
+    <td><code>:x</code></td>
     <td><code>:p</code></td>
-    <td><code>:($(Expr(:$, :y)))</code></td>
+    <td><code>:($(Expr(:$, :x)))</code></td>
   </tr>
 </table>
 
@@ -499,17 +506,17 @@ Case - Advanced expression interpolation  (note: @ip: interpolation, l: left, r:
 <table>
   <tr>
     <td></td>
-    <td><code>@ip x=1 x x</code></td>
-    <td><code>eval(@ip x=1 x x)</code></td>
-    <td><code>eval(eval(@ip x=1 x x))</code></td>
-    <td><code>@ip x=1 x/2 x</code></td>
-    <td><code>eval(@ip x=1 x/2 x)</code></td>
-    <td><code>@ip x=1 1/2 1/4</code></td>
-    <td><code>eval(@ip x=1 1/2 1/4)</code></td>
-    <td><code>@ip x=1 $x $x</code></td>
-    <td><code>eval(@ip x=1 1+$x $x)</code></td>
-    <td><code>@ip x=1 $x/2 $x</code></td>
-    <td><code>eval(@ip x=1 $x/2 $x)</code></td>
+    <td><code>@ip y=1 y y</code></td>
+    <td><code>eval(@ip y=1 y y)</code></td>
+    <td><code>eval(eval(@ip y=1 y y))</code></td>
+    <td><code>@ip y=1 y/2 y</code></td>
+    <td><code>eval(@ip y=1 y/2 y)</code></td>
+    <td><code>@ip y=1 1/2 1/4</code></td>
+    <td><code>eval(@ip y=1 1/2 1/4)</code></td>
+    <td><code>@ip y=1 $y $y</code></td>
+    <td><code>eval(@ip y=1 1+$y $y)</code></td>
+    <td><code>@ip y=1 $y/2 $y</code></td>
+    <td><code>eval(@ip y=1 $y/2 $y)</code></td>
   </tr>
   <tr>
     <td><code>macro ip(ex, l, r)
@@ -518,10 +525,10 @@ quote
  :($$(Meta.quot(l)) + $$(Meta.quot(r)))
 end
 end</code></td>
-    <td><code>:(x + x)</code></td>
+    <td><code>:(y + y)</code></td>
     <td><code>MethodError: +(:p, :p)</code></td>
     <td><code>MethodError: +(:p, :p)</code></td>
-    <td><code>:(x / 2 + x)</code></td>
+    <td><code>:(y / 2 + y)</code></td>
     <td><code>MethodError: /(:p, 2)</code></td>
     <td><code>:(1 / 2 + 1 / 4)</code></td>
     <td><code>0.75</code></td>
@@ -537,10 +544,10 @@ quote
  :($$(Meta.quot(l)) + $$(Meta.quot(r)))
  end
 end</code></td>
-    <td><code>:(x + x)</code></td>
+    <td><code>:(y + y)</code></td>
     <td><code>MethodError: +(:p, :p)</code></td>
     <td><code>MethodError: +(:p, :p)</code></td>
-    <td><code>:(x / 2 + x)</code></td>
+    <td><code>:(y / 2 + y)</code></td>
     <td><code>MethodError: /(:p, 2)</code></td>
     <td><code>:(1 / 2 + 1 / 4)</code></td>
     <td><code>0.75</code></td>
@@ -559,28 +566,28 @@ quote
 end
 end</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :y)) + $(Expr(:$, :y)))))
 end</code></td>
     <td><code>:(1 + 1)</code></td>
     <td><code>2</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :(y / 2))) + $(Expr(:$, :y)))))
 end</code></td>
     <td><code>:(0.5 + 1)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
 end</code></td>
     <td><code>:(0.5 + 0.25)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
 end</code></td>
     <td><code>:(2 + 1)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
 end</code></td>
     <td><code>:(0.5 + 1)</code></td>
@@ -595,28 +602,28 @@ quote
 end
 end</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :x)) + $(Expr(:$, :x)))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :y)) + $(Expr(:$, :y)))))
 end</code></td>
     <td><code>:(1 + 1)</code></td>
     <td><code>2</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :(x / 2))) + $(Expr(:$, :x)))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :(y / 2))) + $(Expr(:$, :y)))))
 end</code></td>
     <td><code>:(0.5 + 1)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, :(1 / 4))))))
 end</code></td>
     <td><code>:(0.5 + 0.25)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, 1)) + $(Expr(:$, 1)))))
 end</code></td>
     <td><code>:(2 + 1)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :(1 / 2))) + $(Expr(:$, 1)))))
 end</code></td>
     <td><code>:(0.5 + 1)</code></td>
@@ -631,28 +638,28 @@ quote
 end
 end</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :(:y))) + $(Expr(:$, :(:y))))))
 end</code></td>
-    <td><code>:(x + x)</code></td>
+    <td><code>:(y + y)</code></td>
     <td><code>2</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(y / 2)))))) + $(Expr(:$, :(:y))))))
 end</code></td>
-    <td><code>:(x / 2 + x)</code></td>
+    <td><code>:(y / 2 + y)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
 end</code></td>
     <td><code>:(1 / 2 + 1 / 4)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, 1))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
 end</code></td>
     <td><code>:((1 + 1) + 1)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, 1))))))))
 end</code></td>
     <td><code>:(1 / 2 + 1)</code></td>
@@ -667,29 +674,29 @@ quote
 end
 end</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :(:x))) + $(Expr(:$, :(:x))))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :(:y))) + $(Expr(:$, :(:y))))))
 end</code></td>
-    <td><code>:(x + x)</code></td>
+    <td><code>:(y + y)</code></td>
     <td><code>2</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(x / 2)))))) + $(Expr(:$, :(:x))))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(y / 2)))))) + $(Expr(:$, :(:y))))))
 end</code></td>
-    <td><code>:(x / 2 + x)</code></td>
+    <td><code>:(y / 2 + y)</code></td>
     <td><code>quote
-    x = 1
+    y = 1
     $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :(1 / 2)))))) + $(Expr(:$, :($(Expr(:quote, :(1 / 4)))))))))
 end</code></td>
     <td><code>:(1 / 2 + 1 / 4)</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :y)))))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :y)))))))))))
 end</code></td>
     <td><code>:((1 + 1) + 1)</code></td>
     <td><code>quote
-    x = 1
-    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)) / 2)))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :x)))))))))))
+    y = 1
+    $(Expr(:quote, :($(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :y)) / 2)))))) + $(Expr(:$, :($(Expr(:quote, :($(Expr(:$, :y)))))))))))
 end</code></td>
     <td><code>:(1 / 2 + 1)</code></td>
   </tr>

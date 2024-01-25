@@ -177,12 +177,13 @@ end
 #%%
 
 basic_expression_generation_tests(io) = begin
-	title = "Case - Basic expression generation:"
+	title = "Case - Basic expressions:"
 	init  = "x=:$(x)   # Main.x\n"*
 					"p=$(p)   # Main.p"
 	tests = [
 		"macro sym(); :x; end",
 		"macro sym(); :(x); end",
+		"macro sym(); :(\$x); end",
 		"macro sym(); quot(x); end",
 		"macro sym(); quot(:x); end",
 		"macro sym(); QuoteNode(:x); end",
@@ -197,11 +198,11 @@ basic_expression_generation_tests(io) = begin
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-# baisc_expression_generation_tests(stdout)
+basic_expression_generation_tests(stdout)
 #%%
 
 medium_expression_generation_tests(io) = begin
-	title = "Case - Basic expression generation:"
+	title = "Case - Medium expression:"
 	init  = "ex=:$(ex)  # Main.ex\n"*
 					"x=:$(x)    # Main.x\n"*
 					"p=$(p)     # Main.p"
@@ -220,9 +221,9 @@ medium_expression_generation_tests(io) = begin
 		"macro fn(ex); quot(:ex); end",
 		"macro fn(ex); QuoteNode(:ex); end",
 		"macro fn(ex); quote; :ex; end end",
-		"macro fn(ex); string(ex); end",
 		"macro fn(ex); :(string(ex)); end",
 		"macro fn(ex); :(string(\$ex)); end",
+		"macro fn(ex); string(ex); end",
 		"macro fn(ex); :(\$(string(ex))); end",
 		# "macro fn(ex); :(string(esc(\$ex))); end",
 		]
@@ -239,7 +240,7 @@ medium_expression_generation_tests(stdout)
 expression_interpolation_tests(io) = begin
 	title = "Case - Expression interpolation:"
 	init= "ex=:$(ex)   #  Main.ex\n"*
-				"y=:$(y)     #  Main.y\n"*
+				"x=:$(x)     #  Main.x\n"*
 				"p=$(p)      #  Main.p"
 	tests = [
 "macro sym(ex)
@@ -274,11 +275,11 @@ end; end",
 end; end",
 		]
 	cases = [
-"@macroexpand(@sym y)",
-"@macroexpand(@sym \$y)",
-"@sym y",
-"eval(@sym y)",
-"@sym \$y",
+"@macroexpand(@sym x)",
+"@macroexpand(@sym \$x)",
+"@sym x",
+"eval(@sym x)",
+"@sym \$x",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
@@ -334,17 +335,17 @@ end
 end",
 		]
 	cases = [
-"@ip x=1 x x",
-"eval(@ip x=1 x x)",
-"eval(eval(@ip x=1 x x))",
-"@ip x=1 x/2 x",
-"eval(@ip x=1 x/2 x)",
-"@ip x=1 1/2 1/4",
-"eval(@ip x=1 1/2 1/4)",
-"@ip x=1 \$x \$x",
-"eval(@ip x=1 1+\$x \$x)",
-"@ip x=1 \$x/2 \$x",
-"eval(@ip x=1 \$x/2 \$x)",
+"@ip y=1 y y",
+"eval(@ip y=1 y y)",
+"eval(eval(@ip y=1 y y))",
+"@ip y=1 y/2 y",
+"eval(@ip y=1 y/2 y)",
+"@ip y=1 1/2 1/4",
+"eval(@ip y=1 1/2 1/4)",
+"@ip y=1 \$y \$y",
+"eval(@ip y=1 1+\$y \$y)",
+"@ip y=1 \$y/2 \$y",
+"eval(@ip y=1 \$y/2 \$y)",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
