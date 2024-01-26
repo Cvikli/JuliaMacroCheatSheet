@@ -3,8 +3,10 @@
 
 Big mistakes: `$QuoteNode(…)` instead of `$(QuoteNode(…))`, `$esc(…)` instead of `$(esc(…))`
 ## Reducing redundancy
-dump(quote 2+3 end) == dump(:(begin 2+3 end)) # even with "Linenumbers are correct"
-:(2+3)  # also similar but without FIRST Linenumber
+```
+quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with `dump(…)`)
+:(2+3)                             # also similar but without FIRST Linenumber
+```
 ## Macro hygenie (aka: SCOPE management)
 Macro hygenie, each interpolated variable(`VAR`) in the macro scope points to `Main.VAR` instead of "local VAR in the macro calling scope". 
 ```julia
@@ -30,13 +32,15 @@ display(@macroexpand @t a=5)     # :(a = 5)
 ```
 
 ## Evaluation time
-Expression interpolation (with $) evaluates when the expression is constructed (at parse time)
-Quotation (with : or quote..end) evaluates only when the expression is passed to eval at runtime.
+`$` (expression interpolation) evaluates when the expression is constructed (at parse time)
+Quotation (with `:` or `quote` … `end`) evaluates only when the expression is passed to eval at runtime.
 
 ## Learning/repeating knowledge from tests
+
 Note: 
 - All test has included `using Base.Meta: quot, QuoteNode`.
 - Linenumbers are removed from the CheatSheet!
+
 
 ### Case - Basic expressions:
 
@@ -162,7 +166,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#580#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#647#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -339,7 +343,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#581#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#648#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -347,7 +351,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#589#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#656#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -356,7 +360,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#597#z" = Main.p ^ 2
+    var"#664#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -465,7 +469,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#615#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#682#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>

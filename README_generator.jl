@@ -11,8 +11,10 @@ Big mistakes: `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`, `\$esc(…)` i
 """)
 o = '#'
 write(file,"""## Reducing redundancy
-dump(quote 2+3 end) == dump(:(begin 2+3 end)) # even with "Linenumbers are correct"
-:(2+3)  # also similar but without FIRST Linenumber
+```
+quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with `dump(…)`)
+:(2+3)                             # also similar but without FIRST Linenumber
+```
 """)
 
 write(file,"""## Macro hygenie (aka: SCOPE management)
@@ -41,14 +43,16 @@ display(@macroexpand @t a=5)     # :(a = 5)
 
 """)
 write(file,"""## Evaluation time
-Expression interpolation (with \$) evaluates when the expression is constructed (at parse time)
-Quotation (with : or quote..end) evaluates only when the expression is passed to eval at runtime.
+`\$` (expression interpolation) evaluates when the expression is constructed (at parse time)
+Quotation (with `:` or `quote` … `end`) evaluates only when the expression is passed to eval at runtime.
 
 """)
 write(file,"""## Learning/repeating knowledge from tests
+
 Note: 
 - All test has included `using Base.Meta: quot, QuoteNode`.
 - Linenumbers are removed from the CheatSheet!
+
 """)
 
 	basic_expression_generation_tests(file)
