@@ -97,7 +97,7 @@ Note:
 Section: https://docs.julialang.org/en/v1/manual/metaprogramming/#man-quote-node\n
 Still total chaotic for me and cannot make a simple explanation. My weak explanation throught tests: \n 
 ```julia
-                       :(   \$:(1+2))   #                               :(1 + 2)
+                       :(   \$:(1+2))   #                               :(1 + 2)  note if it would be $n then of course the interpolation would be cleaner!
                     Expr(:\$, :(1+2))   #                  :(\$(Expr(:\$, :(1 + 2))))
                quot(Expr(:\$, :(1+2))   # :(\$(Expr(:quote, :(\$(Expr(:\$, :(1 + 2)))))))
           QuoteNode(Expr(:\$, :(1+2))   #    :(\$(QuoteNode(:(\$(Expr(:\$, :(1 + 2)))))))

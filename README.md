@@ -232,7 +232,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#774#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#843#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -409,7 +409,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#775#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#844#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -417,7 +417,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#783#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#852#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -426,7 +426,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#791#z" = Main.p ^ 2
+    var"#860#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -535,7 +535,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#809#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#878#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -574,7 +574,7 @@ Section: https://docs.julialang.org/en/v1/manual/metaprogramming/#man-quote-node
 Still total chaotic for me and cannot make a simple explanation. My weak explanation throught tests: 
  
 ```julia
-                       :(   $:(1+2))   #                               :(1 + 2)
+                       :(   $:(1+2))   #                               :(1 + 2)  note if it would be 1 + 2 then of course the interpolation would be cleaner!
                     Expr(:$, :(1+2))   #                  :($(Expr(:$, :(1 + 2))))
                quot(Expr(:$, :(1+2))   # :($(Expr(:quote, :($(Expr(:$, :(1 + 2)))))))
           QuoteNode(Expr(:$, :(1+2))   #    :($(QuoteNode(:($(Expr(:$, :(1 + 2)))))))
