@@ -75,10 +75,10 @@ Note:
 	medium_expression_generation_tests(file)
 	advanced_expression_generation_tests(file)
 
-	# basic_tests(file)
-	# value_interpolation_tests(file)
-	# expression_interpolation_tests(file)
-	# advanced_expression_interpolation_tests(file)
+	basic_tests(file)
+	value_interpolation_tests(file)
+	expression_interpolation_tests(file)
+	advanced_expression_interpolation_tests(file)
 
 
 	write(file,"""\n\n## Possible antipatterns:\n
