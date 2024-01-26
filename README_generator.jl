@@ -8,18 +8,9 @@ write(file,"""# Julia Macro CheatSheet
 
 The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
-For me https://docs.julialang.org/en/v1/manual/metaprogramming/ just couldn't make these things understand so I tried to be as short as possible to reach understanding in each point. Please help us correct things and any simplification is welcomed, It is still a little bit too complicated I know, this have to be even shorter.! 
+For me https://docs.julialang.org/en/v1/manual/metaprogramming/ just couldn't make these things understand so I tried to be as short as possible to reach understanding in each point. n
+Please help us correct things and any simplification is welcomed, It is still a little bit too complicated I know, this have to be even shorter.! 
 
-Frequent mistakes: 
-- `\$esc(…)` instead of `\$(esc(…))`
-- `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`
-""")
-o = '#'
-write(file,"""## Reducing redundancy
-```
-quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with `dump(…)`)
-:(2+3)                             # also similar but without FIRST Linenumber
-```
 """)
 
 write(file,"""## Macro hygenie (aka: SCOPE management)
@@ -58,6 +49,12 @@ display(@macroexpand @✓ a 6)
 First we work in the macro scope, so it shadows the value. We need to use `esc` to reach the local scope. 
 
 """)
+write(file,"""## Reducing redundancy
+```
+quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with `dump(…)`)
+:(2+3)                             # also similar but without FIRST Linenumber
+```
+""")
 write(file,"""## Evaluation time
 `\$` (expression interpolation) evaluates when the expression is constructed (at parse time)\n
 `:` or `quote` … `end`(Quotations) evaluates only when the expression is passed to eval at runtime.
@@ -88,6 +85,11 @@ Note:
 - If you validate the `ex.head`, then using the function in a macro can lead to unusability due to escaping the expression to reach local scope. Because it is `\$(Expr(:escape, VAR))` where `ex.head` == `:escape`. Issue: https://github.com/JuliaLang/julia/issues/37691 (So while this is an edge case we should be keep it in our mind if we want to create really universal macros.)
 	
 """)
+write(file,"""## Frequent mistakes:\n 
+- `\$esc(…)` instead of `\$(esc(…))`\n
+- `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`\n
+
+""")
 	write(file,"""## Sources:\n
 - https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-\n
 - https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q\n
@@ -97,7 +99,7 @@ Note:
 Section: https://docs.julialang.org/en/v1/manual/metaprogramming/#man-quote-node\n
 Still total chaotic for me and cannot make a simple explanation. My weak explanation throught tests: \n 
 ```julia
-                       :(   \$:(1+2))   #                               :(1 + 2)  note if it would be $n then of course the interpolation would be cleaner!
+                       :(   \$:(1+2))   #                               :(1 + 2)  note if it would be \$n then of course the interpolation would be visible!
                     Expr(:\$, :(1+2))   #                  :(\$(Expr(:\$, :(1 + 2))))
                quot(Expr(:\$, :(1+2))   # :(\$(Expr(:quote, :(\$(Expr(:\$, :(1 + 2)))))))
           QuoteNode(Expr(:\$, :(1+2))   #    :(\$(QuoteNode(:(\$(Expr(:\$, :(1 + 2)))))))

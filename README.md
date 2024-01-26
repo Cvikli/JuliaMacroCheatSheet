@@ -2,16 +2,9 @@
 
 The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
-For me https://docs.julialang.org/en/v1/manual/metaprogramming/ just couldn't make these things understand so I tried to be as short as possible to reach understanding in each point. Please help us correct things and any simplification is welcomed, It is still a little bit too complicated I know, this have to be even shorter.! 
+For me https://docs.julialang.org/en/v1/manual/metaprogramming/ just couldn't make these things understand so I tried to be as short as possible to reach understanding in each point. n
+Please help us correct things and any simplification is welcomed, It is still a little bit too complicated I know, this have to be even shorter.! 
 
-Frequent mistakes: 
-- `$esc(…)` instead of `$(esc(…))`
-- `$QuoteNode(…)` instead of `$(QuoteNode(…))`
-## Reducing redundancy
-```
-quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with `dump(…)`)
-:(2+3)                             # also similar but without FIRST Linenumber
-```
 ## Macro hygenie (aka: SCOPE management)
 In short: Escape: = "Reach the local scope from macro from where the macro was called!"
 Macro hygenie, each interpolated variable(`VAR`) in the macro scope points to `Main.VAR` instead of "local VAR in the macro calling scope". 
@@ -47,6 +40,11 @@ display(@macroexpand @✓ a 6)
 ```
 First we work in the macro scope, so it shadows the value. We need to use `esc` to reach the local scope. 
 
+## Reducing redundancy
+```
+quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with `dump(…)`)
+:(2+3)                             # also similar but without FIRST Linenumber
+```
 ## Evaluation time
 `$` (expression interpolation) evaluates when the expression is constructed (at parse time)
 
@@ -232,7 +230,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#843#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#912#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -409,7 +407,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#844#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#913#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -417,7 +415,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#852#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#921#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -426,7 +424,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#860#z" = Main.p ^ 2
+    var"#929#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -535,7 +533,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#878#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#947#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -561,6 +559,13 @@ end</code></td>
 ## Possible antipatterns:
 - If you validate the `ex.head`, then using the function in a macro can lead to unusability due to escaping the expression to reach local scope. Because it is `$(Expr(:escape, VAR))` where `ex.head` == `:escape`. Issue: https://github.com/JuliaLang/julia/issues/37691 (So while this is an edge case we should be keep it in our mind if we want to create really universal macros.)
 	
+## Frequent mistakes:
+ 
+- `$esc(…)` instead of `$(esc(…))`
+
+- `$QuoteNode(…)` instead of `$(QuoteNode(…))`
+
+
 ## Sources:
 
 - https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
@@ -574,7 +579,7 @@ Section: https://docs.julialang.org/en/v1/manual/metaprogramming/#man-quote-node
 Still total chaotic for me and cannot make a simple explanation. My weak explanation throught tests: 
  
 ```julia
-                       :(   $:(1+2))   #                               :(1 + 2)  note if it would be 1 + 2 then of course the interpolation would be cleaner!
+                       :(   $:(1+2))   #                               :(1 + 2)  note if it would be $n then of course the interpolation would be visible!
                     Expr(:$, :(1+2))   #                  :($(Expr(:$, :(1 + 2))))
                quot(Expr(:$, :(1+2))   # :($(Expr(:quote, :($(Expr(:$, :(1 + 2)))))))
           QuoteNode(Expr(:$, :(1+2))   #    :($(QuoteNode(:($(Expr(:$, :(1 + 2)))))))
