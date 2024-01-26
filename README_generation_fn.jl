@@ -7,7 +7,8 @@ ey=Symbol("ez")  # Main.ex
 x=Symbol("p")    # Main.x
 y=Symbol("p")    # Main.y
 q=Symbol("p")    # Main.q
-p=7     # Main.p
+p=7              # Main.p
+a=1
 
 
 gen_all_cases(io,title, init, tests, cases) = begin
@@ -432,14 +433,3 @@ end",
 	gen_all_cases(io,title,init,tests,cases)
 end
 # advanced_expression_interpolation_tests(stdout)
-
-#%%
-a=1
-macro s(ex); :($ex); end         
-macro t(ex); :($(esc(ex))); end   
-eval(        :(a=2))             # a=2
-# eval(        :($(esc(a=3))))     # ERROR: MethodError: no method matching esc(; b::Int64)
-@s a=4                           # a=2
-@t a=5                           # a=5
-display(@macroexpand @s a=4)     # :(var"#54#a" = 4)
-display(@macroexpand @t a=5)     # :(a = 5)

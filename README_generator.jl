@@ -7,7 +7,9 @@ open("README.md", "w") do file
 write(file,"""# Julia macro CheatSheet
 
 
-Big mistakes: `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`, `\$esc(…)` instead of `\$(esc(…))`
+Frequent mistakes: 
+- `\$esc(…)` instead of `\$(esc(…))`
+- `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`
 """)
 o = '#'
 write(file,"""## Reducing redundancy
@@ -21,29 +23,39 @@ write(file,"""## Macro hygenie (aka: SCOPE management)
 Macro hygenie, each interpolated variable(`VAR`) in the macro scope points to `Main.VAR` instead of "local VAR in the macro calling scope". 
 ```julia
 a=1
-macro w();    :(\$:a); end        
+macro ✖();    :(\$:a); end        
 eval(let a=2; :(\$a);  end)        # =2  (exactly the same like: (`let a=2; a; end`))
-     let a=2; @w();   end          # =1
-macro g();    :(\$(esc(:a))); end   
+     let a=2; @✖();   end          # =1
+macro ✓();    :(\$(esc(:a))); end   
 eval(let a=2; :(\$(esc(:a))); end) # ERROR: syntax: invalid syntax (escape (outerref a))
-     let a=2; @g();          end   # =2
+     let a=2; @✓();          end   # =2
 ```
 BUT it generate new variable for the macro scope instead of the "local" scope. So eventually it doesn't see the outer scope variables in this case and believe this is the "new scope where the expression has to work".
 ```
 a=1
-macro s(ex); :(\$ex); end         
-macro t(ex); :(\$(esc(ex))); end   
-eval(        :(a=2)        )     # a=2
-eval(        :(\$(esc(a=3))))    # ERROR: MethodError: no method matching esc(; b::Int64)
-@s a=4                           # a=2
-@t a=5                           # a=5
-display(@macroexpand @s a=4)     # :(var"#54#a" = 4)
-display(@macroexpand @t a=5)     # :(a = 5)
+macro ✖(ex); :(\$ex); end         
+macro ✓(ex); :(\$(esc(ex))); end   
+eval(        :(a=2))             # a=2
+# eval(        :(\$(esc(a=3))))   # ERROR: MethodError: no method matching esc(; b::Int64)
+@✖ a=4                           # a=2
+@✓ a=5                           # a=5
+display(@macroexpand @✖ a=4)     # :(var"#54#a" = 4)
+display(@macroexpand @✓ a=5)     # :(a = 5)
 ```
+also
+```
+macro ✖(va, ex); :(\$va=\$ex); end 
+macro ✓(va, ex); :(\$(esc(va))=\$(esc(ex))); end 
+@✖ b 9
+@✓ a 9
+display(@macroexpand @✖ a 9)
+display(@macroexpand @✓ a 9)
+```
+First we work in the macro scope, so it shadows the value. We need to use `esc` to reach the local scope. 
 
 """)
 write(file,"""## Evaluation time
-`\$` (expression interpolation) evaluates when the expression is constructed (at parse time)
+`\$` (expression interpolation) evaluates when the expression is constructed (at parse time)\n
 Quotation (with `:` or `quote` … `end`) evaluates only when the expression is passed to eval at runtime.
 
 """)
@@ -79,3 +91,10 @@ if length(ll)>1
 	run(`git push`)
 end
 #%%
+macro ✖(va, ex); :($va=$ex); end 
+macro ✓(va, ex); :($(esc(va))=$(esc(ex))); end 
+@✓ a 9
+@✖ b 9
+display(@macroexpand @✓ a 9)
+display(@macroexpand @✖ a 9)
+a, b
