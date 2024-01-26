@@ -77,7 +77,7 @@ Note:
 
 	basic_tests(file)
 	value_interpolation_tests(file)
-	expression_interpolation_tests(file)
+	# expression_interpolation_tests(file)
 	advanced_expression_interpolation_tests(file)
 
 

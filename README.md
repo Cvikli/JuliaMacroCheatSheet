@@ -230,7 +230,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#30#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#142#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -407,7 +407,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#31#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#143#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -415,7 +415,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#36#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#151#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -424,7 +424,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#41#z" = Main.p ^ 2
+    var"#159#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -533,7 +533,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#46#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#177#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -698,132 +698,6 @@ end</code></td>
     <td><code>:((2 + $(Expr(:$, :(sin(1))))) + (2 + $(Expr(:$, :(sin(1))))))</code></td>
     <td><code>:((2 + $(Expr(:$, :q))) + (2 + $(Expr(:$, :q))))</code></td>
     <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-</table>
-
-### Case - Expression interpolation:
-
-```julia
-ex=:ey   #  Main.ex
-x=:p     #  Main.x
-p=7      #  Main.p
-```
-<table>
-  <tr>
-    <td></td>
-    <td><code>@macroexpand(@fn x)</code></td>
-    <td><code>@macroexpand(@fn $x)</code></td>
-    <td><code>@fn x</code></td>
-    <td><code>eval(@fn x)</code></td>
-    <td><code>@fn $x</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- ex
-end</code></td>
-    <td><code>:(Main.x)</code></td>
-    <td><code>:($(Expr(:$, :(Main.x))))</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- :(ex)
-end</code></td>
-    <td><code>:(Main.ex)</code></td>
-    <td><code>:(Main.ex)</code></td>
-    <td><code>:ey</code></td>
-    <td><code>:ez</code></td>
-    <td><code>:ey</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- :($ex)
-end</code></td>
-    <td><code>:(Main.x)</code></td>
-    <td><code>:($(Expr(:$, :(Main.x))))</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- :($:($ex))
-end</code></td>
-    <td><code>:(Main.x)</code></td>
-    <td><code>:($(Expr(:$, :(Main.x))))</code></td>
-    <td><code>:p</code></td>
-    <td><code>7</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- :(quot($ex))
-end</code></td>
-    <td><code>:(Main.quot(Main.x))</code></td>
-    <td><code>:(Main.quot($(Expr(:$, :(Main.x)))))</code></td>
-    <td><code>:(:p)</code></td>
-    <td><code>:p</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- QuoteNode(ex)
-end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:($(QuoteNode(:($(Expr(:$, :x))))))</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>:($(Expr(:$, :x)))</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- :(QuoteNode($ex))
-end</code></td>
-    <td><code>:(Main.QuoteNode(Main.x))</code></td>
-    <td><code>:(Main.QuoteNode($(Expr(:$, :(Main.x)))))</code></td>
-    <td><code>:(:p)</code></td>
-    <td><code>:p</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex)
- :($(QuoteNode(ex)))
-end</code></td>
-    <td><code>:(:x)</code></td>
-    <td><code>:($(QuoteNode(:($(Expr(:$, :x))))))</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>:($(Expr(:$, :x)))</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex); quote 
- QuoteNode($ex)
-end; end</code></td>
-    <td><code>quote
-    Main.QuoteNode(Main.x)
-end</code></td>
-    <td><code>quote
-    Main.QuoteNode($(Expr(:$, :(Main.x))))
-end</code></td>
-    <td><code>:(:p)</code></td>
-    <td><code>:p</code></td>
-    <td><code>syntax: "$" expression outside quote</code></td>
-  </tr>
-  <tr>
-    <td><code>macro fn(ex); quote
- $(QuoteNode(ex))
-end; end</code></td>
-    <td><code>quote
-    :x
-end</code></td>
-    <td><code>quote
-    $(QuoteNode(:($(Expr(:$, :x)))))
-end</code></td>
-    <td><code>:x</code></td>
-    <td><code>:p</code></td>
-    <td><code>:($(Expr(:$, :x)))</code></td>
   </tr>
 </table>
 
