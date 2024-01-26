@@ -232,7 +232,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#498#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#567#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -409,7 +409,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#499#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#568#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -417,7 +417,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#507#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#576#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -426,7 +426,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#515#z" = Main.p ^ 2
+    var"#584#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -535,7 +535,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#533#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#602#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -575,9 +575,9 @@ Still total chaotic for me and cannot make a simple explanation. My weak explana
  
 ```julia
 	                    Expr(:$, :(1+2))   #                  :($(Expr(:$, :(1 + 2))))
-								 quot(Expr(:$, :(1+2))   # :($(Expr(:quote, :($(Expr(:$, :(1 + 2)))))))
-						QuoteNode(Expr(:$, :(1+2))   #    :($(QuoteNode(:($(Expr(:$, :(1 + 2)))))))
-							   eval(Expr(:$, :(1+2))   # ERROR: syntax: "$" expression outside quote
+                 quot(Expr(:$, :(1+2))   # :($(Expr(:quote, :($(Expr(:$, :(1 + 2)))))))
+            QuoteNode(Expr(:$, :(1+2))   #    :($(QuoteNode(:($(Expr(:$, :(1 + 2)))))))
+                 eval(Expr(:$, :(1+2))   # ERROR: syntax: "$" expression outside quote
 	          eval(quot(Expr(:$, :(1+2)))  # 3
 	     eval(QuoteNode(Expr(:$, :(1+2)))  #                  :($(Expr(:$, :(1 + 2))))
 	eval(eval(QuoteNode(Expr(:$, :(1+2)))) # 3
