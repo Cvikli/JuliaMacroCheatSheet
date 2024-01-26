@@ -8,6 +8,8 @@ write(file,"""# Julia Macro CheatSheet
 
 The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
+For me https://docs.julialang.org/en/v1/manual/metaprogramming/ just couldn't make these things understand so I tried to be as short as possible to reach understanding in each point. Please help us correct things and any simplification is welcomed, It is still a little bit too complicated I know, this have to be even shorter.! 
+
 Frequent mistakes: 
 - `\$esc(…)` instead of `\$(esc(…))`
 - `\$QuoteNode(…)` instead of `\$(QuoteNode(…))`
@@ -21,6 +23,7 @@ quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with 
 """)
 
 write(file,"""## Macro hygenie (aka: SCOPE management)
+In short: Escape: = "Reach the local scope from macro from where the macro was called!"
 Macro hygenie, each interpolated variable(`VAR`) in the macro scope points to `Main.VAR` instead of "local VAR in the macro calling scope". 
 ```julia
 a=1
@@ -31,7 +34,7 @@ macro ✓();    :(\$(esc(:a))); end
 eval(let a=2; :(\$(esc(:a))); end) # ERROR: syntax: invalid syntax (escape (outerref a))
      let a=2; @✓();          end   # =2
 ```
-BUT it generate new variable for the macro scope instead of the "local" scope. So eventually it doesn't see the outer scope variables in this case and believe this is the "new scope where the expression has to work".
+BUT it generates new variable for the macro scope instead of the "local" scope. So eventually it doesn't see the outer scope variables in this case and believe this is the "new scope where the expression has to work".
 ```
 a=1
 macro ✖(ex); :(\$ex); end         
@@ -70,6 +73,7 @@ Note:
 
 	basic_expression_generation_tests(file)
 	global_basic_expression_generation_tests(file)
+	nested_quote(file)
 	macro_hygenie(file)
 	medium_expression_generation_tests(file)
 	advanced_expression_generation_tests(file)
@@ -80,7 +84,11 @@ Note:
 	# advanced_expression_interpolation_tests(file)
 
 
-	write(file,"""Sources:\n
+	write(file,"""## Possible antipatterns:
+- If you validate the `ex.head`, then using the function in a macro can lead to unusability due to escaping the expression to reach local scope. Because it is `\$(Expr(:escape, VAR))` where `ex.head` == `:escape`. Issue: https://github.com/JuliaLang/julia/issues/37691 (So while this is an edge case we should be keep it in our mind if we want to create really universal macros.)
+	
+""")
+	write(file,"""## Sources:\n
 - https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-\n
 - https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q\n
 """)
