@@ -9,7 +9,7 @@ write(file,"""# Julia Macro CheatSheet
 The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
 For me https://docs.julialang.org/en/v1/manual/metaprogramming/ just couldn't make these things understand so I tried to be as short as possible to reach understanding in each point. \n
-Please help us correct things and any simplification is welcomed, It is still a little bit too complicated I know, this have to be even shorter.! 
+Please help us correct things and any simplification is welcomed, It is still a little bit too complicated I know, this have to be even shorter! 
 
 """)
 
