@@ -328,6 +328,8 @@ nested_quote(io) = begin
 	tests = [
 		"e=quote quote \$n end end",
 		"e=quote quote \$\$n end end",
+		"e=quote quot(\$n) end",
+		"e=quote QuoteNode(\$n) end",
 		]
 	cases = [
 		"e",
@@ -335,7 +337,7 @@ nested_quote(io) = begin
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-# nested_quote(stdout)
+nested_quote(stdout)
 #%%
 expression_interpolation_tests(io) = begin
 	title = "Case - Expression interpolation:"

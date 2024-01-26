@@ -189,6 +189,20 @@ end</code></td>
     3
 end</code></td>
   </tr>
+  <tr>
+    <td><code>e=quote quot($n) end</code></td>
+    <td><code>quote
+    quot(1 + 2)
+end</code></td>
+    <td><code>:($(Expr(:quote, 3)))</code></td>
+  </tr>
+  <tr>
+    <td><code>e=quote QuoteNode($n) end</code></td>
+    <td><code>quote
+    QuoteNode(1 + 2)
+end</code></td>
+    <td><code>:($(QuoteNode(3)))</code></td>
+  </tr>
 </table>
 
 ### Case - Expression hygenie:
@@ -218,7 +232,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#356#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#429#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -395,7 +409,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#357#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#430#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -403,7 +417,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#365#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#438#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -412,7 +426,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#373#z" = Main.p ^ 2
+    var"#446#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -521,7 +535,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#391#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#464#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -553,3 +567,19 @@ end</code></td>
 
 - https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q
 
+
+## Need simplification
+Section: https://docs.julialang.org/en/v1/manual/metaprogramming/#man-quote-node
+
+Still total chaotic for me and cannot make a simple explanation.
+
+	My explanation: 
+```julia
+	Expr(:$, :(1+2))                       #                  :($(Expr(:$, :(1 + 2))))
+	eval(Expr(:$, :(1+2))                  # ERROR: syntax: "$" expression outside quote
+	quot(Expr(:$, :(1+2))                  # :($(Expr(:quote, :($(Expr(:$, :(1 + 2)))))))
+	eval(quot(Expr(:$, :(1+2)))            # 3
+	QuoteNode(Expr(:$, :(1+2))             #    :($(QuoteNode(:($(Expr(:$, :(1 + 2)))))))
+	eval(QuoteNode(Expr(:$, :(1+2)))       #                  :($(Expr(:$, :(1 + 2))))
+	eval(eval(QuoteNode(Expr(:$, :(1+2)))) # 3
+```
