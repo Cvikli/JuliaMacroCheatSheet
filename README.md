@@ -1,12 +1,42 @@
-# JuliaMacroCheatSheet
-Macro CheatSheet
+# Julia macro CheatSheet
 
 
-Note: Linenumbers are removed from the CheatSheet!
-All test has included: `using Base.Meta: quot, QuoteNode`
+Big mistakes: `$QuoteNode(…)` instead of `$(QuoteNode(…))`, `$esc(…)` instead of `$(esc(…))`
+## Reducing redundancy
+dump(quote 2+3 end) == dump(:(begin 2+3 end)) # even with "Linenumbers are correct"
+:(2+3)  # also similar but without FIRST Linenumber
+## Macro hygenie (aka: SCOPE management)
+Macro hygenie, each interpolated variable(`VAR`) in the macro scope points to `Main.VAR` instead of "local VAR in the macro calling scope". 
+```julia
+a=1
+macro w();    :($:a); end        
+eval(let a=2; :($a);  end)        # =2  (exactly the same like: (`let a=2; a; end`))
+     let a=2; @w();   end          # =1
+macro g();    :($(esc(:a))); end   
+eval(let a=2; :($(esc(:a))); end) # ERROR: syntax: invalid syntax (escape (outerref a))
+     let a=2; @g();          end   # =2
+```
+BUT it generate new variable for the macro scope instead of the "local" scope. So eventually it doesn't see the outer scope variables in this case and believe this is the "new scope where the expression has to work".
+```
+a=1
+macro s(ex); :($ex); end         
+macro t(ex); :($(esc(ex))); end   
+eval(        :(a=2)        )     # a=2
+eval(        :($(esc(a=3))))    # ERROR: MethodError: no method matching esc(; b::Int64)
+@s a=4                           # a=2
+@t a=5                           # a=5
+display(@macroexpand @s a=4)     # :(var"#54#a" = 4)
+display(@macroexpand @t a=5)     # :(a = 5)
+```
 
-Big mistakes: `$QuoteNode(…)` instead of `$(QuoteNode(…))` 
+## Evaluation time
+Expression interpolation (with $) evaluates when the expression is constructed (at parse time)
+Quotation (with : or quote..end) evaluates only when the expression is passed to eval at runtime.
 
+## Learning/repeating knowledge from tests
+Note: 
+- All test has included `using Base.Meta: quot, QuoteNode`.
+- Linenumbers are removed from the CheatSheet!
 
 Case - Basic expressions:
 
@@ -132,7 +162,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#539#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#513#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -309,7 +339,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#540#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#514#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -317,7 +347,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#548#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#522#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -326,7 +356,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#556#z" = Main.p ^ 2
+    var"#530#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -435,7 +465,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#574#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#548#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -458,4 +488,4 @@ end</code></td>
     <td><code>"z = p ^ 2"</code></td>
   </tr>
 </table>
-Sources: https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
+Sources: https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-Sources: https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q
