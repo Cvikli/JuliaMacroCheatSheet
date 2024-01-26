@@ -95,15 +95,14 @@ Note:
 """)
 	write(file,"""## Need simplification
 Section: https://docs.julialang.org/en/v1/manual/metaprogramming/#man-quote-node\n
-Still total chaotic for me and cannot make a simple explanation.\n
-	My explanation: 
+Still total chaotic for me and cannot make a simple explanation. My weak explanation throught tests: \n 
 ```julia
-	Expr(:\$, :(1+2))                       #                  :(\$(Expr(:\$, :(1 + 2))))
-	eval(Expr(:\$, :(1+2))                  # ERROR: syntax: "\$" expression outside quote
-	quot(Expr(:\$, :(1+2))                  # :(\$(Expr(:quote, :(\$(Expr(:\$, :(1 + 2)))))))
-	eval(quot(Expr(:\$, :(1+2)))            # 3
-	QuoteNode(Expr(:\$, :(1+2))             #    :(\$(QuoteNode(:(\$(Expr(:\$, :(1 + 2)))))))
-	eval(QuoteNode(Expr(:\$, :(1+2)))       #                  :(\$(Expr(:\$, :(1 + 2))))
+	                    Expr(:\$, :(1+2))   #                  :(\$(Expr(:\$, :(1 + 2))))
+								 quot(Expr(:\$, :(1+2))   # :(\$(Expr(:quote, :(\$(Expr(:\$, :(1 + 2)))))))
+						QuoteNode(Expr(:\$, :(1+2))   #    :(\$(QuoteNode(:(\$(Expr(:\$, :(1 + 2)))))))
+							   eval(Expr(:\$, :(1+2))   # ERROR: syntax: "\$" expression outside quote
+	          eval(quot(Expr(:\$, :(1+2)))  # 3
+	     eval(QuoteNode(Expr(:\$, :(1+2)))  #                  :(\$(Expr(:\$, :(1 + 2))))
 	eval(eval(QuoteNode(Expr(:\$, :(1+2)))) # 3
 ```
 """)
@@ -117,10 +116,3 @@ if length(ll)>1
 	run(`git push`)
 end
 #%%
-macro ✖(va, ex); :($va=$ex); end 
-macro ✓(va, ex); :($(esc(va))=$(esc(ex))); end 
-@✓ a 9
-@✖ b 9
-display(@macroexpand @✓ a 9)
-display(@macroexpand @✖ a 9)
-a, b
