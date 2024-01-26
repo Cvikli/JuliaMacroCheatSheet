@@ -81,7 +81,7 @@ Note:
 	# advanced_expression_interpolation_tests(file)
 
 
-	write(file,"""## Possible antipatterns:\n
+	write(file,"""\n\n## Possible antipatterns:\n
 - If you validate the `ex.head`, then using the function in a macro can lead to unusability due to escaping the expression to reach local scope. Because it is `\$(Expr(:escape, VAR))` where `ex.head` == `:escape`. Issue: https://github.com/JuliaLang/julia/issues/37691 (So while this is an edge case we should be keep it in our mind if we want to create really universal macros.)
 	
 """)
