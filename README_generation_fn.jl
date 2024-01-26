@@ -148,7 +148,7 @@ end"),
 	call = "@fn x"
 	gen_all_cases_internal(io,title,init,tests,cases, call)
 end
-basic_tests(stdout)
+# basic_tests(stdout)
 #%%
 value_interpolation_tests(io) = begin
 	title = "Case - Value interpolation:"
@@ -215,7 +215,7 @@ global_basic_expression_generation_tests(io) = begin
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-global_basic_expression_generation_tests(stdout)
+# global_basic_expression_generation_tests(stdout)
 #%%
 
 medium_expression_generation_tests(io) = begin
@@ -293,8 +293,8 @@ end
 # advanced_expression_generation_tests(stdout)
 #%%
 
-macro_hygenie(io) = begin
-	title = "Case - Expression hygenie:"
+macro_hygiene(io) = begin
+	title = "Case - Expression hygiene:"
 	init  = "ex=:$(ex)  # Main.ex\n"*
 					"p=$(p)     # Main.p"
 	tests = [
@@ -319,7 +319,7 @@ end",
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-# macro_hygenie(stdout)
+# macro_hygiene(stdout)
 #%%
 
 nested_quote(io) = begin
@@ -337,7 +337,7 @@ nested_quote(io) = begin
 	]
 	gen_all_cases(io,title,init,tests,cases)
 end
-nested_quote(stdout)
+# nested_quote(stdout)
 #%%
 expression_interpolation_tests(io) = begin
 	title = "Case - Expression interpolation:"

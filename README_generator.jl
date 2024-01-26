@@ -13,9 +13,9 @@ Please help us correct things and any simplification is welcomed, It is still a 
 
 """)
 
-write(file,"""## Macro hygenie (aka: SCOPE management)
-In short: Escape: = "Reach the local scope from macro from where the macro was called!"
-Macro hygenie, each interpolated variable(`VAR`) in the macro scope points to `Main.VAR` instead of "local VAR in the macro calling scope". 
+write(file,"""## Macro hygiene (aka: SCOPE management)
+In short: Escape: = "Access the local scope from where the macro is called!"
+In macro hygiene, each interpolated variable(`VAR`) in the macro points to `Main.VAR` instead of the local `VAR` in the macro's calling scope. 
 ```julia
 a=1
 macro ✖();    :(\$:a); end        
@@ -46,12 +46,12 @@ macro ✓(va, ex); :(\$(esc(va))=\$(esc(ex))); end
 display(@macroexpand @✖ a 5)
 display(@macroexpand @✓ a 6)
 ```
-First we work in the macro scope, so it shadows the value. We need to use `esc` to reach the local scope. 
+First we work in the macro scope, so it shadows(`gensym(:a)`) the variable. We need to use `esc` to reach the local scope. 
 
 """)
 write(file,"""## Reducing redundancy
 ```
-quote 2+3 end == :(begin 2+3 end)  # even "Linenumbers are correct" (check with `dump(…)`)
+quote 2+3 end == :(begin 2+3 end)  # both preserve the linenumbers (verifiable with `dump(…)`)
 :(2+3)                             # also similar but without FIRST Linenumber
 ```
 """)
@@ -71,7 +71,7 @@ Note:
 	basic_expression_generation_tests(file)
 	global_basic_expression_generation_tests(file)
 	nested_quote(file)
-	macro_hygenie(file)
+	macro_hygiene(file)
 	medium_expression_generation_tests(file)
 	advanced_expression_generation_tests(file)
 
