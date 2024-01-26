@@ -82,7 +82,8 @@ Note:
 
 	write(file,"""Sources: 
 - https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
-- https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q""")
+- https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q
+""")
 
 end
 
