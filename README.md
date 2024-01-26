@@ -157,7 +157,7 @@ p=7    # Main.p
 ### Case - Nested quote: https://docs.julialang.org/en/v1/manual/metaprogramming/#Nested-quote
 
 ```julia
-n=1 + 2
+n=:(1 + 2)
 ```
 <table>
   <tr>
@@ -230,7 +230,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#142#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#280#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -407,7 +407,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#143#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#281#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -415,7 +415,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#151#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#289#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -424,7 +424,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#159#z" = Main.p ^ 2
+    var"#297#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -533,7 +533,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#177#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#315#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>

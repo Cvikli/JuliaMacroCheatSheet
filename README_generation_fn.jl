@@ -8,7 +8,7 @@ x=Symbol("p")    # Main.x
 y=Symbol("p")    # Main.y
 q=Symbol("p")    # Main.q
 p=7              # Main.p
-n=:(1 + 2)       # Main.n
+n=:(1+2)         # Main.n
 a=1
 
 
@@ -324,7 +324,7 @@ end
 
 nested_quote(io) = begin
 	title = "Case - Nested quote: https://docs.julialang.org/en/v1/manual/metaprogramming/#Nested-quote"
-	init  = "n=$n"
+	init  = "n=:($n)"
 	tests = [
 		"e=quote quote \$n end end",
 		"e=quote quote \$\$n end end",
