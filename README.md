@@ -1,4 +1,4 @@
-# Julia macro CheatSheet
+# Julia Macro CheatSheet
 
 The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
@@ -47,7 +47,7 @@ First we work in the macro scope, so it shadows the value. We need to use `esc` 
 ## Evaluation time
 `$` (expression interpolation) evaluates when the expression is constructed (at parse time)
 
-Quotation (with `:` or `quote` … `end`) evaluates only when the expression is passed to eval at runtime.
+`:` or `quote` … `end`(Quotations) evaluates only when the expression is passed to eval at runtime.
 
 ## Learning/repeating knowledge from tests
 
@@ -180,7 +180,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#133#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#195#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -357,7 +357,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#134#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#196#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -365,7 +365,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#142#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#204#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -374,7 +374,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#150#z" = Main.p ^ 2
+    var"#212#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -483,7 +483,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#168#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#230#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -506,7 +506,7 @@ end</code></td>
     <td><code>"z = p ^ 2"</code></td>
   </tr>
 </table>
-Sources: 
+Sources:
 
 - https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
 

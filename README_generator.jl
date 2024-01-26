@@ -4,7 +4,7 @@ isdir("./JuliaMacroCheatSheet") && cd("./JuliaMacroCheatSheet")
 println(pwd())
 
 open("README.md", "w") do file
-write(file,"""# Julia macro CheatSheet
+write(file,"""# Julia Macro CheatSheet
 
 The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
@@ -57,7 +57,7 @@ First we work in the macro scope, so it shadows the value. We need to use `esc` 
 """)
 write(file,"""## Evaluation time
 `\$` (expression interpolation) evaluates when the expression is constructed (at parse time)\n
-Quotation (with `:` or `quote` … `end`) evaluates only when the expression is passed to eval at runtime.
+`:` or `quote` … `end`(Quotations) evaluates only when the expression is passed to eval at runtime.
 
 """)
 write(file,"""## Learning/repeating knowledge from tests
@@ -80,7 +80,7 @@ Note:
 	# advanced_expression_interpolation_tests(file)
 
 
-	write(file,"""Sources: \n
+	write(file,"""Sources:\n
 - https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-\n
 - https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q\n
 """)
