@@ -38,7 +38,7 @@ Note:
 - All test has included `using Base.Meta: quot, QuoteNode`.
 - Linenumbers are removed from the CheatSheet!
 
-Case - Basic expressions:
+### Case - Basic expressions:
 
 ```julia
 x=:p   # Main.x
@@ -98,7 +98,7 @@ end</code></td>
   </tr>
 </table>
 
-Case - Global space basic expressions:
+### Case - Global space basic expressions:
 
 ```julia
 x=:p   # Main.x
@@ -135,7 +135,7 @@ p=7   # Main.p
   </tr>
 </table>
 
-Case - Expression hygenie:
+### Case - Expression hygenie:
 
 ```julia
 ex=:ey  # Main.ex
@@ -162,7 +162,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#513#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#580#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -173,7 +173,7 @@ end</code></td>
   </tr>
 </table>
 
-Case - Medium expression:
+### Case - Medium expression:
 
 ```julia
 ex=:ey  # Main.ex
@@ -322,7 +322,7 @@ end</code></td>
   </tr>
 </table>
 
-Case - Medium expression:
+### Case - Medium expression:
 
 ```julia
 ex=:ey  # Main.ex
@@ -339,7 +339,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#514#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#581#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -347,7 +347,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#522#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#589#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -356,7 +356,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#530#z" = Main.p ^ 2
+    var"#597#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -465,7 +465,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#548#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#615#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>

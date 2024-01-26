@@ -11,7 +11,7 @@ p=7     # Main.p
 
 
 gen_all_cases(io,title, init, tests, cases) = begin
-	println(io,'\n',title,'\n')
+	println(io,'\n',"### ",title,'\n')
 	!isempty(init) && println(io,"""```julia
 	$init
 	```""")
@@ -62,7 +62,7 @@ gen_all_cases(io,title, init, tests, cases) = begin
 end
 #%%
 gen_all_cases_internal(io,title, init, tests, cases, call) = begin
-	println(io,'\n',title,'\n')
+	println(io,'\n',"### ",title,'\n')
 	!isempty(init) && println(io,"""```julia
 	$init
 	```""")
