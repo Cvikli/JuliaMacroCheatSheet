@@ -80,9 +80,9 @@ Note:
 	# advanced_expression_interpolation_tests(file)
 
 
-	write(file,"""Sources: 
-- https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
-- https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q
+	write(file,"""Sources: \n
+- https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-\n
+- https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q\n
 """)
 
 end
