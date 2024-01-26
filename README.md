@@ -1,5 +1,6 @@
 # Julia macro CheatSheet
 
+The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
 Frequent mistakes: 
 - `$esc(…)` instead of `$(esc(…))`
@@ -24,22 +25,22 @@ BUT it generate new variable for the macro scope instead of the "local" scope. S
 ```
 a=1
 macro ✖(ex); :($ex); end         
-macro ✓(ex); :($(esc(ex))); end   
-eval(        :(a=2))             # a=2
-# eval(        :($(esc(a=3))))   # ERROR: MethodError: no method matching esc(; b::Int64)
-@✖ a=4                           # a=2
-@✓ a=5                           # a=5
-display(@macroexpand @✖ a=4)     # :(var"#54#a" = 4)
-display(@macroexpand @✓ a=5)     # :(a = 5)
+macro ✓(ex); :($(esc(ex))); end   # this works similarly: `:(:ey)`
+eval(        :(a=2))               # a=2
+# eval(        :($(esc(a=3))))    # ERROR: MethodError: no method matching esc(; b::Int64)
+@✖ a=4                             # a=2
+@✓ a=5                             # a=5
+display(@macroexpand @✖ a=4)       # :(var"#54#a" = 4)
+display(@macroexpand @✓ a=5)       # :(a = 5)
 ```
 also
 ```
 macro ✖(va, ex); :($va=$ex); end 
 macro ✓(va, ex); :($(esc(va))=$(esc(ex))); end 
-@✖ b 9
-@✓ a 9
-display(@macroexpand @✖ a 9)
-display(@macroexpand @✓ a 9)
+@✖ a 5
+@✓ a 6
+display(@macroexpand @✖ a 5)
+display(@macroexpand @✓ a 6)
 ```
 First we work in the macro scope, so it shadows the value. We need to use `esc` to reach the local scope. 
 
@@ -59,7 +60,7 @@ Note:
 
 ```julia
 x=:p   # Main.x
-p=7   # Main.p
+p=7    # Main.p
 ```
 <table>
   <tr>
@@ -119,7 +120,7 @@ end</code></td>
 
 ```julia
 x=:p   # Main.x
-p=7   # Main.p
+p=7    # Main.p
 ```
 <table>
   <tr>
@@ -179,7 +180,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#760#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#13#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -356,7 +357,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#761#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#14#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -364,7 +365,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#769#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#19#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -373,7 +374,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#777#z" = Main.p ^ 2
+    var"#26#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -482,7 +483,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#795#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#44#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
@@ -505,4 +506,7 @@ end</code></td>
     <td><code>"z = p ^ 2"</code></td>
   </tr>
 </table>
-Sources: https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-Sources: https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q
+Sources: 
+- https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
+
+- https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q

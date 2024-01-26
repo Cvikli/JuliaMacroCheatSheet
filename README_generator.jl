@@ -6,6 +6,7 @@ println(pwd())
 open("README.md", "w") do file
 write(file,"""# Julia macro CheatSheet
 
+The whole file is wider on this screen: https://github.com/Cvikli/JuliaMacroCheatSheet/blob/main/README.md
 
 Frequent mistakes: 
 - `\$esc(…)` instead of `\$(esc(…))`
@@ -34,22 +35,22 @@ BUT it generate new variable for the macro scope instead of the "local" scope. S
 ```
 a=1
 macro ✖(ex); :(\$ex); end         
-macro ✓(ex); :(\$(esc(ex))); end   
-eval(        :(a=2))             # a=2
-# eval(        :(\$(esc(a=3))))   # ERROR: MethodError: no method matching esc(; b::Int64)
-@✖ a=4                           # a=2
-@✓ a=5                           # a=5
-display(@macroexpand @✖ a=4)     # :(var"#54#a" = 4)
-display(@macroexpand @✓ a=5)     # :(a = 5)
+macro ✓(ex); :(\$(esc(ex))); end   # this works similarly: `:($(QuoteNode(ex)))`
+eval(        :(a=2))               # a=2
+# eval(        :(\$(esc(a=3))))    # ERROR: MethodError: no method matching esc(; b::Int64)
+@✖ a=4                             # a=2
+@✓ a=5                             # a=5
+display(@macroexpand @✖ a=4)       # :(var"#54#a" = 4)
+display(@macroexpand @✓ a=5)       # :(a = 5)
 ```
 also
 ```
 macro ✖(va, ex); :(\$va=\$ex); end 
 macro ✓(va, ex); :(\$(esc(va))=\$(esc(ex))); end 
-@✖ b 9
-@✓ a 9
-display(@macroexpand @✖ a 9)
-display(@macroexpand @✓ a 9)
+@✖ a 5
+@✓ a 6
+display(@macroexpand @✖ a 5)
+display(@macroexpand @✓ a 6)
 ```
 First we work in the macro scope, so it shadows the value. We need to use `esc` to reach the local scope. 
 
@@ -79,8 +80,9 @@ Note:
 	# advanced_expression_interpolation_tests(file)
 
 
-	write(file,"""Sources: https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-""")
-	write(file,"""Sources: https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q""")
+	write(file,"""Sources: 
+- https://riptutorial.com/julia-lang/example/24364/quotenode--meta-quot--and-ex--quote-
+- https://nextjournal.com/a/KpqWNKDvNLnkBrgiasA35?change-id=CQRuZrWB1XaT71H92x8Y2Q""")
 
 end
 

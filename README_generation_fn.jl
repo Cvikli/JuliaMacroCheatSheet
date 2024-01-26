@@ -180,7 +180,7 @@ end
 basic_expression_generation_tests(io) = begin
 	title = "Case - Basic expressions:"
 	init  = "x=:$(x)   # Main.x\n"*
-					"p=$(p)   # Main.p"
+					"p=$(p)    # Main.p"
 	tests = [
 		"macro fn(); :x; end",
 		"macro fn(); :(x); end",
@@ -200,7 +200,7 @@ end
 global_basic_expression_generation_tests(io) = begin
 	title = "Case - Global space basic expressions:"
 	init  = "x=:$(x)   # Main.x\n"*
-					"p=$(p)   # Main.p"
+					"p=$(p)    # Main.p"
 	tests = [
 		"macro fn(); :(\$x); end",
 		"macro fn(); :(\$(esc(x))); end",
