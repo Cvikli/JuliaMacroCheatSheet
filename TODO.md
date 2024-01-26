@@ -1,0 +1,5 @@
+- The basic program representation simplification.
+- Algorithmically how does interpolation and qutationg works. Chart visualization!
+- More topic
+- More simplification
+- Colors: https://gist.github.com/luigiMinardi/4574708d404cdf4fe0da7ac6fe2314db
