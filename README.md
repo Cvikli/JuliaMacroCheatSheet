@@ -8,7 +8,7 @@ Please help us correct things and any simplification is welcomed, It is still a 
 
 ## Macro hygiene (aka: SCOPE management)
 In short: Escape: = "Access the local scope from where the macro is called!"
-In macro hygiene, each interpolated variable(`VAR`) in the macro points to `Main.VAR` instead of the local `VAR` in the macro's calling scope. 
+In macro hygiene, each interpolated variable(`VAR`) in the macro points to the module where the macro is defined (ex: `Main.VAR` or `MyModule.VAR`) instead of the local `VAR` in the macro's calling scope. 
 ```julia
 a=1
 macro ✖();    :($:a); end        
@@ -231,7 +231,7 @@ end</code></td>
     <td><code>49</code></td>
     <td><code>:(Main.p ^ 2)</code></td>
     <td><code>49</code></td>
-    <td><code>:(var"#694#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#7#z" = Main.p ^ 2)</code></td>
   </tr>
   <tr>
     <td><code>macro dummy(ex); return esc(ex); end</code></td>
@@ -408,7 +408,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); ex; end</code></td>
-    <td><code>:(var"#695#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#8#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -416,7 +416,7 @@ p=7     # Main.p
   </tr>
   <tr>
     <td><code>macro fn(ex); :($ex); end</code></td>
-    <td><code>:(var"#703#z" = Main.p ^ 2)</code></td>
+    <td><code>:(var"#13#z" = Main.p ^ 2)</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -425,7 +425,7 @@ p=7     # Main.p
   <tr>
     <td><code>macro fn(ex); quote; $ex; end end</code></td>
     <td><code>quote
-    var"#711#z" = Main.p ^ 2
+    var"#18#z" = Main.p ^ 2
 end</code></td>
     <td><code>49</code></td>
     <td><code>49</code></td>
@@ -534,7 +534,7 @@ end</code></td>
   </tr>
   <tr>
     <td><code>macro fn(ex); :(string($ex)); end</code></td>
-    <td><code>:(Main.string($(Expr(:(=), Symbol("#729#z"), :(Main.p ^ 2)))))</code></td>
+    <td><code>:(Main.string($(Expr(:(=), Symbol("#23#z"), :(Main.p ^ 2)))))</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>
     <td><code>"49"</code></td>

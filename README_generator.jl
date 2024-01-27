@@ -15,7 +15,7 @@ Please help us correct things and any simplification is welcomed, It is still a 
 
 write(file,"""## Macro hygiene (aka: SCOPE management)
 In short: Escape: = "Access the local scope from where the macro is called!"
-In macro hygiene, each interpolated variable(`VAR`) in the macro points to `Main.VAR` instead of the local `VAR` in the macro's calling scope. 
+In macro hygiene, each interpolated variable(`VAR`) in the macro points to the module where the macro is defined (ex: `Main.VAR` or `MyModule.VAR`) instead of the local `VAR` in the macro's calling scope. 
 ```julia
 a=1
 macro ✖();    :(\$:a); end        
