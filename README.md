@@ -36,10 +36,10 @@ macro ✖(va, ex); :($va=$ex); end
 macro ✓(va, ex); :($(esc(va))=$(esc(ex))); end 
 @✖ a 5
 @✓ a 6
-display(@macroexpand @✖ a 5)
-display(@macroexpand @✓ a 6)
+display(@macroexpand @✖ a 5) # :(var"#7#a" = 5)
+display(@macroexpand @✓ a 6) # :(a = 6)
 ```
-First we work in the macro scope, so it shadows(`gensym(:a)`) the variable. We need to use `esc` to reach the local scope. 
+First time it works in the macro scope, so it shadows(`gensym(:a)`) the variable, second time it creates `a` into the scope. We need to use `esc` to reach the local scope. 
 
 ## Reducing redundancy
 ```
