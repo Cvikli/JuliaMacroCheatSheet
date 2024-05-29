@@ -11,12 +11,12 @@ In short: Escape: = "Access the local scope from where the macro is called!"
 In macro hygiene, each interpolated variable(`VAR`) in the macro points to the module where the macro is defined (ex: `Main.VAR` or `MyModule.VAR`) instead of the local `VAR` in the macro's calling scope. 
 ```julia
 a=1
-macro wrong();    :($:a); end        
-eval(let a=2; :($a);    end)        # =2  (exactly the same like: (`let a=2; a; end`))
-     let a=2; @wrong(); end         # =1
-macro correct();    :($(esc(:a))); end   
-eval(let a=2; :($(esc(:a))); end)   # ERROR: syntax: invalid syntax (escape (outerref a))
-     let a=2; @correct();    end    # =2
+macro wrong(); :($:a);  end        
+eval(let a=2;  :($a);   end)           # =2  (exactly the same like: (`let a=2; a; end`))
+     let a=2; @wrong(); end            # =1
+macro correct(); :($(esc(:a))); end   
+eval(let a=2;    :($(esc(:a))); end)   # ERROR: syntax: invalid syntax (escape (outerref a))
+     let a=2;    @correct();    end    # =2
 ```
 BUT it generates new variable for the macro scope instead of the "local" scope. So eventually it doesn't see the outer scope variables in this case and believe this is the "new scope where the expression has to work".
 ```
