@@ -12,11 +12,11 @@ In macro hygiene, each interpolated variable(`VAR`) in the macro points to the m
 ```julia
 a=1
 macro wrong(); :($:a);  end        
-eval(let a=2;  :($a);   end)           # =2  (exactly the same like: (`let a=2; a; end`))
      let a=2; @wrong(); end            # =1
+eval(let a=2;  :($a);   end)           # =2  (exactly the same like: (`let a=2; a; end`))
 macro correct(); :($(esc(:a))); end   
-eval(let a=2;    :($(esc(:a))); end)   # ERROR: syntax: invalid syntax (escape (outerref a))
      let a=2;    @correct();    end    # =2
+eval(let a=2;    :($(esc(:a))); end)   # ERROR: syntax: invalid syntax (escape (outerref a))
 ```
 BUT it generates new variable for the macro scope instead of the "local" scope. So eventually it doesn't see the outer scope variables in this case and believe this is the "new scope where the expression has to work".
 ```
