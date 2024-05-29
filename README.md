@@ -11,20 +11,20 @@ In short: Escape: = "Access the local scope from where the macro is called!"
 In macro hygiene, each interpolated variable(`VAR`) in the macro points to the module where the macro is defined (ex: `Main.VAR` or `MyModule.VAR`) instead of the local `VAR` in the macro's calling scope. 
 ```julia
 a=1
-macro ✖();    :($:a); end        
-eval(let a=2; :($a);  end)        # =2  (exactly the same like: (`let a=2; a; end`))
-     let a=2; @✖();   end          # =1
-macro ✓();    :($(esc(:a))); end   
-eval(let a=2; :($(esc(:a))); end) # ERROR: syntax: invalid syntax (escape (outerref a))
-     let a=2; @✓();          end   # =2
+macro wrong();    :($:a); end        
+eval(let a=2; :($a);    end)        # =2  (exactly the same like: (`let a=2; a; end`))
+     let a=2; @wrong(); end         # =1
+macro correct();    :($(esc(:a))); end   
+eval(let a=2; :($(esc(:a))); end)   # ERROR: syntax: invalid syntax (escape (outerref a))
+     let a=2; @correct();    end    # =2
 ```
 BUT it generates new variable for the macro scope instead of the "local" scope. So eventually it doesn't see the outer scope variables in this case and believe this is the "new scope where the expression has to work".
 ```
 a=1
 macro ✖(ex); :($ex); end         
-macro ✓(ex); :($(esc(ex))); end   # this works similarly: `:(:ey)`
+macro ✓(ex); :($(esc(ex))); end    # this works similarly: `:(:ey)`
 eval(        :(a=2))               # a=2
-# eval(        :($(esc(a=3))))    # ERROR: MethodError: no method matching esc(; b::Int64)
+# eval(        :($(esc(a=3))))     # ERROR: MethodError: no method matching esc(; b::Int64)
 @✖ a=4                             # a=2
 @✓ a=5                             # a=5
 display(@macroexpand @✖ a=4)       # :(var"#54#a" = 4)
@@ -49,7 +49,7 @@ quote 2+3 end == :(begin 2+3 end)  # both preserve the linenumbers (verifiable w
 ## Evaluation time
 `$` (expression interpolation) evaluates when the expression is constructed (at parse time)
 
-`:` or `quote` … `end`(Quotations) evaluates only when the expression is passed to eval at runtime.
+`:(`…`)` or `quote` … `end`(Quotations) evaluates only when the expression is passed to eval at runtime.
 
 ## Learning/repeating knowledge from tests
 
